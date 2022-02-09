@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Siyuan Query</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<style type="text/css">
+    html,
+    body {
+        padding: 0;
+        border: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+    }
+
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+    }
+
+    #query {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<body>
+    <button id="query" type="button">Query</button>
+</body>
+<script type="module">
+    /* 
+ * 获取挂件自身 ID
+ * 调整页面大小
+ * 读取挂件自身的属性
+ *   - 若没有属性 custom-sql, 设置该属性
+ * 查询挂件前是否有一个具有属性 custom-type: query 的代码块
+ *   - 若没有任何块, 使用 prependBlock 插入一个 SQL 代码块, 内容为 custom-sql, 结束
+ *   - 若有块, 但不是具有属性 custom-query 的代码块, 使用 insertBlock 插入一个 SQL 代码块, 内容为 custom-sql, 结束
+ *   - 若是具有属性 custom-query 的代码块, 使用 getBlockByID 获得代码块内 SQL 语句
+ *       - 将该语句写入挂件属性 custom-sql
+ * 进行 SQL 查询
+ *   - 查询失败: 弹窗显示错误信息, 结束
+ *   - 查询成功, 无记录: 弹窗显示提示信息, 结束
+ *   - 查询成功且有记录
+ * 解析查询记录并生成 markdown 表格
+ * 查询挂件后是一个具有属性 custom-type: query-result 的表格
+ *   - 没有表格 || 不符合要求: 使用 insertBlock 插入表格
+ *   - 符合要求: 使用 updateBlock 更新表格
+ */
+import { config } from './src/script/module/config.js';
+import {
+    initWidgetBlock,
+    codeBlock,
+    widgetBlock,
+    tableBlock,
+} from './src/script/module/query.js';
+
+
+var node = window.frameElement.parentElement.parentElement;
+// console.log(node);
+var data = {
+    config: config, // 配置选项
+    node: node,
+    id: node.getAttribute('data-node-id'), // 挂件块 ID
+    sql: '', // 查询语句
+    rows: null, // 查询结果
+    markdown: null, // markdown 表格
+}
+await initWidgetBlock(data); // 初始化挂件尺寸和属性
+
+export async function query() {
+    try {
+        if (await codeBlock(data)) return;
+        if (await widgetBlock(data)) return;
+        if (await tableBlock(data)) return;
+    } catch (err) {
+        console.log(err);
+        // window.alert(`SQL 查询错误!\nThe SQL query error!\n${err}`);
+    }
+}
+
+(() => {
+    document.getElementById('query').addEventListener('click', query);
+})();
+</script>
+
+</html>

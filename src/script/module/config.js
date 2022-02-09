@@ -1,62 +1,14 @@
-# widget-query
+/* 配置文件(可以被 data/widgets/custom.js 覆盖) */
+import {
+    cutString,
+    ReplaceSpace,
+    ReplaceCRLF,
+    ialParser,
+    markdown2span,
+    timestampFormat,
+    isEmptyString,
+} from './../utils/string.js';
 
-<center>
-
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Zuoqiu-Yingyi/widget-query?include_prereleases)
-![GitHub Release Date](https://img.shields.io/github/release-date/Zuoqiu-Yingyi/widget-query)
-![GitHub](https://img.shields.io/github/license/Zuoqiu-Yingyi/widget-query)
-![GitHub last commit](https://img.shields.io/github/last-commit/Zuoqiu-Yingyi/widget-query)
-![GitHub repo size](https://img.shields.io/github/repo-size/Zuoqiu-Yingyi/widget-query)
-![jsDelivr hits (GitHub)](https://img.shields.io/jsdelivr/gh/hy/Zuoqiu-Yingyi/widget-query?label=hits)
-![GitHub all releases](https://img.shields.io/github/downloads/Zuoqiu-Yingyi/widget-query/total)
-
-</center>
-
-一个将思源笔记数据库查询结果以表格样式渲染的挂件  
-A widget that renders the query results of the Siyuan Notes database in tabular style.
-
-现已上架[思源笔记社区集市](https://github.com/siyuan-note/bazaar), 如果您需要订阅[思源笔记](https://github.com/siyuan-note/siyuan)增值服务，欢迎使用我的推荐码: **h0sc9rc**  
-It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.com/siyuan-note/bazaar). If you need to subscribe to the value-added services of [siyuan note](https://github.com/siyuan-note/siyuan/blob/master/README_en_US.md), please use my referral code: **h0sc9rc**
-
-## 预览 | PREVIEW
-
-![preview](preview.png)
-
-## 功能 | FUNCTION
-
-1. 符合正则表达式 `^\s*SELECT\s+\*\s+FROM\s+blocks.*` 的 SQL 语句将启用自定义渲染模式  
-   SQL statements that conform to the regular expression `^\s*SELECT\s+\*\s+FROM\s+blocks.*` will enable custom rendering mode.
-   - 这个正则表达式在 `/src/script/module/config.js` 中的 `config.query.regs.blocks` 配置  
-     This regular expression is configured in `config.query.regs.blocks` in `/src/script/module/config.js`
-2. 自定义渲染模式 | Custom rendering modes
-   - 可以在 `config.query.limit` 中设置过长查询结果的截取方案  
-     You can set the the interception scheme for query results that are too long in `config.query.limit`.
-     - `config.query.maxlen`: 最大长度 | Maximum length
-     - `config.query.maxrow`: 最多行数 | Maximum number of rows
-   - 可以在 `config.query.fields` 中设置想要显示的字段  
-     You can set the fields you want to display in `config.query.fields`.
-   - 可以在 `config.query.align` 中设置各字段的对齐方式  
-     You can set the alignment of each field in `config.query.align`.
-   - 可以在 `config.query.handler` 中设置各字段的处理方法  
-     You can set the handling method for each field in `config.query.handler`.
-3. 普通模式 | Normal mode
-   - 完整显示查询结果  
-     Displays the query results in full.
-
-## 自定义配置 | CUSTOM CONFIG
-
-1. 创建文件 `<工作空间>/data/widgets/custom.js`  
-   Create a file `<workspace>/data/widgets/custom.js`
-2. 在文件 `<工作空间>/data/widgets/custom.js` 中定义的值将覆盖 `<工作空间>/widgets/Query/src/script/module/config.js` 中对应的值  
-   The value defined in file `<workspace>/data/widgets/custom.js` overwrites the corresponding value in file `<workspace>/widgets/Query/src/script/module/config.js`.
-
-### 配置示例 | CONFIG EXAMPLE
-
-```js
-/* 路径 | Path
- * <工作空间>/data/widgets/custom.js
- * <workspace>/data/widgets/custom.js
- */
 export var config = {
     width: '128px', // 宽度
     height: '32px', // 高度
@@ -247,19 +199,12 @@ export var config = {
     },
 };
 
-```
+try {
+    let custom = await import('/widgets/custom.js');
+    config = custom.config;
+} catch (err) {
+    console.log(err);
+} finally {
+    console.log(config);
+}
 
-## 开始 | START
-
-该挂件已在[思源笔记社区集市](https://github.com/siyuan-note/bazaar)上架, 可直接在集市中安装  
-The widget has been put on the shelves at [SiYuan community bazaar](https://github.com/siyuan-note/bazaar) and can be installed directly in the Bazaar.
-
-## 参考 & 感谢 | REFERENCE & THANKS
-
-| 作者 \| Author                                      | 项目 \| Project                                                                                                                                       | 许可证 \| License |
-| :-------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------- |
-| **[leolee9086](https://github.com/leolee9086)**     | [leolee9086/cc-baselib](https://github.com/leolee9086/cc-baselib)                                                                                     | *Unknown*         |
-
-## 更改日志 | CHANGE LOG
-
-[CHANGE LOG](./CHANGELOG.md)
