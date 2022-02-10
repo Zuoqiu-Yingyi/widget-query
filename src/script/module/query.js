@@ -34,26 +34,33 @@ export async function codeBlock(data) {
     let previous_block = data.node.previousElementSibling;
     let id = null;
     let mode = 0;
-    if (previous_block == null) { // 挂件位于文档首部
-        id = data.node.parentElement.parentElement.querySelector('div[data-node-id]').getAttribute('data-node-id');
-        mode = 1;
+    if (previous_block == null) { // 挂件位于文档/引用块/超级快首部
+        if (data.node.parentElement.getAttribute('data-node-id') == null) { // 挂件位于文档首
+            id = data.node.parentElement.parentElement.querySelector('div[data-node-id]').getAttribute('data-node-id');
+            mode = 1;
+        }
+        else { // 挂件位于引用块/超级快首部
+            id = data.node.parentElement.getAttribute('data-node-id');
+            mode = 2;
+        }
     }
     else if (previous_block.getAttribute('class') == 'protyle-action') { // 挂件位于列表项中第一个块
         id = data.node.parentElement.getAttribute('data-node-id');
-        mode = 2;
+        mode = 3;
     }
     else if (previous_block.getAttribute('custom-type') == 'query'
         && previous_block.getAttribute('data-type') == 'NodeCodeBlock') { // 挂件前的块是查询代码块
         id = previous_block.getAttribute('data-node-id');
-        mode = 3;
+        mode = 4;
     }
     else { // 挂件前的块不是代码块/不是查询代码块
         id = previous_block.getAttribute('data-node-id');
-        mode = 4;
+        mode = 5;
     }
     switch (mode) {
         case 1:
         case 2:
+        case 3:
             prependBlock(
                 id,
                 'markdown',
@@ -64,11 +71,11 @@ export async function codeBlock(data) {
                 return 1;
             });
             return 2;
-        case 3:
+        case 4:
             let sql_block = await getBlockByID(id);
             data.sql = sql_block.content;
             return 0;
-        case 4:
+        case 5:
             insertBlock(
                 id,
                 'markdown',
@@ -85,11 +92,14 @@ export async function codeBlock(data) {
 
 export async function widgetBlock(data) {
     await setBlockAttrs(data.id, { 'custom-sql': data.sql });
+    // console.log(data.rows);
     data.rows = await sql(data.sql);
     // console.log(data.rows);
-
-    if (data.rows.length <= 0) {
-        window.alert("查询结果为空!\nThe query result is empty!");
+    if (data.rows == null) {
+        return -1;
+    }
+    else if (data.rows.length <= 0) {
+        // window.alert("查询结果为空!\nThe query result is empty!");
         return 1;
     }
 
