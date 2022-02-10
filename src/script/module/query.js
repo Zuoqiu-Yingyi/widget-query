@@ -18,51 +18,68 @@ export async function initWidgetBlock(data) {
     // window.document.querySelector('html').style.height = data.config.height;
     window.frameElement.style.width = data.config.width;
     window.frameElement.style.height = data.config.height;
-    let payload = {
-        id: data.id,
-        attrs: {
-            // style: `width: ${data.config.width}; height: ${data.config.height};`,
-        }
-    }
+
     // console.log(data.id);
     getBlockAttrs(data.id).then(attrs => {
-        if (attrs['custom-sql'] == null) payload.attrs['custom-sql'] = data.sql;
+        if (attrs['custom-sql'] == null) {
+            setBlockAttrs(data.id, {
+                'custom-sql': data.sql,
+            });
+        }
         else data.sql = attrs['custom-sql'];
     });
-    await setBlockAttrs(payload.id, payload.attrs);
 }
 
 export async function codeBlock(data) {
     let previous_block = data.node.previousElementSibling;
-    if (previous_block == null) {
-        let parent_id = data.node.parentElement.parentElement.querySelector('div[data-node-id]').getAttribute('data-node-id');
-        prependBlock(
-            parent_id,
-            'markdown',
-            `\`\`\`sql\n${data.sql}\n\`\`\`\n{: custom-type="query"}`,
-        ).then(block => {
-            if (block == null) return -1;
-            data.code_block_id = block[0].doOperations[0].id;
-            return 1;
-        });
+    let id = null;
+    let mode = 0;
+    if (previous_block == null) { // 挂件位于文档首部
+        id = data.node.parentElement.parentElement.querySelector('div[data-node-id]').getAttribute('data-node-id');
+        mode = 1;
+    }
+    else if (previous_block.getAttribute('class') == 'protyle-action') { // 挂件位于列表项中第一个块
+        id = data.node.parentElement.getAttribute('data-node-id');
+        mode = 2;
     }
     else if (previous_block.getAttribute('custom-type') == 'query'
-        && previous_block.getAttribute('data-type') == 'NodeCodeBlock') {
-        let previous_block_id = previous_block.getAttribute('data-node-id');
-        let sql_block = await getBlockByID(previous_block_id);
-        data.sql = sql_block.content;
-        return 0;
+        && previous_block.getAttribute('data-type') == 'NodeCodeBlock') { // 挂件前的块是查询代码块
+        id = previous_block.getAttribute('data-node-id');
+        mode = 3;
     }
-    else {
-        let previous_block_id = previous_block.getAttribute('data-node-id');
-        insertBlock(
-            previous_block_id,
-            'markdown',
-            `\`\`\`sql\n${data.sql}\n\`\`\`\n{: custom-type="query"}`,
-        ).then(block => {
-            if (block == null) return -2;
+    else { // 挂件前的块不是代码块/不是查询代码块
+        id = previous_block.getAttribute('data-node-id');
+        mode = 4;
+    }
+    switch (mode) {
+        case 1:
+        case 2:
+            prependBlock(
+                id,
+                'markdown',
+                `\`\`\`sql\n${data.sql}\n\`\`\`\n{: custom-type="query"}`,
+            ).then(block => {
+                if (block == null) return -1;
+                data.code_block_id = block[0].doOperations[0].id;
+                return 1;
+            });
             return 2;
-        });
+        case 3:
+            let sql_block = await getBlockByID(id);
+            data.sql = sql_block.content;
+            return 0;
+        case 4:
+            insertBlock(
+                id,
+                'markdown',
+                `\`\`\`sql\n${data.sql}\n\`\`\`\n{: custom-type="query"}`,
+            ).then(block => {
+                if (block == null) return -2;
+                return 3;
+            });
+            return 4;
+        default:
+            return -3;
     }
 }
 
