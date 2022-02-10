@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- 修复默认处理方法参数错误 | Fixed default processing method parameter errors.
+
 ## v0.1.2/2022-02-10
 
 - [v0.1.1 <=> v0.1.2](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.1...v0.1.2)

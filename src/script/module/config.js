@@ -78,7 +78,7 @@ export var config = {
             sort: '-:',
         },
         default: {
-            handler: (row) => { // 其他查询结果默认处理方法
+            handler: (row, key) => { // 其他查询结果默认处理方法, row 是查询结果的一条记录, key 是字段名
                 return `\`${row[key]}\``;
             },
         },
