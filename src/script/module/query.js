@@ -13,11 +13,11 @@ import {
 } from './../utils/api.js';
 
 export async function initWidgetBlock(data) {
-    window.document.getElementById('query').style['border-radius'] = data.config.radius;
-    // window.document.querySelector('html').style.width = data.config.width;
-    // window.document.querySelector('html').style.height = data.config.height;
-    window.frameElement.style.width = data.config.width;
-    window.frameElement.style.height = data.config.height;
+    window.document.getElementById('query').style['border-radius'] = data.config.query.radius;
+    // window.document.querySelector('html').style.width = data.config.query.width;
+    // window.document.querySelector('html').style.height = data.config.query.height;
+    window.frameElement.style.width = data.config.query.width;
+    window.frameElement.style.height = data.config.query.height;
 
     // console.log(data.id);
     getBlockAttrs(data.id).then(attrs => {
@@ -92,8 +92,8 @@ export async function codeBlock(data) {
 
 export async function widgetBlock(data) {
     await setBlockAttrs(data.id, { 'custom-sql': data.sql });
-    if (config.template.enable) { 
-        let RealSql = await config.template.handler(data);
+    if (data.config.query.template.enable) { 
+        let RealSql = await data.config.query.template.handler(data);
         data.rows = await sql(RealSql);
     }
     else data.rows = await sql(data.sql);

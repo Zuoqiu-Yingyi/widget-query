@@ -83,12 +83,11 @@ import {
 } from '/widgets/Query/src/script/utils/templateParser.js'
 
 export var config = {
-    width: '128px', // 宽度
-    height: '32px', // 高度
-    radius: '8px', // 圆角
-
     token: '', // API token, 无需填写
     query: { // 查询配置
+        width: '128px', // 宽度
+        height: '32px', // 高度
+        radius: '8px', // 圆角
         regs: {
             blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks.*/i, // 块查询的正则表达式
         },

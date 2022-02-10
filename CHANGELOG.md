@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- 修复配置文件字段引用错误 | Fix profile field reference errors.
+
 ## v0.1.1/2022-02-10
 
 - [v0.1.0 <=> v0.1.1](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.3.0...v0.3.1)
