@@ -39,7 +39,17 @@ It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.c
      You can set the alignment of each field in `config.query.align`.
    - 可以在 `config.query.handler` 中设置各字段的处理方法  
      You can set the handling method for each field in `config.query.handler`.
-3. 普通模式 | Normal mode
+3. 部分模板字段解析支持  
+   Partial template field parsing support.
+   - `.prefix{.field}`
+     - `prefix`: 前缀字段 | prefix field
+       - `block`: 挂件块 | Widget block.
+       - `parent`: 挂件块的上级块 | The parent block of the pendant block.
+       - `root`: 挂件块所在文档块 | The document block in which the pendant block resides.
+     - `field`: 属性字段 | attribute field
+       - 数据库中 `blocks` 表的字段名  
+         The field name of the `blocks` table in the database.
+4. 普通模式 | Normal mode
    - 完整显示查询结果  
      Displays the query results in full.
 
@@ -57,6 +67,21 @@ It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.c
  * <工作空间>/data/widgets/custom.js
  * <workspace>/data/widgets/custom.js
  */
+
+import {
+    cutString,
+    ReplaceSpace,
+    ReplaceCRLF,
+    ialParser,
+    markdown2span,
+    timestampFormat,
+    isEmptyString,
+} from '/widgets/Query/src/script/utils/string.js';
+
+import {
+    templateParse
+} from '/widgets/Query/src/script/utils/templateParser.js'
+
 export var config = {
     width: '128px', // 宽度
     height: '32px', // 高度
@@ -72,6 +97,12 @@ export var config = {
         limit: 'row', // 查询结果字段限制, (null 为不限制, 'len' 为限制长度, 'row' 为限制行数)
         CRLF: '<br />', // 换行符替换
         space: ' ', // 空白字符替换
+        template: { // 类似模板字段解析支持, 类似 .prefix{.field}, 目前支持的有 .root{.<挂件所在文档块的字段名>} .parent{.<挂件上级块的字段名>} .block{挂件块的字段名}
+            enable: true, // 是否启用模板解析
+            handler: async (data) => { // 模板解析处理函数
+                return await templateParse(data);
+            }
+        },
         fields: [ // 需渲染的 blocks 表的字段, 顺序分先后
             // 'content', // 去除了 Markdown 标记符的文本
             'markdown', // 包含完整 Markdown 标记符的文本
@@ -93,7 +124,6 @@ export var config = {
             // 'subtype', // 内容块子类型，参考((20210210103411-tcbcjja "子类型字段"))
             // 'ial', // 内联属性列表，形如 `{: name="value"}`
             // 'sort', // 排序权重, 数值越小排序越靠前
-
         ],
         align: { // 查询结果字段对齐样式(':-' 左对齐, ':-:' 居中, '-:' 右对齐)
             content: ':-',
@@ -117,7 +147,12 @@ export var config = {
             ial: ':-',
             sort: '-:',
         },
-        handler: { // 查询结果字段处理方法
+        default: {
+            handler: (row) => { // 其他查询结果默认处理方法
+                return `\`${row[key]}\``;
+            },
+        },
+        handler: { // 块查询结果各字段处理方法
             content: (row) => {
                 switch (config.query.limit) {
                     case 'len':

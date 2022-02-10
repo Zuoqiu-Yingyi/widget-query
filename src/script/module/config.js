@@ -28,7 +28,7 @@ export var config = {
         limit: 'row', // 查询结果字段限制, (null 为不限制, 'len' 为限制长度, 'row' 为限制行数)
         CRLF: '<br />', // 换行符替换
         space: ' ', // 空白字符替换
-        template: { // 思源模板字段解析支持, 类似 .prefix{.attribute}
+        template: { // 类似模板字段解析支持, 类似 .prefix{.field}, 目前支持的有 .root{.<挂件所在文档块的字段名>} .parent{.<挂件上级块的字段名>} .block{挂件块的字段名}
             enable: true, // 是否启用模板解析
             handler: async (data) => { // 模板解析处理函数
                 return await templateParse(data);
@@ -78,7 +78,12 @@ export var config = {
             ial: ':-',
             sort: '-:',
         },
-        handler: { // 查询结果字段处理方法
+        default: {
+            handler: (row) => { // 其他查询结果默认处理方法
+                return `\`${row[key]}\``;
+            },
+        },
+        handler: { // 块查询结果各字段处理方法
             content: (row) => {
                 switch (config.query.limit) {
                     case 'len':

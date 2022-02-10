@@ -13,7 +13,7 @@ export async function templateParse(data) {
     parent_block ? sql = parseBlock(sql, parent_block, ".parent") : null;
 
     let doc_block = await getBlockByID(block.root_id);
-    doc_block ? sql = parseBlock(sql, doc_block, ".action") : null;
+    doc_block ? sql = parseBlock(sql, doc_block, ".root") : null;
     // console.log(sql);
     return sql;
 }

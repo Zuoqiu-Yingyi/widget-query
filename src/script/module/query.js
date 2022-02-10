@@ -161,7 +161,7 @@ export async function widgetBlock(data) {
                     row_markdown.push(` |`);
                 }
                 else {
-                    row_markdown.push(` \`${row[key]}\` |`);
+                    row_markdown.push(` ${data.config.query.default.handler(row, key)} |`);
                 }
             }
             markdown.push(row_markdown.join(''));
