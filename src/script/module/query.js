@@ -11,6 +11,9 @@ import {
     insertBlock,
     sql,
 } from './../utils/api.js';
+import {
+    templateParse
+} from './../utils/templateParser.js'
 
 export async function initWidgetBlock(data) {
     window.document.getElementById('query').style['border-radius'] = data.config.radius;
@@ -92,8 +95,9 @@ export async function codeBlock(data) {
 
 export async function widgetBlock(data) {
     await setBlockAttrs(data.id, { 'custom-sql': data.sql });
-    // console.log(data.rows);
-    data.rows = await sql(data.sql);
+    // data.rows = await sql(data.sql);
+    let RealSql = await templateParse(data)
+    data.rows = await sql(RealSql);
     // console.log(data.rows);
     if (data.rows == null) {
         return -1;
