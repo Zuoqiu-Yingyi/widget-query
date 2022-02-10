@@ -9,6 +9,10 @@ import {
     isEmptyString,
 } from './../utils/string.js';
 
+import {
+    templateParse
+} from './../utils/templateParser.js'
+
 export var config = {
     width: '128px', // 宽度
     height: '32px', // 高度
@@ -24,6 +28,12 @@ export var config = {
         limit: 'row', // 查询结果字段限制, (null 为不限制, 'len' 为限制长度, 'row' 为限制行数)
         CRLF: '<br />', // 换行符替换
         space: ' ', // 空白字符替换
+        template: { // 思源模板字段解析支持, 类似 .prefix{.attribute}
+            enable: true, // 是否启用模板解析
+            handler: async (data) => { // 模板解析处理函数
+                return await templateParse(data);
+            }
+        },
         fields: [ // 需渲染的 blocks 表的字段, 顺序分先后
             // 'content', // 去除了 Markdown 标记符的文本
             'markdown', // 包含完整 Markdown 标记符的文本

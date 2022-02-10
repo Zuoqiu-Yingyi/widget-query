@@ -2,6 +2,7 @@
 
 - 修复列表项中插入查询代码块运行时异常 | Fixed a run-time exception for inserting a query code block into a list item.
 - 修复引述块或超级快中插入查询代码时异常 | Fixed an exception when inserting query code in Quoted Block or Super Express.
+- 新增部分思源模板参数解析 | Added the parsing of partial template parameters in the Siyuan.
 
 ## v0.1.0/2022-02-10
 
