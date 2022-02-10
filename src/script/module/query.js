@@ -44,7 +44,7 @@ export async function codeBlock(data) {
             mode = 2;
         }
     }
-    else if (previous_block.getAttribute('class') == 'protyle-action') { // 挂件位于列表项中第一个块
+    else if (previous_block.getAttribute('class').search('protyle-action') != -1) { // 挂件位于列表项中第一个块
         id = data.node.parentElement.getAttribute('data-node-id');
         mode = 3;
     }
