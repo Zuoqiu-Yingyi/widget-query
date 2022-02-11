@@ -1,7 +1,5 @@
 /* 使用表格显示 SQL 查询结果 */
 
-import { config } from './config.js';
-
 import {
     getBlockAttrs,
     setBlockAttrs,
