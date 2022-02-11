@@ -1,6 +1,7 @@
 # 更改日志 | CHANGE LOG
 
 - 修复默认处理方法参数错误 | Fixed default processing method parameter errors.
+- 默认块搜索结果排除挂件查询组合块 | The default block search results exclude the widget query combination block.
 
 ## v0.1.2/2022-02-10
 

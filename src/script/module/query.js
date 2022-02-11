@@ -24,6 +24,7 @@ export async function initWidgetBlock(data) {
         if (attrs['custom-sql'] == null) {
             setBlockAttrs(data.id, {
                 'custom-sql': data.sql,
+                'custom-type': data.config.query.attribute.widget,
             });
         }
         else data.sql = attrs['custom-sql'];
@@ -48,7 +49,7 @@ export async function codeBlock(data) {
         id = data.node.parentElement.getAttribute('data-node-id');
         mode = 3;
     }
-    else if (previous_block.getAttribute('custom-type') == 'query'
+    else if (previous_block.getAttribute('custom-type') == data.config.query.attribute.code
         && previous_block.getAttribute('data-type') == 'NodeCodeBlock') { // 挂件前的块是查询代码块
         id = previous_block.getAttribute('data-node-id');
         mode = 4;
@@ -64,24 +65,26 @@ export async function codeBlock(data) {
             prependBlock(
                 id,
                 'markdown',
-                `\`\`\`sql\n${data.sql}\n\`\`\`\n{: custom-type="query"}`,
+                `\`\`\`sql\n${data.sql}\n\`\`\`\n{: custom-type="${data.config.query.attribute.code}"}`,
             ).then(block => {
                 if (block == null) return -1;
-                data.code_block_id = block[0].doOperations[0].id;
+                data.previous_id = block[0].doOperations[0].id;
                 return 1;
             });
             return 2;
         case 4:
             let sql_block = await getBlockByID(id);
+            data.previous_id = sql_block.id;
             data.sql = sql_block.content;
             return 0;
         case 5:
             insertBlock(
                 id,
                 'markdown',
-                `\`\`\`sql\n${data.sql}\n\`\`\`\n{: custom-type="query"}`,
+                `\`\`\`sql\n${data.sql}\n\`\`\`\n{: custom-type="${data.config.query.attribute.code}"}`,
             ).then(block => {
                 if (block == null) return -2;
+                data.previous_id = block[0].doOperations[0].id;
                 return 3;
             });
             return 4;
@@ -92,7 +95,7 @@ export async function codeBlock(data) {
 
 export async function widgetBlock(data) {
     await setBlockAttrs(data.id, { 'custom-sql': data.sql });
-    if (data.config.query.template.enable) { 
+    if (data.config.query.template.enable) {
         let RealSql = await data.config.query.template.handler(data);
         data.rows = await sql(RealSql);
     }
@@ -122,13 +125,26 @@ export async function widgetBlock(data) {
         markdown.push(align.join(''));
 
         // REF [JS几种数组遍历方式以及性能分析对比 - 撒网要见鱼 - 博客园](https://www.cnblogs.com/dailc/p/6103091.html)
-        for (let i = 1, len = data.rows.length; i <= len; i++) {
+        for (let i = 0, index = 0, len = data.rows.length; i < len; i++) {
             // 每一条查询记录
-            let row = data.rows[i - 1];
+            let row = data.rows[i];
+            // console.log(row);
+            if (data.config.query.filter.blocks.enable) { // 过滤器开启
+                let flag_filtrate = false; // 是否过滤
+                for (let handler of data.config.query.filter.blocks.handlers) {
+                    if (handler(row, data)) {
+                        flag_filtrate = true;
+                        break;
+                    }
+                }
+                if (flag_filtrate) continue;
+                else index++;
+            }
+            else index++;
             // console.log(row);
 
             let row_markdown = [];
-            row_markdown.push(`| ${i} |`);
+            row_markdown.push(`| ${index} |`);
             for (let field of data.config.query.fields) { // 根据自定义字段列表，构造表格
                 row_markdown.push(` ${data.config.query.handler[field](row)} |`);
             }
@@ -152,8 +168,9 @@ export async function widgetBlock(data) {
 
         for (let i = 1, len = data.rows.length; i <= len; i++) {
             // 每一条查询记录
-            // console.log(row);
             let row = data.rows[i - 1];
+            // console.log(row);
+
             let row_markdown = [];
             row_markdown.push(`| ${i} |`);
             for (var key of keys) {
@@ -168,7 +185,7 @@ export async function widgetBlock(data) {
         }
     }
 
-    markdown.push('{: custom-type="query-result"}');
+    markdown.push(`{: custom-type="${data.config.query.attribute.table}"}`);
     data.markdown = markdown.join('\n');
     // console.log(data.markdown);
     return 0;
@@ -180,23 +197,29 @@ export async function tableBlock(data) {
     // console.log(next_block);
 
     if (next_block
-        && next_block.getAttribute('custom-type') == 'query-result'
+        && next_block.getAttribute('custom-type') == data.config.query.attribute.table
         && next_block.getAttribute('data-type') == 'NodeTable'
     ) { // 若下一节点有查询结果
         // 更新查询结果节点
         let id = next_block.getAttribute('data-node-id');
-        await updateBlock(
+        updateBlock(
             id,
             'markdown',
             data.markdown,
-        );
+        ).then(block => {
+            if (block == null) return -1;
+            data.next_id = block[0].doOperations[0].id;
+        });
     } else { // 若下一节点无查询结果
         // 创建查询结果节点
-        await insertBlock(
+        insertBlock(
             data.id,
             'markdown',
             data.markdown,
-        );
+        ).then(block => {
+            if (block == null) return -2;
+            data.next_id = block[0].doOperations[0].id;
+        });
     }
     return 0;
 }

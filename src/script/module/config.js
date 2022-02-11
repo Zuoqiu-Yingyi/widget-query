@@ -19,6 +19,11 @@ export var config = {
         width: '128px', // 宽度
         height: '32px', // 高度
         radius: '8px', // 圆角
+        attribute: { // 块属性
+            code: 'query-code', // 查询代码块
+            widget: 'query-widget', // 查询挂件块
+            table: 'query-table', // 查询结果表格块
+        },
         regs: {
             blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks.*/i, // 块查询的正则表达式
         },
@@ -31,6 +36,26 @@ export var config = {
             enable: true, // 是否启用模板解析
             handler: async (data) => { // 模板解析处理函数
                 return await templateParse(data);
+            }
+        },
+        filter: { // 查询结果过滤
+            blocks: { // 块查询的过滤
+                enable: true, // 是否启用过滤
+                handlers: [ // 过滤处理方法序列
+                    (row, data) => { // 过滤查询结果中的查询结构(查询代码块, Query 挂件块)
+                        // row: 查询结果一条记录
+                        // data: 挂件数据
+                        // return: 返回 true 则过滤掉当前记录, 返回 false 则不过滤
+                        switch (true) {
+                            case row.ial.indexOf(`custom-type="${data.config.query.attribute.code}"`) != -1:
+                            case row.ial.indexOf(`custom-type="${data.config.query.attribute.widget}"`) != -1:
+                            case row.ial.indexOf(`custom-type="${data.config.query.attribute.table}"`) != -1:
+                                return true;
+                            default:
+                                return false;
+                        }
+                    },
+                ],
             }
         },
         fields: [ // 需渲染的 blocks 表的字段, 顺序分先后
