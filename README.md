@@ -330,6 +330,17 @@ The widget has been put on the shelves at [SiYuan community bazaar](https://gith
 | :-------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------- |
 | **[leolee9086](https://github.com/leolee9086)**     | [leolee9086/cc-baselib](https://github.com/leolee9086/cc-baselib)                                                                                     | *Unknown*         |
 
+注: 排序不分先后  
+ps: Sort in no particular order.
+
+## 贡献者 | CONTRIBUTOR
+
+- [leolee9086](https://github.com/leolee9086)
+- [jpanda-cn](https://github.com/jpanda-cn)
+
+注: 排序不分先后  
+ps: Sort in no particular order.
+
 ## 更改日志 | CHANGE LOG
 
 [CHANGE LOG](./CHANGELOG.md)
