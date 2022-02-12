@@ -55,12 +55,14 @@ It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.c
 
 ## 自定义配置 | CUSTOM CONFIG
 
+### 全局自定义配置 | GLOBAL CUSTOM CONFIG
+
 1. 创建文件 `<工作空间>/data/widgets/custom.js`  
    Create a file `<workspace>/data/widgets/custom.js`
 2. 在文件 `<工作空间>/data/widgets/custom.js` 中定义的值将覆盖 `<工作空间>/widgets/Query/src/script/module/config.js` 中对应的值  
    The value defined in file `<workspace>/data/widgets/custom.js` overwrites the corresponding value in file `<workspace>/widgets/Query/src/script/module/config.js`.
 
-### 配置示例 | CONFIG EXAMPLE
+#### 配置示例 | CONFIG EXAMPLE
 
 ```js
 /* 路径 | Path
@@ -307,6 +309,15 @@ export var config = {
 };
 
 ```
+
+### 块自定义配置 | BLOCK CUSTOM CONFIG
+
+- 在挂件块中设置自定义块属性  
+  Set custom block attributes in the widget block.
+  - 自定义属性名称为 `src/script/module/config.js` 文件中 `config` 对象中的属性  
+    Custom block attribute names are property in the `config` object under the file `src/script/module/config.js`.
+  - 例如, 如果想要自定义查询结果字段列表, 可以设置自定义块属性 `query-fields`: `["hpath", "type", "markdown"]`, 在该块中将会替换 `config.query.fields` 字段  
+    For example, if you want to customize the query result field list, you can set the custom block attribute `query-fields`: `["hpath", "type", "markdown"]`, where the `config.query.fields` property will be replaced in this block.
 
 ## 开始 | START
 

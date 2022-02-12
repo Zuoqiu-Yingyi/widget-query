@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+- 使用自定义属性实现每个挂件块的自定义配置 | Use custom attributes to implement a custom configuration for each widget block.
+  - [借助于挂件的自定义属性实现每个不同的挂件可以展示不同的表格内容 by jpanda-cn · Pull Request #5 · Zuoqiu-Yingyi/widget-query](https://github.com/Zuoqiu-Yingyi/widget-query/pull/5)
+
 ## v0.1.3/2022-02-12
 
 - [v0.1.2 <=> v0.1.3](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.2...v0.1.3)
