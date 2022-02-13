@@ -1,6 +1,9 @@
 # 更改日志 | CHANGE LOG
 
-- 配置文件有变动 | There are changes to the configuration file.
+## v0.1.4/2022-02-13
+
+- [v0.1.3 <=> v0.1.4](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.3...v0.1.4)
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 使用自定义属性实现每个挂件块的自定义配置 | Use custom attributes to implement a custom configuration for each widget block.
   - [借助于挂件的自定义属性实现每个不同的挂件可以展示不同的表格内容 by jpanda-cn · Pull Request #5 · Zuoqiu-Yingyi/widget-query](https://github.com/Zuoqiu-Yingyi/widget-query/pull/5)
 - 使用配置文件设置块搜索结果各字段的宽度 | Use a configuration file to set the width of each field of the block search results.
