@@ -140,7 +140,7 @@ export async function widgetBlock(data) {
         markdown.push(header.join(""));
         markdown.push(align.join(""));
 
-        if (data.rows.length <= 0) {
+        if (data.rows.length > 0) {
             // REF [JS几种数组遍历方式以及性能分析对比 - 撒网要见鱼 - 博客园](https://www.cnblogs.com/dailc/p/6103091.html)
             for (let i = 0, index = 0, len = data.rows.length; i < len; i++) {
                 // 每一条查询记录
