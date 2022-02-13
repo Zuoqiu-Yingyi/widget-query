@@ -87,9 +87,9 @@ import {
 export var config = {
     token: '', // API token, 无需填写
     query: { // 查询配置
-        width: '128px', // 宽度
-        height: '32px', // 高度
-        radius: '8px', // 圆角
+        width: '128px', // 挂件宽度
+        height: '32px', // 挂件高度
+        radius: '8px', // 挂件圆角
         attribute: { // 块属性
             code: 'query-code', // 查询代码块
             widget: 'query-widget', // 查询挂件块
@@ -109,7 +109,40 @@ export var config = {
                 return await templateParse(data);
             }
         },
+        default: {
+            // 非块查询的处理模式
+            handler: (row, key) => { // 其他查询结果默认处理方法, row 是查询结果的一条记录, key 是字段名
+                return `\`${row[key]}\``;
+            },
+            style: {
+                column: '',
+                align: ':-',
+            },
+        },
+        fields: [ // 需渲染的 blocks 表的字段, 顺序分先后
+            'type', // 内容块类型，参考((20210210103523-ombf290 "类型字段"))
+            // 'content', // 去除了 Markdown 标记符的文本
+            'markdown', // 包含完整 Markdown 标记符的文本
+            'hpath', // 人类可读的内容块所在文档路径
+            'created', // 创建时间
+            'updated', // 更新时间
+
+            // 'id', // 内容块 ID
+            // 'parent_id', // 双亲块 ID, 如果内容块是文档块则该字段为空
+            // 'root_id', // 文档块 ID
+            // 'box', // 笔记本 ID
+            // 'path', // 内容块所在文档路径
+            // 'name', // 内容块名称
+            // 'alias', // 内容块别名
+            // 'memo', // 内容块备注
+            // 'hash', // content 字段的 SHA256 校验和
+            // 'length', // markdown 字段文本长度
+            // 'subtype', // 内容块子类型，参考((20210210103411-tcbcjja "子类型字段"))
+            // 'ial', // 内联属性列表，形如 `{: name="value"}`
+            // 'sort', // 排序权重, 数值越小排序越靠前
+        ],
         style: {
+            // 查询结果样式
             column: {
                 // 列样式, 自定义宽度的字段可以设置为 '{: style="width: 512px"}'
                 content: '',
@@ -118,7 +151,7 @@ export var config = {
                 updated: '',
                 type: '',
                 hpath: '',
-    
+
                 id: '',
                 parent_id: '',
                 root_id: '',
@@ -156,7 +189,8 @@ export var config = {
                 sort: '-:',
             },
         },
-        filter: { // 查询结果过滤
+        filter: {
+            // 查询结果过滤器
             blocks: { // 块查询的过滤
                 enable: true, // 是否启用过滤
                 handlers: [ // 过滤处理方法序列
@@ -175,33 +209,6 @@ export var config = {
                     },
                 ],
             }
-        },
-        fields: [ // 需渲染的 blocks 表的字段, 顺序分先后
-            // 'content', // 去除了 Markdown 标记符的文本
-            'markdown', // 包含完整 Markdown 标记符的文本
-            'created', // 创建时间
-            'updated', // 更新时间
-            'type', // 内容块类型，参考((20210210103523-ombf290 "类型字段"))
-            'hpath', // 人类可读的内容块所在文档路径
-
-            // 'id', // 内容块 ID
-            // 'parent_id', // 双亲块 ID, 如果内容块是文档块则该字段为空
-            // 'root_id', // 文档块 ID
-            // 'box', // 笔记本 ID
-            // 'path', // 内容块所在文档路径
-            // 'name', // 内容块名称
-            // 'alias', // 内容块别名
-            // 'memo', // 内容块备注
-            // 'hash', // content 字段的 SHA256 校验和
-            // 'length', // markdown 字段文本长度
-            // 'subtype', // 内容块子类型，参考((20210210103411-tcbcjja "子类型字段"))
-            // 'ial', // 内联属性列表，形如 `{: name="value"}`
-            // 'sort', // 排序权重, 数值越小排序越靠前
-        ],
-        default: {
-            handler: (row, key) => { // 其他查询结果默认处理方法, row 是查询结果的一条记录, key 是字段名
-                return `\`${row[key]}\``;
-            },
         },
         handler: { // 块查询结果各字段处理方法
             content: (row) => {
@@ -293,7 +300,8 @@ export var config = {
                 return row.sort;
             },
         },
-        map: { // 映射表
+        map: {
+            // 映射表
             blocktype: { // 块类型映射
                 d: '文档块',
                 h: '标题块',
