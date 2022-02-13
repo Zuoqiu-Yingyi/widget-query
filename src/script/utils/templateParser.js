@@ -23,7 +23,7 @@ function parseBlock(sql, block, prefix) {
         let templateAction = `${prefix}{.${attributeName}}`;
         // console.log(templateAction);
         let blockAttribute = block[attributeName];
-        sql = sql.replace(templateAction, blockAttribute);
+        sql = sql.replaceAll(templateAction, blockAttribute);
         // console.log(sql);
     }
     return sql;

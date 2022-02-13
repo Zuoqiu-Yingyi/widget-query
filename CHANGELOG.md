@@ -8,6 +8,7 @@
   - [借助于挂件的自定义属性实现每个不同的挂件可以展示不同的表格内容 by jpanda-cn · Pull Request #5 · Zuoqiu-Yingyi/widget-query](https://github.com/Zuoqiu-Yingyi/widget-query/pull/5)
 - 使用配置文件设置块搜索结果各字段的宽度 | Use a configuration file to set the width of each field of the block search results.
 - 查询结果为 0 时渲染表格头 | The table header is rendered when the query result is 0.
+- 修复多个相同模板字段解析失败问题 | Fixed multiple failed parsing of the same template fields.
 
 ## v0.1.3/2022-02-12
 
