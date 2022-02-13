@@ -137,8 +137,8 @@ export async function widgetBlock(data) {
         align.push("| -: |");
         for (let field of data.config.query.fields) {
             // 根据自定义字段列表，构造表头
-            header.push(` ${field} |`);
-            align.push(` ${data.config.query.align[field]} |`);
+            header.push(` ${field}${data.config.query.style.column[field]} |`);
+            align.push(` ${data.config.query.style.align[field]} |`);
         }
         markdown.push(header.join(""));
         markdown.push(align.join(""));
@@ -179,8 +179,8 @@ export async function widgetBlock(data) {
         header.push(`|    |`);
         align.push(`| -: |`);
         for (var key of keys) {
-            header.push(` ${key} |`);
-            align.push(` :- |`);
+            header.push(` ${key}${data.config.query.default.style.column} |`);
+            align.push(` ${data.config.query.default.style.align} |`);
         }
         markdown.push(header.join("")); // 表头
         markdown.push(align.join("")); // 对齐样式

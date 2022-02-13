@@ -109,6 +109,53 @@ export var config = {
                 return await templateParse(data);
             }
         },
+        style: {
+            column: {
+                // 列样式, 自定义宽度的字段可以设置为 '{: style="width: 512px"}'
+                content: '',
+                markdown: '',
+                created: '',
+                updated: '',
+                type: '',
+                hpath: '',
+    
+                id: '',
+                parent_id: '',
+                root_id: '',
+                hash: '',
+                box: '',
+                path: '',
+                name: '',
+                alias: '',
+                memo: '',
+                length: '',
+                subtype: '',
+                ial: '',
+                sort: '',
+            },
+            align: { // 查询结果字段对齐样式(':-' 左对齐, ':-:' 居中, '-:' 右对齐)
+                content: ':-',
+                markdown: ':-',
+                created: ':-:',
+                updated: ':-:',
+                type: ':-:',
+                hpath: ':-',
+
+                id: ':-:',
+                parent_id: ':-:',
+                root_id: ':-:',
+                hash: ':-:',
+                box: ':-:',
+                path: ':-',
+                name: ':-',
+                alias: ':-',
+                memo: ':-',
+                length: '-:',
+                subtype: '-:',
+                ial: ':-',
+                sort: '-:',
+            },
+        },
         filter: { // 查询结果过滤
             blocks: { // 块查询的过滤
                 enable: true, // 是否启用过滤
@@ -151,28 +198,6 @@ export var config = {
             // 'ial', // 内联属性列表，形如 `{: name="value"}`
             // 'sort', // 排序权重, 数值越小排序越靠前
         ],
-        align: { // 查询结果字段对齐样式(':-' 左对齐, ':-:' 居中, '-:' 右对齐)
-            content: ':-',
-            markdown: ':-',
-            created: ':-:',
-            updated: ':-:',
-            type: ':-:',
-            hpath: ':-',
-
-            id: ':-:',
-            parent_id: ':-:',
-            root_id: ':-:',
-            hash: ':-:',
-            box: ':-:',
-            path: ':-',
-            name: ':-',
-            alias: ':-',
-            memo: ':-',
-            length: '-:',
-            subtype: '-:',
-            ial: ':-',
-            sort: '-:',
-        },
         default: {
             handler: (row, key) => { // 其他查询结果默认处理方法, row 是查询结果的一条记录, key 是字段名
                 return `\`${row[key]}\``;
