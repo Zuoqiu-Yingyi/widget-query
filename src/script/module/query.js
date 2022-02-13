@@ -122,9 +122,6 @@ export async function widgetBlock(data) {
 
     if (data.rows == null) {
         return -1;
-    } else if (data.rows.length <= 0) {
-        // window.alert("查询结果为空!\nThe query result is empty!");
-        return 1;
     }
 
     let markdown = [];
@@ -143,33 +140,35 @@ export async function widgetBlock(data) {
         markdown.push(header.join(""));
         markdown.push(align.join(""));
 
-        // REF [JS几种数组遍历方式以及性能分析对比 - 撒网要见鱼 - 博客园](https://www.cnblogs.com/dailc/p/6103091.html)
-        for (let i = 0, index = 0, len = data.rows.length; i < len; i++) {
-            // 每一条查询记录
-            let row = data.rows[i];
-            // console.log(row);
-            if (data.config.query.filter.blocks.enable) {
-                // 过滤器开启
-                let flag_filtrate = false; // 是否过滤
-                for (let handler of data.config.query.filter.blocks.handlers) {
-                    if (handler(row, data)) {
-                        flag_filtrate = true;
-                        break;
+        if (data.rows.length <= 0) {
+            // REF [JS几种数组遍历方式以及性能分析对比 - 撒网要见鱼 - 博客园](https://www.cnblogs.com/dailc/p/6103091.html)
+            for (let i = 0, index = 0, len = data.rows.length; i < len; i++) {
+                // 每一条查询记录
+                let row = data.rows[i];
+                // console.log(row);
+                if (data.config.query.filter.blocks.enable) {
+                    // 过滤器开启
+                    let flag_filtrate = false; // 是否过滤
+                    for (let handler of data.config.query.filter.blocks.handlers) {
+                        if (handler(row, data)) {
+                            flag_filtrate = true;
+                            break;
+                        }
                     }
+                    if (flag_filtrate) continue;
+                    else index++;
+                } else index++;
+                // console.log(row);
+
+                let row_markdown = [];
+                row_markdown.push(`| ${index} |`);
+                for (let field of data.config.query.fields) {
+                    // 根据自定义字段列表，构造表格
+                    row_markdown.push(` ${data.config.query.handler[field](row)} |`);
                 }
-                if (flag_filtrate) continue;
-                else index++;
-            } else index++;
-            // console.log(row);
 
-            let row_markdown = [];
-            row_markdown.push(`| ${index} |`);
-            for (let field of data.config.query.fields) {
-                // 根据自定义字段列表，构造表格
-                row_markdown.push(` ${data.config.query.handler[field](row)} |`);
+                markdown.push(row_markdown.join(""));
             }
-
-            markdown.push(row_markdown.join(""));
         }
     } else {
         let header = []; // 表头
@@ -185,23 +184,25 @@ export async function widgetBlock(data) {
         markdown.push(header.join("")); // 表头
         markdown.push(align.join("")); // 对齐样式
 
-        for (let i = 1, len = data.rows.length; i <= len; i++) {
-            // 每一条查询记录
-            let row = data.rows[i - 1];
-            // console.log(row);
+        if (data.rows.length > 0) {
+            for (let i = 1, len = data.rows.length; i <= len; i++) {
+                // 每一条查询记录
+                let row = data.rows[i - 1];
+                // console.log(row);
 
-            let row_markdown = [];
-            row_markdown.push(`| ${i} |`);
-            for (var key of keys) {
-                if (row[key] == "" || row[key] == null || row[key] == undefined) {
-                    row_markdown.push(` |`);
-                } else {
-                    row_markdown.push(
-                        ` ${data.config.query.default.handler(row, key)} |`
-                    );
+                let row_markdown = [];
+                row_markdown.push(`| ${i} |`);
+                for (var key of keys) {
+                    if (row[key] == "" || row[key] == null || row[key] == undefined) {
+                        row_markdown.push(` |`);
+                    } else {
+                        row_markdown.push(
+                            ` ${data.config.query.default.handler(row, key)} |`
+                        );
+                    }
                 }
+                markdown.push(row_markdown.join(""));
             }
-            markdown.push(row_markdown.join(""));
         }
     }
 
