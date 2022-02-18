@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+## v0.1.5/2022-02-18
+
+- [v0.1.4 <=> v0.1.5](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.4...v0.1.5)
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 使用字段别名定义查询显示样式 | Use field aliases to define query display styles.
 
