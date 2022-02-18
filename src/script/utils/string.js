@@ -46,6 +46,14 @@ export function timestampFormat(timestamp) {
     return timestamp.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/, "$1-$2-$3 $4:$5:$6");
 }
 
+export function dateFormat(timestamp) {
+    return timestamp.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3");
+}
+
+export function timeFormat(timestamp) {
+    return timestamp.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/, "$4:$5:$6");
+}
+
 export function markdown2span(markdown) {
     // markdown 转 span
     if (typeof (markdown) == 'string') {

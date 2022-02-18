@@ -50,8 +50,37 @@ It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.c
        - 数据库中 `blocks` 表的字段名  
          The field name of the `blocks` table in the database.
 4. 普通模式 | Normal mode
-   - 完整显示查询结果  
-     Displays the query results in full.
+   - 使用字段别名前缀定义查询显示样式  
+     Use field aliases prefix to define query display styles.
+     - `__ref__`:
+       - 该字段渲染为块引用  
+         The field is rendered as a block reference.
+       - 示例 | example: `((<field> "<field>"))`
+     - `__link__`:
+       - 该字段渲染为块链接  
+         The field is rendered as a block link.
+       - 示例 | example: `[<field>](<field>)`
+     - `__raw__`:
+       - 该字段渲染为原始值(行内代码样式)  
+         The field is rendered as the original value (inline code style).
+       - 示例 | example: `` `<field>` ``
+     - `__date__`:
+       - 该字段渲染为日期  
+         The field is rendered as a date.
+       - 示例 | example: `yyyy-MM-dd`
+     - `__time__`:
+       - 该字段渲染为时间  
+         The field is rendered as a time.
+       - 示例 | example: `HH:mm:ss`
+     - `__datetime__`:
+       - 该字段渲染为日期时间  
+         The field is rendered as a datetime.
+       - 示例 | example: `yyyy-MM-dd HH:mm:ss`
+     - `__pre__`:
+       - 该字段渲染为预览(渲染 markdown 行级标识符)  
+         The field is rendered as a preview (rendering the markdown row-level identifier).
+   - 默认显示查询结果原始值(使用行内代码)  
+     Displays the original value of the query result by default (using inline code).
 
 ## 自定义配置 | CUSTOM CONFIG
 

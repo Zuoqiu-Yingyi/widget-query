@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- 使用字段别名定义查询显示样式 | Use field aliases to define query display styles.
+
 ## v0.1.4/2022-02-13
 
 - [v0.1.3 <=> v0.1.4](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.3...v0.1.4)
