@@ -105,6 +105,8 @@ import {
     ReplaceCRLF,
     ialParser,
     markdown2span,
+    dateFormat,
+    timeFormat,
     timestampFormat,
     isEmptyString,
 } from '/widgets/Query/src/script/utils/string.js';
@@ -119,6 +121,16 @@ export var config = {
         width: '128px', // 挂件宽度
         height: '32px', // 挂件高度
         radius: '8px', // 挂件圆角
+        prefix: {
+            // 非默认查询时字段别名前缀
+            ref: '__ref__', // 该字段渲染为引用
+            link: '__link__', // 该字段渲染为链接
+            pre: '__pre__', // 该字段渲染为预览
+            raw: '__raw__', // 该字段渲染为原始值
+            date: '__date__', // 该字段渲染为日期
+            time: '__time__', // 该字段渲染为时间
+            datetime: '__datetime__', // 该字段渲染为日期时间
+        },
         attribute: { // 块属性
             code: 'query-code', // 查询代码块
             widget: 'query-widget', // 查询挂件块
@@ -141,7 +153,23 @@ export var config = {
         default: {
             // 非块查询的处理模式
             handler: (row, key) => { // 其他查询结果默认处理方法, row 是查询结果的一条记录, key 是字段名
-                return `\`${row[key]}\``;
+                switch (true) {
+                    case key.startsWith(config.query.prefix.ref):
+                        return `((${row[key]} "${row[key]}"))`;
+                    case key.startsWith(config.query.prefix.link):
+                        return `[${row[key]}](${row[key]})`;
+                    case key.startsWith(config.query.prefix.pre):
+                        return markdown2span(row[key]);
+                    case key.startsWith(config.query.prefix.date):
+                        return dateFormat(row[key]);
+                    case key.startsWith(config.query.prefix.time):
+                        return timeFormat(row[key]);
+                    case key.startsWith(config.query.prefix.datetime):
+                        return timestampFormat(row[key]);
+                    case key.startsWith(config.query.prefix.raw):
+                    default:
+                        return `\`${row[key]}\``;
+                }
             },
             style: {
                 column: '',

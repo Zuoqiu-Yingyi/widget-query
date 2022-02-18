@@ -1,5 +1,6 @@
 # 更改日志 | CHANGE LOG
 
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 使用字段别名定义查询显示样式 | Use field aliases to define query display styles.
 
 ## v0.1.4/2022-02-13
