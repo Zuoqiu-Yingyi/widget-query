@@ -113,6 +113,14 @@ export async function widgetBlock(data) {
         })
     );
 
+    if (data.config.query.sql.limit.enable) {
+        // 是否启用默认查询记录数量限制
+        if (data.sql.search(data.config.query.regs.limit) == -1) {
+            // 原查询语句中不包含 LIMIT 关键字
+            data.sql = `${data.sql}\nLIMIT ${data.config.query.sql.limit.begin}, ${data.config.query.sql.limit.end}`;
+        }
+    }
+
     // await setBlockAttrs(data.id, { 'custom-sql': data.sql });
     if (data.config.query.template.enable) {
         let RealSql = await data.config.query.template.handler(data);

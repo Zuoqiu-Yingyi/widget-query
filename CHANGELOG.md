@@ -1,5 +1,9 @@
 # 更改日志 | CHANGE LOG
 
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
+- 添加查询记录默认最大数量(该功能默认关闭) | Add the default maximum number of query records (this feature is off by default).
+  - 配置选项 | Configuration options: `config.sql.limit`
+
 ## v0.1.5/2022-02-18
 
 - [v0.1.4 <=> v0.1.5](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.4...v0.1.5)
