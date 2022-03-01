@@ -138,6 +138,15 @@ export var config = {
         },
         regs: {
             blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks.*/i, // 块查询的正则表达式
+            limit: /\s+LIMIT\s+/i, // SQL LIMIT 关键字正则表达式
+        },
+        sql: {
+            // SQL 语句处理
+            limit: { // 查询记录数量限制, 若启用且为设置 LIMIT 语句, 则在查询语句末尾添加 "LIMIT begin, end"
+                enable: false, // 是否启用限制
+                begin: 0, // 开始记录数
+                end: 100, // 结束记录数
+            },
         },
         maxlen: 64, // 查询结果每个字段最大长度
         maxrow: 3, // 查询结果每个字段最大行数
@@ -152,6 +161,26 @@ export var config = {
         },
         default: {
             // 非块查询的处理模式
+            name: (key) => { // 字段名称处理函数
+                switch (true) {
+                    case key.startsWith(config.query.prefix.ref):
+                        return key.substr(config.query.prefix.ref.length);
+                    case key.startsWith(config.query.prefix.link):
+                        return key.substr(config.query.prefix.link.length);
+                    case key.startsWith(config.query.prefix.pre):
+                        return key.substr(config.query.prefix.pre.length);
+                    case key.startsWith(config.query.prefix.date):
+                        return key.substr(config.query.prefix.date.length);
+                    case key.startsWith(config.query.prefix.time):
+                        return key.substr(config.query.prefix.time.length);
+                    case key.startsWith(config.query.prefix.datetime):
+                        return key.substr(config.query.prefix.datetime.length);
+                    case key.startsWith(config.query.prefix.raw):
+                        return key.substr(config.query.prefix.raw.length);
+                    default:
+                        return key;
+                }
+            },
             handler: (row, key) => { // 其他查询结果默认处理方法, row 是查询结果的一条记录, key 是字段名
                 switch (true) {
                     case key.startsWith(config.query.prefix.ref):
