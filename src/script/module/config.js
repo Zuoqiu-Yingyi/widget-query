@@ -61,6 +61,26 @@ export var config = {
         },
         default: {
             // 非块查询的处理模式
+            name: (key) => { // 字段名称处理函数
+                switch (true) {
+                    case key.startsWith(config.query.prefix.ref):
+                        return key.substr(config.query.prefix.ref.length);
+                    case key.startsWith(config.query.prefix.link):
+                        return key.substr(config.query.prefix.link.length);
+                    case key.startsWith(config.query.prefix.pre):
+                        return key.substr(config.query.prefix.pre.length);
+                    case key.startsWith(config.query.prefix.date):
+                        return key.substr(config.query.prefix.date.length);
+                    case key.startsWith(config.query.prefix.time):
+                        return key.substr(config.query.prefix.time.length);
+                    case key.startsWith(config.query.prefix.datetime):
+                        return key.substr(config.query.prefix.datetime.length);
+                    case key.startsWith(config.query.prefix.raw):
+                        return key.substr(config.query.prefix.raw.length);
+                    default:
+                        return key;
+                }
+            },
             handler: (row, key) => { // 其他查询结果默认处理方法, row 是查询结果的一条记录, key 是字段名
                 switch (true) {
                     case key.startsWith(config.query.prefix.ref):

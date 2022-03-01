@@ -6,6 +6,7 @@
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 添加查询记录默认最大数量(该功能默认关闭) | Add the default maximum number of query records (this feature is off by default).
   - 配置选项 | Configuration options: `config.sql.limit`
+- 移除查询结果表头用于指定渲染样式的字段别名前缀 | Removes the field alias prefix that the query results header uses to specify the rendering style.
 
 ## v0.1.5/2022-02-18
 

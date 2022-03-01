@@ -186,6 +186,7 @@ export async function widgetBlock(data) {
         header.push(`|    |`);
         align.push(`| -: |`);
         for (var key of keys) {
+            key = data.config.query.default.name(key);
             header.push(` ${key}${data.config.query.default.style.column} |`);
             align.push(` ${data.config.query.default.style.align} |`);
         }
