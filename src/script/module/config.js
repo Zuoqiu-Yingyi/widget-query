@@ -329,10 +329,9 @@ export var config = {
 
 try {
     let custom = await import('/widgets/custom.js');
-    config = custom.config;
+    config = custom.config != null ? custom.config : config;
 } catch (err) {
     console.log(err);
 } finally {
     console.log(config);
 }
-

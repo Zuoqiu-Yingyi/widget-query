@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- 使用 [All Contributors · GitHub](https://github.com/all-contributors) 自动生成贡献者列表 | Use [All Contributors · GitHub] (https://github.com/all-contributors) automatically generates a table of contributors.
+
 ## v0.1.6/2022-03-02
 
 - [v0.1.5 <=> v0.1.6](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.5...v0.1.6)

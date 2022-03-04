@@ -454,10 +454,13 @@ ps: Sort in no particular order.
 
 ## 贡献者 | CONTRIBUTOR
 
-[![贡献者](https://contrib.rocks/image?repo=Zuoqiu-Yingyi/widget-query)](https://github.com/Zuoqiu-Yingyi/widget-query/graphs/contributors)
+<!-- [![贡献者](https://contrib.rocks/image?repo=Zuoqiu-Yingyi/widget-query)](https://github.com/Zuoqiu-Yingyi/widget-query/graphs/contributors) -->
 
-注: 排序不分先后  
-ps: Sort in no particular order.
+<!-- ALL-CONTRIBUTORS-LIST: START - Do not remove or modify this section -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+注: 该表格使用 [All Contributors · GitHub](https://github.com/all-contributors) 自动生成  
+ps: The table is generated automatically using [All Contributors · GitHub](https://github.com/all-contributors).
 
 ## 更改日志 | CHANGE LOG
 
