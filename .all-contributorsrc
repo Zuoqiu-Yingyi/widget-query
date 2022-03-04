@@ -32,6 +32,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "banjuer",
+      "name": "banjuer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18739609?v=4",
+      "profile": "https://github.com/banjuer",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
