@@ -35,7 +35,7 @@
     }
   ],
   "contributorsPerLine": 7,
-  "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#贡献者-|-CONTRIBUTOR)",
+  "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#贡献者--contributor)",
   "projectName": "widget-query",
   "projectOwner": "Zuoqiu-Yingyi",
   "repoType": "github",
