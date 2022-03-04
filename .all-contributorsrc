@@ -23,6 +23,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "whuwangyong",
+      "name": "Wang Yong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5968678?v=4",
+      "profile": "https://www.cnblogs.com/duanguyuan/",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
