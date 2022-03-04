@@ -14,10 +14,19 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "jpanda-cn",
+      "name": "jpanda-cn",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50101020?v=4",
+      "profile": "https://github.com/jpanda-cn",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-    "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#贡献者-|-CONTRIBUTOR)",
+  "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#贡献者-|-CONTRIBUTOR)",
   "projectName": "widget-query",
   "projectOwner": "Zuoqiu-Yingyi",
   "repoType": "github",
