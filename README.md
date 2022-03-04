@@ -88,8 +88,8 @@ It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.c
 
 1. 创建文件 `<工作空间>/data/widgets/custom.js`  
    Create a file `<workspace>/data/widgets/custom.js`
-2. 在文件 `<工作空间>/data/widgets/custom.js` 中定义的值将覆盖 `<工作空间>/widgets/Query/src/script/module/config.js` 中对应的值  
-   The value defined in file `<workspace>/data/widgets/custom.js` overwrites the corresponding value in file `<workspace>/widgets/Query/src/script/module/config.js`.
+2. 在文件 `<工作空间>/data/widgets/custom.js` 中定义的值将覆盖 `<工作空间>/data/widgets/Query/src/script/module/config.js` 中对应的值  
+   The value defined in file `<workspace>/data/widgets/custom.js` overwrites the corresponding value in file `<workspace>/data/widgets/Query/src/script/module/config.js`.
 
 #### 配置示例 | CONFIG EXAMPLE
 
@@ -431,8 +431,8 @@ export var config = {
 
 ### 块自定义配置 | BLOCK CUSTOM CONFIG
 
-- 在挂件块中设置自定义块属性  
-  Set custom block attributes in the widget block.
+- 在挂件块（笔记中的Query按钮）中设置自定义块属性  
+  Set custom block attributes in the widget block(the Query button in your note).
   - 自定义属性名称为 `src/script/module/config.js` 文件中 `config` 对象中的属性  
     Custom block attribute names are property in the `config` object under the file `src/script/module/config.js`.
   - 例如, 如果想要自定义查询结果字段列表, 可以设置自定义块属性 `query-fields`: `["hpath", "type", "markdown"]`, 在该块中将会替换 `config.query.fields` 字段  
