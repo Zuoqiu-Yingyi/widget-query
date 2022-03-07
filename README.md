@@ -233,7 +233,7 @@ export var config = {
             // 查询结果样式
             table: {
                 // 表格样式
-                enable: true, // 是否启用使用块自定义属性设置表格样式
+                enable: false, // 是否启用使用块自定义属性设置表格样式
                 attributes: [
                     {
                         // 表格自定义属性属性, 详情请参考 [siyuan-theme-dark-plus/custom-table-width.css at main · Zuoqiu-Yingyi/siyuan-theme-dark-plus](https://github.com/Zuoqiu-Yingyi/siyuan-theme-dark-plus/blob/main/style/module/custom-table-width.css)
