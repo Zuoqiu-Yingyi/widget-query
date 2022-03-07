@@ -231,6 +231,17 @@ export var config = {
         ],
         style: {
             // 查询结果样式
+            table: {
+                // 表格样式
+                enable: true, // 是否启用使用块自定义属性设置表格样式
+                attributes: [
+                    {
+                        // 表格自定义属性属性, 详情请参考 [siyuan-theme-dark-plus/custom-table-width.css at main · Zuoqiu-Yingyi/siyuan-theme-dark-plus](https://github.com/Zuoqiu-Yingyi/siyuan-theme-dark-plus/blob/main/style/module/custom-table-width.css)
+                        key: 'custom-table-width', // 表格宽度自定义属性名
+                        value: 'auto', // 表格宽度自定义属性值
+                    },
+                ],
+            },
             column: {
                 // 列样式, 自定义宽度的字段可以设置为 '{: style="width: 512px"}'
                 content: '',

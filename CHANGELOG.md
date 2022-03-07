@@ -1,6 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 使用 [All Contributors · GitHub](https://github.com/all-contributors) 自动生成贡献者列表 | Use [All Contributors · GitHub] (https://github.com/all-contributors) automatically generates a table of contributors.
+- 增加通过设置查询结果表格自定义块属性的方式设置渲染样式 | Added the way to set the rendering style by setting the query result table custom block attributes.
 
 ## v0.1.6/2022-03-02
 

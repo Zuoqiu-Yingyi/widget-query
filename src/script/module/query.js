@@ -214,8 +214,14 @@ export async function widgetBlock(data) {
             }
         }
     }
-
-    markdown.push(`{: custom-type="${data.config.query.attribute.table}"}`);
+    let table_attrs = [];
+    table_attrs.push(`custom-type="${data.config.query.attribute.table}"`);
+    if (data.config.query.style.table.enable) {
+        for (let attribute of data.config.query.style.table.attributes) {
+            table_attrs.push(`${attribute.key}="${attribute.value}"`);
+        }
+    }
+    markdown.push(`{: ${table_attrs.join(" ")} }`);
     data.markdown = markdown.join("\n");
     // console.log(data.markdown);
     return 0;
@@ -249,6 +255,7 @@ export async function tableBlock(data) {
     }
     return 0;
 }
+
 async function mergeConfig(data) {
     let ats = {}
     await getBlockAttrs(data.id).then((attrs) => {
