@@ -21,6 +21,14 @@ export var config = {
         width: '128px', // 挂件宽度
         height: '32px', // 挂件高度
         radius: '8px', // 挂件圆角
+        render: {
+            // 块查询部分字段渲染方案, 可以设置为 'ref' (渲染为块引用) 或 'link' (渲染为块超链接)
+            type: 'ref', // 块类型
+            hpath: 'ref', // 块所在文档路径
+            id: 'ref', // 块 ID
+            parent_id: 'ref', // 块的上级块 ID
+            root_id: 'ref', // 块所在文档 ID
+        },
         prefix: {
             // 非默认查询时字段别名前缀
             ref: '__ref__', // 该字段渲染为引用
@@ -235,21 +243,53 @@ export var config = {
                 return timestampFormat(row.updated);
             },
             type: (row) => {
-                return `((${row.id} "${config.query.map.blocktype[row.type]}"))`;
+                switch (config.query.render.type) {
+                    case 'link':
+                        return `[${config.query.map.blocktype[row.type]}](siyuan://blocks/${row.id})`;
+                    case 'ref':
+                    default:
+                        return `((${row.id} "${config.query.map.blocktype[row.type]}"))`;
+                }
             },
             hpath: (row) => {
-                return `((${row.root_id} "${row.hpath}"))`;
+                switch (config.query.render.hpath) {
+                    case 'link':
+                        return `[${row.hpath}](siyuan://blocks/${row.root_id})`;
+                    case 'ref':
+                    default:
+                        return `((${row.root_id} "${row.hpath}"))`;
+                }
             },
 
             id: (row) => {
-                return `((${row.id} "${row.id}"))`;
+                switch (config.query.render.id) {
+                    case 'link':
+                        return `[${row.id}](siyuan://blocks/${row.id})`;
+                    case 'ref':
+                    default:
+                        return `((${row.id} "${row.id}"))`;
+                }
             },
             parent_id: (row) => {
                 if (isEmptyString(row.parent_id)) return '';
-                else return `((${row.parent_id} "${row.parent_id}"))`;
+                else {
+                    switch (config.query.render.parent_id) {
+                        case 'link':
+                            return `[${row.parent_id}](siyuan://blocks/${row.parent_id})`;
+                        case 'ref':
+                        default:
+                            return `((${row.parent_id} "${row.parent_id}"))`;
+                    }
+                }
             },
             root_id: (row) => {
-                return `((${row.root_id} "${row.root_id}"))`;
+                switch (config.query.render.root_id) {
+                    case 'link':
+                        return `[${row.root_id}](siyuan://blocks/${row.root_id})`;
+                    case 'ref':
+                    default:
+                        return `((${row.root_id} "${row.root_id}"))`;
+                }
             },
             hash: (row) => {
                 return `\`${row.hash}\``;

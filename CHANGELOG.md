@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
+- 在 `config.query.render` 属性中设置默认块查询时相应字段的渲染方式 | Set the rendering of the corresponding field when the default block query is set in the `config.query.render` property.
+
 ## v0.1.7/2022-03-07
 
 - [v0.1.6 <=> v0.1.7](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.6...v0.1.7)
