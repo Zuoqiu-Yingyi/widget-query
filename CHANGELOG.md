@@ -2,6 +2,7 @@
 
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 在 `config.query.render` 属性中设置默认块查询时相应字段的渲染方式 | Set the rendering of the corresponding field when the default block query is set in the `config.query.render` property.
+- 更改自定义配置文件覆盖默认配置文件方案为递归覆盖 | Change the custom configuration file override the default configuration file solution to recursive overrides.
 
 ## v0.1.7/2022-03-07
 
