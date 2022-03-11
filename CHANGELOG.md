@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- 修复资源文件引用率路径问题 | Fixed the resource file reference rate path issue.
+
 ## v0.1.8/2022-03-10
 
 - [v0.1.7 <=> v0.1.8](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.7...v0.1.8)

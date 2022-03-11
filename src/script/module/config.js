@@ -1,6 +1,6 @@
 /* 配置文件(可以被 data/widgets/custom.js 覆盖) */
 
-import { merge } from '/appearance/themes/Dark+/script/utils/misc.js';
+import { merge } from './../utils/misc.js';
 
 import {
     cutString,
