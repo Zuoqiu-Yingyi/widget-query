@@ -24,6 +24,21 @@ It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.c
 
 ![preview](https://cdn.jsdelivr.net/gh/Zuoqiu-Yingyi/widget-query/preview.png)
 
+背景颜色状态指示:  
+Background color status indication:
+- 白色 | White:
+  - 初始化 | Initialization.
+  - 正在处理查询 | Processing query.
+- 绿色 | Green:
+  - 查询成功 | Query success.
+- 蓝色 | Blue:
+  - 请继续操作 | Please continue to operate.
+- 黄色 | Yellow:
+  - 查询结果为空 | Query result is empty.
+- 红色 | Red:
+  - SQL 语句错误 | SQL statement error.
+  - 未知错误 | Unknown error.
+
 ## 功能 | FUNCTION
 
 1. 符合正则表达式 `^\s*SELECT\s+\*\s+FROM\s+blocks.*` 的 SQL 语句将启用自定义渲染模式  
@@ -130,6 +145,13 @@ export var config = {
         width: '128px', // 挂件宽度
         height: '32px', // 挂件高度
         radius: '8px', // 挂件圆角
+        color: {
+            default: 'rgb(255, 255, 255)', // 默认颜色
+            success: 'rgb(183, 223, 185)', // 成功颜色
+            info: 'rgb(166, 213, 250)', // 信息颜色
+            warning: 'rgb(255, 213, 153)', // 警告颜色
+            error: 'rgb(250, 179, 174)', // 错误颜色
+        },
         render: {
             // 块查询部分字段渲染方案, 可以设置为 'ref' (渲染为块引用) 或 'link' (渲染为块超链接)
             type: 'ref', // 块类型

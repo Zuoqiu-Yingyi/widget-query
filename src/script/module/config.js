@@ -23,6 +23,13 @@ export var config = {
         width: '128px', // 挂件宽度
         height: '32px', // 挂件高度
         radius: '8px', // 挂件圆角
+        color: {
+            default: 'rgb(255, 255, 255)', // 默认颜色
+            success: 'rgb(183, 223, 185)', // 成功颜色
+            info: 'rgb(166, 213, 250)', // 信息颜色
+            warning: 'rgb(255, 213, 153)', // 警告颜色
+            error: 'rgb(250, 179, 174)', // 错误颜色
+        },
         render: {
             // 块查询部分字段渲染方案, 可以设置为 'ref' (渲染为块引用) 或 'link' (渲染为块超链接)
             type: 'ref', // 块类型

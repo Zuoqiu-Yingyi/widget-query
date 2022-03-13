@@ -3,6 +3,7 @@
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 增加用于手动定义查询结果顺序的字段别名前缀 | Add field alias prefix for manual ordering of query results.
 - 为默认块查询渲染函数句柄传递内联属性表 `IAL` 解析值 | Pass the inline attribute table `IAL` value to the default block query renderer.
+- 使用按钮背景颜色表示挂件当前状态 | Use button background color to indicate the current state of the widget.
 
 ## v0.1.9/2022-03-12
 

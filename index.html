@@ -34,7 +34,7 @@
     <button id="query" type="button">Query</button>
 </body>
 <script type="module">
-    /* 
+/* 
  * 获取挂件自身 ID
  * 调整页面大小
  * 读取挂件自身的属性
@@ -76,19 +76,61 @@ var data = {
 }
 await initWidgetBlock(data); // 初始化挂件尺寸和属性
 
-export async function query() {
+var query = document.getElementById('query');
+var status = 0;
+
+async function fn() {
     try {
-        if (await codeBlock(data)) return;
-        if (await widgetBlock(data)) return;
-        if (await tableBlock(data)) return;
+        query.style.backgroundColor = data.config.query.color.default;
+        status = await codeBlock(data);
+        switch (true) {
+            case status == 0:
+                query.style.backgroundColor = data.config.query.color.default;
+                break;
+            case status > 0:
+                query.style.backgroundColor = data.config.query.color.info;
+                return;
+            default:
+            case status < 0:
+                query.style.backgroundColor = data.config.query.color.warning;
+                return;
+        }
+        status = await widgetBlock(data);
+        switch (true) {
+            case status == 0:
+                query.style.backgroundColor = data.config.query.color.default;
+                break;
+            case status > 0:
+                query.style.backgroundColor = data.config.query.color.warning;
+                return;
+            default:
+            case status < 0:
+                query.style.backgroundColor = data.config.query.color.error;
+                return;
+        }
+        status = await tableBlock(data);
+        switch (true) {
+            case status == 0:
+                query.style.backgroundColor = data.config.query.color.success;
+                break;
+            case status > 0:
+                query.style.backgroundColor = data.config.query.color.info;
+                return;
+            default:
+            case status < 0:
+                query.style.backgroundColor = data.config.query.color.error;
+                return;
+            }
+            
     } catch (err) {
         console.error(err);
+        query.style.backgroundColor = data.config.query.color.error;
         // window.alert(`SQL 查询错误!\nThe SQL query error!\n${err}`);
     }
 }
 
 (() => {
-    document.getElementById('query').addEventListener('click', query);
+    query.addEventListener('click', fn);
 })();
 </script>
 

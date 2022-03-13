@@ -130,6 +130,7 @@ export async function widgetBlock(data) {
     // console.log(data.rows);
 
     if (data.rows == null) {
+        // error: SQL 语句错误
         return -1;
     }
 
@@ -182,46 +183,51 @@ export async function widgetBlock(data) {
                 markdown.push(row_markdown.join(""));
             }
         }
+        else {
+            // warning: 查询结果为空
+            return 1;
+        }
     } else {
         let header_row = null;
         if (data.rows.length > 0) {
             header_row = data.rows[0];
+            let header = []; // 表头
+            let align = []; // 对齐样式
+            let keys = Object.keys(header_row);
+            header.push(`|    |`);
+            align.push(`| -: |`);
+            for (var key of keys) {
+                key = data.config.query.default.name(key);
+                header.push(` ${key}${data.config.query.default.style.column} |`);
+                align.push(` ${data.config.query.default.style.align} |`);
+            }
+            markdown.push(header.join("")); // 表头
+            markdown.push(align.join("")); // 对齐样式
+    
+            if (data.rows.length > 0) {
+                for (let i = 1, len = data.rows.length; i <= len; i++) {
+                    // 每一条查询记录
+                    let row = data.rows[i - 1];
+                    // console.log(row);
+    
+                    let row_markdown = [];
+                    row_markdown.push(`| ${i} |`);
+                    for (var key of keys) {
+                        if (row[key] == "" || row[key] == null || row[key] == undefined) {
+                            row_markdown.push(` |`);
+                        } else {
+                            row_markdown.push(
+                                ` ${data.config.query.default.handler(row, key)} |`
+                            );
+                        }
+                    }
+                    markdown.push(row_markdown.join(""));
+                }
+            }
         }
         else {
-            return -1;
-        }
-        let header = []; // 表头
-        let align = []; // 对齐样式
-        let keys = Object.keys(header_row);
-        header.push(`|    |`);
-        align.push(`| -: |`);
-        for (var key of keys) {
-            key = data.config.query.default.name(key);
-            header.push(` ${key}${data.config.query.default.style.column} |`);
-            align.push(` ${data.config.query.default.style.align} |`);
-        }
-        markdown.push(header.join("")); // 表头
-        markdown.push(align.join("")); // 对齐样式
-
-        if (data.rows.length > 0) {
-            for (let i = 1, len = data.rows.length; i <= len; i++) {
-                // 每一条查询记录
-                let row = data.rows[i - 1];
-                // console.log(row);
-
-                let row_markdown = [];
-                row_markdown.push(`| ${i} |`);
-                for (var key of keys) {
-                    if (row[key] == "" || row[key] == null || row[key] == undefined) {
-                        row_markdown.push(` |`);
-                    } else {
-                        row_markdown.push(
-                            ` ${data.config.query.default.handler(row, key)} |`
-                        );
-                    }
-                }
-                markdown.push(row_markdown.join(""));
-            }
+            // warning: 查询结果为空
+            return 2;
         }
     }
     let table_attrs = [];
