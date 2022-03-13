@@ -1,5 +1,6 @@
 /* 使用表格显示 SQL 查询结果 */
 
+import { ialParser } from './../utils/string.js';
 import {
     getBlockAttrs,
     setBlockAttrs,
@@ -135,7 +136,7 @@ export async function widgetBlock(data) {
     let markdown = [];
 
     if (data.config.query.regs.blocks.test(data.sql)) {
-        // 匹配指定正则的 SQL 查询
+        // 匹配指定正则的 SQL 查询, 是 `SELECT * FROM blocks ...` 语句
         let header = []; // 表头
         let align = []; // 对齐样式
         header.push("|    |");
@@ -168,11 +169,14 @@ export async function widgetBlock(data) {
                 } else index++;
                 // console.log(row);
 
+                // 解析内联属性列表(inline attribute list, IAL)
+                let ial = ialParser(row.ial);
+
                 let row_markdown = [];
                 row_markdown.push(`| ${index} |`);
                 for (let field of data.config.query.fields) {
                     // 根据自定义字段列表，构造表格
-                    row_markdown.push(` ${data.config.query.handler[field](row)} |`);
+                    row_markdown.push(` ${data.config.query.handler[field](row, ial)} |`);
                 }
 
                 markdown.push(row_markdown.join(""));
