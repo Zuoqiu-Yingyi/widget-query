@@ -24,10 +24,37 @@
         "code",
         "ideas"
       ]
+    },
+    {
+      "login": "whuwangyong",
+      "name": "Wang Yong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5968678?v=4",
+      "profile": "https://www.cnblogs.com/duanguyuan/",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "banjuer",
+      "name": "banjuer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18739609?v=4",
+      "profile": "https://github.com/banjuer",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
+      "login": "Tlonglan",
+      "name": "Tlonglan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/38731172?v=4",
+      "profile": "https://github.com/Tlonglan",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#贡献者-|-CONTRIBUTOR)",
+  "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#贡献者--contributor)",
   "projectName": "widget-query",
   "projectOwner": "Zuoqiu-Yingyi",
   "repoType": "github",

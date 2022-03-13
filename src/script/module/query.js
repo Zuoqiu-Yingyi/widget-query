@@ -179,9 +179,15 @@ export async function widgetBlock(data) {
             }
         }
     } else {
+        let header_row = null;
+        if (data.rows.length > 0) {
+            header_row = data.rows[0];
+        }
+        else {
+            return -1;
+        }
         let header = []; // 表头
         let align = []; // 对齐样式
-        let header_row = data.rows[0];
         let keys = Object.keys(header_row);
         header.push(`|    |`);
         align.push(`| -: |`);
@@ -214,8 +220,14 @@ export async function widgetBlock(data) {
             }
         }
     }
-
-    markdown.push(`{: custom-type="${data.config.query.attribute.table}"}`);
+    let table_attrs = [];
+    table_attrs.push(`custom-type="${data.config.query.attribute.table}"`);
+    if (data.config.query.style.table.enable) {
+        for (let attribute of data.config.query.style.table.attributes) {
+            table_attrs.push(`${attribute.key}="${attribute.value}"`);
+        }
+    }
+    markdown.push(`{: ${table_attrs.join(" ")} }`);
     data.markdown = markdown.join("\n");
     // console.log(data.markdown);
     return 0;
@@ -249,6 +261,7 @@ export async function tableBlock(data) {
     }
     return 0;
 }
+
 async function mergeConfig(data) {
     let ats = {}
     await getBlockAttrs(data.id).then((attrs) => {

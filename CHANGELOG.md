@@ -1,6 +1,25 @@
 # 更改日志 | CHANGE LOG
 
-- 使用 [All Contributors · GitHub](https://github.com/all-contributors) 自动生成贡献者列表 | Use [All Contributors · GitHub] (https://github.com/all-contributors) automatically generates a table of contributors.
+- 增加用于手动定义查询结果顺序的字段别名前缀 | Add field alias prefix for manual ordering of query results.
+
+## v0.1.9/2022-03-12
+
+- [v0.1.8 <=> v0.1.9](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.8...v0.1.9)
+- 修复资源文件引用路径问题 | Fixed the resource file reference path issue.
+
+## v0.1.8/2022-03-10
+
+- [v0.1.7 <=> v0.1.8](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.7...v0.1.8)
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
+- 在 `config.query.render` 属性中设置默认块查询时相应字段的渲染方式 | Set the rendering of the corresponding field when the default block query is set in the `config.query.render` property.
+- 更改自定义配置文件覆盖默认配置文件方案为递归覆盖 | Change the custom configuration file override the default configuration file solution to recursive overrides.
+
+## v0.1.7/2022-03-07
+
+- [v0.1.6 <=> v0.1.7](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.6...v0.1.7)
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
+- 使用 [All Contributors · GitHub](https://github.com/all-contributors) 自动生成贡献者列表 | Use [All Contributors · GitHub](https://github.com/all-contributors) automatically generates a table of contributors.
+- 增加通过设置查询结果表格自定义块属性的方式设置渲染样式 | Added the way to set the rendering style by setting the query result table custom block attributes.
 
 ## v0.1.6/2022-03-02
 

@@ -5,13 +5,12 @@
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Zuoqiu-Yingyi/widget-query?include_prereleases&style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/releases/latest)
 [![GitHub Release Date](https://img.shields.io/github/release-date/Zuoqiu-Yingyi/widget-query?style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/releases/latest)
 [![GitHub License](https://img.shields.io/github/license/Zuoqiu-Yingyi/widget-query?style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/blob/main/LICENSE)
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#贡献者-|-CONTRIBUTOR)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![GitHub last commit](https://img.shields.io/github/last-commit/Zuoqiu-Yingyi/widget-query?style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/commits/main)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Zuoqiu-Yingyi/widget-query?style=flat-square)
 ![hits](https://hits.b3log.org/Zuoqiu-Yingyi/widget-query.svg)
-[![GitHub all releases](https://img.shields.io/github/downloads/Zuoqiu-Yingyi/widget-query/total?style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/releases)
+[![GitHub all releases](https://img.shields.io/github/downloads/Zuoqiu-Yingyi/widget-query/total?style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/releases)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#贡献者--contributor)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 </center>
 
@@ -23,7 +22,7 @@ It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.c
 
 ## 预览 | PREVIEW
 
-![preview](preview.png)
+![preview](https://cdn.jsdelivr.net/gh/Zuoqiu-Yingyi/widget-query/preview.png)
 
 ## 功能 | FUNCTION
 
@@ -82,6 +81,14 @@ It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.c
      - `__pre__`:
        - 该字段渲染为预览(渲染 markdown 行级标识符)  
          The field is rendered as a preview (rendering the markdown row-level identifier).
+   - 使用字段别名前缀定义查询结果字段顺序  
+     Use field aliases prefix to define query result field order.
+     - `__<number>__`:
+       - 该字段可以放置在查询样式前缀字段的前面  
+         The field can be placed in front of the query style prefix field.
+       - 示例 | example: 
+         - `__1____pre__测试1`
+         - `__02____raw__测试2`
    - 默认显示查询结果原始值(使用行内代码)  
      Displays the original value of the query result by default (using inline code).
 
@@ -124,6 +131,14 @@ export var config = {
         width: '128px', // 挂件宽度
         height: '32px', // 挂件高度
         radius: '8px', // 挂件圆角
+        render: {
+            // 块查询部分字段渲染方案, 可以设置为 'ref' (渲染为块引用) 或 'link' (渲染为块超链接)
+            type: 'ref', // 块类型
+            hpath: 'ref', // 块所在文档路径
+            id: 'ref', // 块 ID
+            parent_id: 'ref', // 块的上级块 ID
+            root_id: 'ref', // 块所在文档 ID
+        },
         prefix: {
             // 非默认查询时字段别名前缀
             ref: '__ref__', // 该字段渲染为引用
@@ -232,6 +247,17 @@ export var config = {
         ],
         style: {
             // 查询结果样式
+            table: {
+                // 表格样式
+                enable: false, // 是否启用使用块自定义属性设置表格样式
+                attributes: [
+                    {
+                        // 表格自定义属性属性, 详情请参考 [siyuan-theme-dark-plus/custom-table-width.css at main · Zuoqiu-Yingyi/siyuan-theme-dark-plus](https://github.com/Zuoqiu-Yingyi/siyuan-theme-dark-plus/blob/main/style/module/custom-table-width.css)
+                        key: 'custom-table-width', // 表格宽度自定义属性名
+                        value: 'auto', // 表格宽度自定义属性值
+                    },
+                ],
+            },
             column: {
                 // 列样式, 自定义宽度的字段可以设置为 '{: style="width: 512px"}'
                 content: '',
@@ -327,21 +353,53 @@ export var config = {
                 return timestampFormat(row.updated);
             },
             type: (row) => {
-                return `((${row.id} "${config.query.map.blocktype[row.type]}"))`;
+                switch (config.query.render.type) {
+                    case 'link':
+                        return `[${config.query.map.blocktype[row.type]}](siyuan://blocks/${row.id})`;
+                    case 'ref':
+                    default:
+                        return `((${row.id} "${config.query.map.blocktype[row.type]}"))`;
+                }
             },
             hpath: (row) => {
-                return `((${row.root_id} "${row.hpath}"))`;
+                switch (config.query.render.hpath) {
+                    case 'link':
+                        return `[${row.hpath}](siyuan://blocks/${row.root_id})`;
+                    case 'ref':
+                    default:
+                        return `((${row.root_id} "${row.hpath}"))`;
+                }
             },
 
             id: (row) => {
-                return `((${row.id} "${row.id}"))`;
+                switch (config.query.render.id) {
+                    case 'link':
+                        return `[${row.id}](siyuan://blocks/${row.id})`;
+                    case 'ref':
+                    default:
+                        return `((${row.id} "${row.id}"))`;
+                }
             },
             parent_id: (row) => {
                 if (isEmptyString(row.parent_id)) return '';
-                else return `((${row.parent_id} "${row.parent_id}"))`;
+                else {
+                    switch (config.query.render.parent_id) {
+                        case 'link':
+                            return `[${row.parent_id}](siyuan://blocks/${row.parent_id})`;
+                        case 'ref':
+                        default:
+                            return `((${row.parent_id} "${row.parent_id}"))`;
+                    }
+                }
             },
             root_id: (row) => {
-                return `((${row.root_id} "${row.root_id}"))`;
+                switch (config.query.render.root_id) {
+                    case 'link':
+                        return `[${row.root_id}](siyuan://blocks/${row.root_id})`;
+                    case 'ref':
+                    default:
+                        return `((${row.root_id} "${row.root_id}"))`;
+                }
             },
             hash: (row) => {
                 return `\`${row.hash}\``;
@@ -466,6 +524,9 @@ ps: Sort in no particular order.
   <tr>
     <td align="center"><a href="https://github.com/leolee9086"><img src="https://avatars.githubusercontent.com/u/19915077?v=4?s=100" width="100px;" alt=""/><br /><sub><b>leolee9086</b></sub></a><br /><a href="https://github.com/Zuoqiu-Yingyi/widget-query/issues?q=author%3Aleolee9086" title="Bug reports">🐛</a> <a href="https://github.com/Zuoqiu-Yingyi/widget-query/commits?author=leolee9086" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/jpanda-cn"><img src="https://avatars.githubusercontent.com/u/50101020?v=4?s=100" width="100px;" alt=""/><br /><sub><b>jpanda-cn</b></sub></a><br /><a href="https://github.com/Zuoqiu-Yingyi/widget-query/commits?author=jpanda-cn" title="Code">💻</a> <a href="#ideas-jpanda-cn" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://www.cnblogs.com/duanguyuan/"><img src="https://avatars.githubusercontent.com/u/5968678?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wang Yong</b></sub></a><br /><a href="https://github.com/Zuoqiu-Yingyi/widget-query/commits?author=whuwangyong" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/banjuer"><img src="https://avatars.githubusercontent.com/u/18739609?v=4?s=100" width="100px;" alt=""/><br /><sub><b>banjuer</b></sub></a><br /><a href="#ideas-banjuer" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/Tlonglan"><img src="https://avatars.githubusercontent.com/u/38731172?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tlonglan</b></sub></a><br /><a href="#ideas-Tlonglan" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
