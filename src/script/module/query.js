@@ -179,9 +179,15 @@ export async function widgetBlock(data) {
             }
         }
     } else {
+        let header_row = null;
+        if (data.rows.length > 0) {
+            header_row = data.rows[0];
+        }
+        else {
+            return -1;
+        }
         let header = []; // 表头
         let align = []; // 对齐样式
-        let header_row = data.rows[0];
         let keys = Object.keys(header_row);
         header.push(`|    |`);
         align.push(`| -: |`);

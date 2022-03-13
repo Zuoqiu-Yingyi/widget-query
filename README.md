@@ -81,6 +81,14 @@ It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.c
      - `__pre__`:
        - 该字段渲染为预览(渲染 markdown 行级标识符)  
          The field is rendered as a preview (rendering the markdown row-level identifier).
+   - 使用字段别名前缀定义查询结果字段顺序  
+     Use field aliases prefix to define query result field order.
+     - `__<number>__`:
+       - 该字段可以放置在查询样式前缀字段的前面  
+         The field can be placed in front of the query style prefix field.
+       - 示例 | example: 
+         - `__1____pre__测试1`
+         - `__02____raw__测试2`
    - 默认显示查询结果原始值(使用行内代码)  
      Displays the original value of the query result by default (using inline code).
 
