@@ -36,34 +36,34 @@ export async function codeBlock(data) {
     let mode = 0;
     if (previous_block == null) {
         // 挂件位于文档/引用块/超级快首部
-        if (data.node.parentElement.getAttribute("data-node-id") == null) {
+        if (data.node.parentElement.dataset.nodeId == null) {
             // 挂件位于文档首
             id = data.node.parentElement.parentElement
                 .querySelector("div[data-node-id]")
-                .getAttribute("data-node-id");
+                .dataset.nodeId;
             mode = 1;
         } else {
             // 挂件位于引用块/超级快首部
-            id = data.node.parentElement.getAttribute("data-node-id");
+            id = data.node.parentElement.dataset.nodeId;
             mode = 2;
         }
     } else if (
         previous_block.getAttribute("class").search("protyle-action") != -1
     ) {
         // 挂件位于列表项中第一个块
-        id = data.node.parentElement.getAttribute("data-node-id");
+        id = data.node.parentElement.dataset.nodeId;
         mode = 3;
     } else if (
         previous_block.getAttribute("custom-type") ==
         data.config.query.attribute.code &&
-        previous_block.getAttribute("data-type") == "NodeCodeBlock"
+        previous_block.dataset.type == "NodeCodeBlock"
     ) {
         // 挂件前的块是查询代码块
-        id = previous_block.getAttribute("data-node-id");
+        id = previous_block.dataset.nodeId;
         mode = 4;
     } else {
         // 挂件前的块不是代码块/不是查询代码块
-        id = previous_block.getAttribute("data-node-id");
+        id = previous_block.dataset.nodeId;
         mode = 5;
     }
     switch (mode) {
@@ -252,11 +252,11 @@ export async function tableBlock(data) {
         next_block &&
         next_block.getAttribute("custom-type") ==
         data.config.query.attribute.table &&
-        next_block.getAttribute("data-type") == "NodeTable"
+        next_block.dataset.type == "NodeTable"
     ) {
         // 若下一节点有查询结果
         // 更新查询结果节点
-        let id = next_block.getAttribute("data-node-id");
+        let id = next_block.dataset.nodeId;
         updateBlock(id, "markdown", data.markdown).then((block) => {
             if (block == null) return -1;
             data.next_id = block[0].doOperations[0].id;

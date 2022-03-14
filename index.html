@@ -68,7 +68,7 @@ var data = {
     config: config, // 配置选项
     node: node,
     previous_id: null, // 前置代码块 ID
-    id: node.getAttribute('data-node-id'), // 挂件块 ID
+    id: node.dataset.nodeId, // 挂件块 ID
     next_id: null, // 后置表格块 ID
     sql: '', // 查询语句
     rows: null, // 查询结果

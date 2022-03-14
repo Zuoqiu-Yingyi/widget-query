@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- 使用 `node.dataset` 代替 `node.getAttribute` | Use `node.dataset` instead of `node.getAttribute`.
+
 ## v0.2.0/2022-03-13
 
 - [v0.1.9 <=> v0.2.0](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.1.9...v0.2.0)
