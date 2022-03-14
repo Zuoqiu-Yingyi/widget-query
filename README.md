@@ -154,11 +154,11 @@ export var config = {
         },
         render: {
             // 块查询部分字段渲染方案, 可以设置为 'ref' (渲染为块引用) 或 'link' (渲染为块超链接)
-            type: 'ref', // 块类型
-            hpath: 'ref', // 块所在文档路径
-            id: 'ref', // 块 ID
-            parent_id: 'ref', // 块的上级块 ID
-            root_id: 'ref', // 块所在文档 ID
+            type: 'link', // 块类型
+            hpath: 'link', // 块所在文档路径
+            id: 'link', // 块 ID
+            parent_id: 'link', // 块的上级块 ID
+            root_id: 'link', // 块所在文档 ID
         },
         prefix: {
             // 非默认查询时字段别名前缀

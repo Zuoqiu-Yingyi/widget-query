@@ -1,6 +1,7 @@
 # 更改日志 | CHANGE LOG
 
 - 使用 `node.dataset` 代替 `node.getAttribute` | Use `node.dataset` instead of `node.getAttribute`.
+- 默认使用思源内部超链接(`siyuan:`)渲染查询结果 | Default use SiYuan internal hyperlinks `siyuan://` to render query result.
 
 ## v0.2.0/2022-03-13
 
