@@ -1,7 +1,9 @@
 # 更改日志 | CHANGE LOG
 
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 使用 `node.dataset` 代替 `node.getAttribute` | Use `node.dataset` instead of `node.getAttribute`.
 - 默认使用思源内部超链接(`siyuan:`)渲染查询结果 | Default use SiYuan internal hyperlinks `siyuan://` to render query result.
+- 修复字段别名前缀 `__link__` 样式渲染问题 | Fix the issue of field alias prefix `__link__` style rendering.
 
 ## v0.2.0/2022-03-13
 

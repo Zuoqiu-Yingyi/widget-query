@@ -228,7 +228,7 @@ export var config = {
                     case name.startsWith(config.query.prefix.ref):
                         return `((${row[key]} "${row[key]}"))`;
                     case name.startsWith(config.query.prefix.link):
-                        return `[${row[key]}](${row[key]})`;
+                        return `[${row[key]}](siyuan://blocks/${row[key]})`;
                     case name.startsWith(config.query.prefix.pre):
                         return markdown2span(row[key]);
                     case name.startsWith(config.query.prefix.date):
