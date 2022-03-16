@@ -69,41 +69,41 @@ Background color status indication:
 4. 普通模式 | Normal mode
    - 使用字段别名前缀定义查询显示样式  
      Use field aliases prefix to define query display styles.
-     - `__ref__`:
+     - `__ref__别名1` | `__ref__alias1`:
        - 该字段渲染为块引用  
          The field is rendered as a block reference.
-       - 示例 | example: `((<field> "<field>"))`
-     - `__link__`:
+       - 示例 | example: `((<value> "<value>"))`
+     - `__link__别名2` | `__link__alias2`:
        - 该字段渲染为块链接  
          The field is rendered as a block link.
-       - 示例 | example: `[<field>](<field>)`
-     - `__raw__`:
+       - 示例 | example: `[<value>](siyuan://blocks/<value>)`
+     - `__raw__别名3` | `__raw__alias3`:
        - 该字段渲染为原始值(行内代码样式)  
          The field is rendered as the original value (inline code style).
-       - 示例 | example: `` `<field>` ``
-     - `__date__`:
+       - 示例 | example: `` `<value>` ``
+     - `__date__别名4` | `__date__alias4`:
        - 该字段渲染为日期  
          The field is rendered as a date.
        - 示例 | example: `yyyy-MM-dd`
-     - `__time__`:
+     - `__time__别名5` | `__time__alias5`:
        - 该字段渲染为时间  
          The field is rendered as a time.
        - 示例 | example: `HH:mm:ss`
-     - `__datetime__`:
+     - `__datetime__别名6` | `__datetime__alias6`:
        - 该字段渲染为日期时间  
          The field is rendered as a datetime.
        - 示例 | example: `yyyy-MM-dd HH:mm:ss`
-     - `__pre__`:
+     - `__pre__别名7` | `__pre__alias7`:
        - 该字段渲染为预览(渲染 markdown 行级标识符)  
          The field is rendered as a preview (rendering the markdown row-level identifier).
    - 使用字段别名前缀定义查询结果字段顺序  
      Use field aliases prefix to define query result field order.
-     - `__<number>__`:
+     - `__<数字>__别名8` | `__<number>__alias8`:
        - 该字段可以放置在查询样式前缀字段的前面  
          The field can be placed in front of the query style prefix field.
-       - 示例 | example: 
-         - `__1____pre__测试1`
-         - `__02____raw__测试2`
+       - 示例 | example:
+         - `__1____pre__别名9` | `__1____pre__alias9`
+         - `__02____raw__别名10` | `__02____raw__alias10`
    - 默认显示查询结果原始值(使用行内代码)  
      Displays the original value of the query result by default (using inline code).
 
@@ -219,7 +219,7 @@ export var config = {
                     case name.startsWith(config.query.prefix.raw):
                         return name.substr(config.query.prefix.raw.length);
                     default:
-                        return key;
+                        return name;
                 }
             },
             handler: (row, key) => { // 其他查询结果默认处理方法, row 是查询结果的一条记录, key 是字段名

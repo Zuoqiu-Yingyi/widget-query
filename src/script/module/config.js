@@ -97,7 +97,7 @@ export var config = {
                     case name.startsWith(config.query.prefix.raw):
                         return name.substr(config.query.prefix.raw.length);
                     default:
-                        return key;
+                        return name;
                 }
             },
             handler: (row, key) => { // 其他查询结果默认处理方法, row 是查询结果的一条记录, key 是字段名

@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
+- 修复查询结果字段别名显示用于排序的前缀问题 | Fix an issue where query result field aliases display prefixes for sorting.
+
 ## v0.2.1/2022-03-15
 
 - [v0.2.0 <=> v0.2.1](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.2.0...v0.2.1)
