@@ -234,7 +234,9 @@ export async function widgetBlock(data) {
     table_attrs.push(`custom-type="${data.config.query.attribute.table}"`);
     if (data.config.query.style.table.enable) {
         for (let attribute of data.config.query.style.table.attributes) {
-            table_attrs.push(`${attribute.key}="${attribute.value}"`);
+            if (attribute.enable) { 
+                table_attrs.push(`${attribute.key}="${attribute.value}"`);
+            }
         }
     }
     markdown.push(`{: ${table_attrs.join(" ")} }`);

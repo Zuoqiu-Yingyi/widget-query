@@ -151,12 +151,19 @@ export var config = {
             // 查询结果样式
             table: {
                 // 表格样式
-                enable: false, // 是否启用使用块自定义属性设置表格样式
+                enable: true, // 是否启用使用块自定义属性设置表格样式
                 attributes: [
                     {
-                        // 表格自定义属性属性, 详情请参考 [siyuan-theme-dark-plus/custom-table-width.css at main · Zuoqiu-Yingyi/siyuan-theme-dark-plus](https://github.com/Zuoqiu-Yingyi/siyuan-theme-dark-plus/blob/main/style/module/custom-table-width.css)
-                        key: 'custom-table-width', // 表格宽度自定义属性名
-                        value: 'auto', // 表格宽度自定义属性值
+                        // 表格自定义属性, 表格自动折行, 详情请参考 [siyuan-theme-dark-plus/custom-table-width.css at main · Zuoqiu-Yingyi/siyuan-theme-dark-plus](https://github.com/Zuoqiu-Yingyi/siyuan-theme-dark-plus/blob/main/style/module/custom-table-width.css)
+                        enable: false, // 是否启用该自定义属性
+                        key: 'custom-table-width', // 属性名
+                        value: 'auto', // 属性值
+                    },
+                    {
+                        // 块自定义属性, 为块设置滚动条, 详情请参考 [siyuan-theme-dark-plus/custom-render-scroll.css at main · Zuoqiu-Yingyi/siyuan-theme-dark-plus](https://github.com/Zuoqiu-Yingyi/siyuan-theme-dark-plus/blob/main/style/module/custom-render-scroll.css)
+                        enable: true, // 是否启用该自定义属性
+                        key: 'custom-render', // 属性名
+                        value: 'scroll', // 属性值
                     },
                 ],
             },
