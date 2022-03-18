@@ -54,8 +54,8 @@ export var config = {
             table: 'query-table', // 查询结果表格块
         },
         regs: {
-            blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks.*/i, // 块查询的正则表达式
-            limit: /\s+LIMIT\s+/i, // SQL LIMIT 关键字正则表达式
+            blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*/i, // 块查询的正则表达式
+            limit: /\s+LIMIT\s+\d+/i, // SQL LIMIT 关键字正则表达式
             sort: /^__(\d+)__(.*)$/i, // 手动排序字段正则表达式
         },
         sql: {

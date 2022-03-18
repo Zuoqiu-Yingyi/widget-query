@@ -41,8 +41,8 @@ Background color status indication:
 
 ## 功能 | FUNCTION
 
-1. 符合正则表达式 `^\s*SELECT\s+\*\s+FROM\s+blocks.*` 的 SQL 语句将启用自定义渲染模式  
-   SQL statements that conform to the regular expression `^\s*SELECT\s+\*\s+FROM\s+blocks.*` will enable custom rendering mode.
+1. 符合正则表达式 `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` 的 SQL 语句将启用自定义渲染模式  
+   SQL statements that conform to the regular expression `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` will enable custom rendering mode.
    - 这个正则表达式在 `/src/script/module/config.js` 中的 `config.query.regs.blocks` 配置  
      This regular expression is configured in `config.query.regs.blocks` in `/src/script/module/config.js`
 2. 自定义渲染模式 | Custom rendering modes
@@ -176,9 +176,8 @@ export var config = {
             table: 'query-table', // 查询结果表格块
         },
         regs: {
-            blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks.*/i, // 块查询的正则表达式
-            limit: /\s+LIMIT\s+/i, // SQL LIMIT 关键字正则表达式
-            sort: /^__(\d+)__(.*)$/i, // 手动排序字段正则表达式
+            blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*$/i, // 块查询的正则表达式
+            limit: /\s+LIMIT\s+\d+/i, // SQL LIMIT 关键字正则表达式            sort: /^__(\d+)__(.*)$/i, // 手动排序字段正则表达式
         },
         sql: {
             // SQL 语句处理

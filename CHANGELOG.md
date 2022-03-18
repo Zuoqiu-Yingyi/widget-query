@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
+- 优化部分正则表达式 | Optimize some regular expressions.
+
 ## v0.2.1/2022-03-17
 
 - [v0.2.1 <=> v0.2.2](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.2.1...v0.2.2)
