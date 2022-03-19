@@ -129,8 +129,8 @@ export var config = {
             'type', // 内容块类型，参考((20210210103523-ombf290 "类型字段"))
             // 'content', // 去除了 Markdown 标记符的文本
             'markdown', // 包含完整 Markdown 标记符的文本
-            'hpath', // 人类可读的内容块所在文档路径
             'ial', // 内联属性列表，形如 `{: name="value"}`
+            'hpath', // 人类可读的内容块所在文档路径
             'created', // 创建时间
             'updated', // 更新时间
 
