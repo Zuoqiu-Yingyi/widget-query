@@ -93,9 +93,54 @@ Background color status indication:
        - 该字段渲染为日期时间  
          The field is rendered as a datetime.
        - 示例 | example: `yyyy-MM-dd HH:mm:ss`
-     - `__pre__别名7` | `__pre__alias7`:
+     - `__s__别名7` | `___s__alias7`:
+       - 该字段渲染为删除线  
+         The field is rendered as strikethrough.
+       - 示例 | example: `~~<value>~~`
+     - `__u__别名8` | `___u__alias8`:
+       - 该字段渲染为下划线  
+         The field is rendered as underline.
+       - 示例 | example: `<u><value></u>`
+     - `__em__别名9` | `___em__alias9`:
+       - 该字段渲染为斜体  
+         The field is rendered as emphasis.
+       - 示例 | example: `*<value>*`
+     - `__tag__别名10` | `__tag__alias10`:
+       - 该字段渲染为标签  
+         The field is rendered as tag.
+       - 示例 | example: `<kbd><value></kbd>`
+     - `__kbd__别名11` | `__kbd__alias11`:
+       - 该字段渲染为按键样式  
+         The field is rendered as keyboard.
+       - 示例 | example: `~<value>~`
+     - `__sub__别名12` | `__sub__alias12`:
+       - 该字段渲染为下标样式  
+         The field is rendered as subscript.
+       - 示例 | example: `^<value>^`
+     - `__sup__别名13` | `__sup__alias13`:
+       - 该字段渲染为上标样式  
+         The field is rendered as superscript.
+       - 示例 | example: `#<value>#`
+     - `__code__别名14` | `__code__alias14`:
+       - 该字段渲染为行内代码  
+         The field is rendered as inline code.
+       - 示例 | example: `` `<value>` ``
+     - `__mark__别名15` | `__mark__alias15`:
+       - 该字段渲染为标记  
+         The field is rendered as mark.
+       - 示例 | example: `==<value>==`
+     - `__math__别名16` | `__math__alias16`:
+       - 该字段渲染为公式  
+         The field is rendered as math formula.
+       - 示例 | example: `$<value>$`
+     - `__strong__别名17` | `__strong__alias17`:
+       - 该字段渲染为粗体  
+         The field is rendered as weightbold.
+       - 示例 | example: `**<value>**`
+     - `__pre__别名18` | `__pre__alias7`:
        - 该字段渲染为预览(渲染 markdown 行级标识符)  
          The field is rendered as a preview (rendering the markdown row-level identifier).
+       - 示例 | example: `<value>`
    - 使用字段别名前缀定义查询结果字段顺序  
      Use field aliases prefix to define query result field order.
      - `__<数字>__别名8` | `__<number>__alias8`:
@@ -169,6 +214,18 @@ export var config = {
             date: '__date__', // 该字段渲染为日期
             time: '__time__', // 该字段渲染为时间
             datetime: '__datetime__', // 该字段渲染为日期时间
+
+            s: '__s__', // 该字段渲染为删除线
+            u: '__u__', // 该字段渲染为下划线
+            em: '__em__', // 该字段渲染为斜体
+            tag: '__tag__', // 该字段渲染为标签
+            kbd: '__kbd__', // 该字段渲染为按键样式
+            sub: '__sub__', // 该字段渲染为下标样式
+            sup: '__sup__', // 该字段渲染为上标样式
+            code: '__code__', // 该字段渲染为行内代码
+            mark: '__mark__', // 该字段渲染为标记
+            math: '__math__', // 该字段渲染为公式
+            strong: '__strong__', // 该字段渲染为粗体
         },
         attribute: { // 块属性
             code: 'query-code', // 查询代码块
@@ -179,6 +236,7 @@ export var config = {
             blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*/i, // 块查询的正则表达式
             limit: /\s+LIMIT\s+\d+/i, // SQL LIMIT 关键字正则表达式
             sort: /^__(\d+)__(.*)$/i, // 手动排序字段正则表达式
+            render: /^__(\w+)__(.*)$/i, // 渲染控制字段正则表达式
         },
         sql: {
             // SQL 语句处理
@@ -203,24 +261,7 @@ export var config = {
             // 非块查询的处理模式
             name: (key) => { // 字段名称处理函数
                 let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
-                switch (true) {
-                    case name.startsWith(config.query.prefix.ref):
-                        return name.substr(config.query.prefix.ref.length);
-                    case name.startsWith(config.query.prefix.link):
-                        return name.substr(config.query.prefix.link.length);
-                    case name.startsWith(config.query.prefix.pre):
-                        return name.substr(config.query.prefix.pre.length);
-                    case name.startsWith(config.query.prefix.date):
-                        return name.substr(config.query.prefix.date.length);
-                    case name.startsWith(config.query.prefix.time):
-                        return name.substr(config.query.prefix.time.length);
-                    case name.startsWith(config.query.prefix.datetime):
-                        return name.substr(config.query.prefix.datetime.length);
-                    case name.startsWith(config.query.prefix.raw):
-                        return name.substr(config.query.prefix.raw.length);
-                    default:
-                        return name;
-                }
+                return config.query.regs.render.test(name) ? config.query.regs.render.exec(name)[2] : key;
             },
             handler: (key) => { // 其他查询结果默认处理方法生成函数, key 是字段名, 返回一个处理方法
                 let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
@@ -237,7 +278,30 @@ export var config = {
                         return (row, key) => timeFormat(row[key]);
                     case name.startsWith(config.query.prefix.datetime):
                         return (row, key) => timestampFormat(row[key]);
+
+                    case name.startsWith(config.query.prefix.s):
+                        return (row, key) => `~~${row[key]}~~`;
+                    case name.startsWith(config.query.prefix.u):
+                        return (row, key) => `<u>${row[key]}</u>`;
+                    case name.startsWith(config.query.prefix.em):
+                        return (row, key) => `*${row[key]}*`;
+                    case name.startsWith(config.query.prefix.kbd):
+                        return (row, key) => `<kbd>${row[key]}</kbd>`;
+                    case name.startsWith(config.query.prefix.sub):
+                        return (row, key) => `~${row[key]}~`;
+                    case name.startsWith(config.query.prefix.sup):
+                        return (row, key) => `^${row[key]}^`;
+                    case name.startsWith(config.query.prefix.tag):
+                        return (row, key) => `#${row[key]}#`;
+                    case name.startsWith(config.query.prefix.mark):
+                        return (row, key) => `==${row[key]}==`;
+                    case name.startsWith(config.query.prefix.math):
+                        return (row, key) => `$${row[key]}$`;
+                    case name.startsWith(config.query.prefix.strong):
+                        return (row, key) => `**${row[key]}**`;
+
                     case name.startsWith(config.query.prefix.raw):
+                    case name.startsWith(config.query.prefix.code):
                     default:
                         return (row, key) => `\`${row[key]}\``;
                 }

@@ -6,6 +6,7 @@
 - 为 IAL 解析器添加 HTML 转义字符解析 | Add HTML escaping characters parsing for IAL parser.
 - 调整默认 IAL 渲染方法 | Adjust the default IAL rendering method.
 - 优化渲染速度 | Optimize rendering speed.
+- 扩展用于样式渲染的字段别名前缀 | Extend prefixes for field aliases for style rendering.
 
 ## v0.2.1/2022-03-17
 
