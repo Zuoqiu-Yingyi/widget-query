@@ -193,32 +193,31 @@ export async function widgetBlock(data) {
             header_row = data.rows[0];
             let header = []; // 表头
             let align = []; // 对齐样式
+            let renderer = {}; // 渲染器
             let keys = Object.keys(header_row);
             header.push(`|    |`);
             align.push(`| -: |`);
             for (var key of keys) {
-                key = data.config.query.default.name(key);
-                header.push(` ${key}${data.config.query.default.style.column} |`);
+                header.push(` ${data.config.query.default.name(key)}${data.config.query.default.style.column} |`);
                 align.push(` ${data.config.query.default.style.align} |`);
+                renderer[key] = data.config.query.default.handler(key);
             }
             markdown.push(header.join("")); // 表头
             markdown.push(align.join("")); // 对齐样式
-    
+
             if (data.rows.length > 0) {
                 for (let i = 1, len = data.rows.length; i <= len; i++) {
                     // 每一条查询记录
                     let row = data.rows[i - 1];
                     // console.log(row);
-    
+
                     let row_markdown = [];
                     row_markdown.push(`| ${i} |`);
                     for (var key of keys) {
                         if (row[key] == "" || row[key] == null || row[key] == undefined) {
                             row_markdown.push(` |`);
                         } else {
-                            row_markdown.push(
-                                ` ${data.config.query.default.handler(row, key)} |`
-                            );
+                            row_markdown.push(` ${renderer[key](row[key])} |`);
                         }
                     }
                     markdown.push(row_markdown.join(""));
@@ -234,7 +233,7 @@ export async function widgetBlock(data) {
     table_attrs.push(`custom-type="${data.config.query.attribute.table}"`);
     if (data.config.query.style.table.enable) {
         for (let attribute of data.config.query.style.table.attributes) {
-            if (attribute.enable) { 
+            if (attribute.enable) {
                 table_attrs.push(`${attribute.key}="${attribute.value}"`);
             }
         }

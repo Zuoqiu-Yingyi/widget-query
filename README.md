@@ -222,24 +222,24 @@ export var config = {
                         return name;
                 }
             },
-            handler: (row, key) => { // 其他查询结果默认处理方法, row 是查询结果的一条记录, key 是字段名
+            handler: (key) => { // 其他查询结果默认处理方法生成函数, key 是字段名, 返回一个处理方法
                 let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
                 switch (true) {
                     case name.startsWith(config.query.prefix.ref):
-                        return `((${row[key]} "${row[key]}"))`;
+                        return (field) => `((${field} "${field}"))`;
                     case name.startsWith(config.query.prefix.link):
-                        return `[${row[key]}](siyuan://blocks/${row[key]})`;
+                        return (field) => `[${field}](siyuan://blocks/${field})`;
                     case name.startsWith(config.query.prefix.pre):
-                        return markdown2span(row[key]);
+                        return (field) => markdown2span(field);
                     case name.startsWith(config.query.prefix.date):
-                        return dateFormat(row[key]);
+                        return (field) => dateFormat(field);
                     case name.startsWith(config.query.prefix.time):
-                        return timeFormat(row[key]);
+                        return (field) => timeFormat(field);
                     case name.startsWith(config.query.prefix.datetime):
-                        return timestampFormat(row[key]);
+                        return (field) => timestampFormat(field);
                     case name.startsWith(config.query.prefix.raw):
                     default:
-                        return `\`${row[key]}\``;
+                        return (field) => `\`${field}\``;
                 }
             },
             style: {
