@@ -104,20 +104,20 @@ export var config = {
                 let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
                 switch (true) {
                     case name.startsWith(config.query.prefix.ref):
-                        return (field) => `((${field} "${field}"))`;
+                        return (row, key) => `((${row[key]} "${row[key]}"))`;
                     case name.startsWith(config.query.prefix.link):
-                        return (field) => `[${field}](siyuan://blocks/${field})`;
+                        return (row, key) => `[${row[key]}](siyuan://blocks/${row[key]})`;
                     case name.startsWith(config.query.prefix.pre):
-                        return (field) => markdown2span(field);
+                        return (row, key) => markdown2span(row[key]);
                     case name.startsWith(config.query.prefix.date):
-                        return (field) => dateFormat(field);
+                        return (row, key) => dateFormat(row[key]);
                     case name.startsWith(config.query.prefix.time):
-                        return (field) => timeFormat(field);
+                        return (row, key) => timeFormat(row[key]);
                     case name.startsWith(config.query.prefix.datetime):
-                        return (field) => timestampFormat(field);
+                        return (row, key) => timestampFormat(row[key]);
                     case name.startsWith(config.query.prefix.raw):
                     default:
-                        return (field) => `\`${field}\``;
+                        return (row, key) => `\`${row[key]}\``;
                 }
             },
             style: {

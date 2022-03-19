@@ -217,7 +217,7 @@ export async function widgetBlock(data) {
                         if (row[key] == "" || row[key] == null || row[key] == undefined) {
                             row_markdown.push(` |`);
                         } else {
-                            row_markdown.push(` ${renderer[key](row[key])} |`);
+                            row_markdown.push(` ${renderer[key](row, key)} |`);
                         }
                     }
                     markdown.push(row_markdown.join(""));
