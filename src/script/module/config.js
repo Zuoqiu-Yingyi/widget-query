@@ -144,7 +144,7 @@ export var config = {
             // 'hash', // content 字段的 SHA256 校验和
             // 'length', // markdown 字段文本长度
             // 'subtype', // 内容块子类型，参考((20210210103411-tcbcjja "子类型字段"))
-            // 'ial', // 内联属性列表，形如 `{: name="value"}`
+            'ial', // 内联属性列表，形如 `{: name="value"}`
             // 'sort', // 排序权重, 数值越小排序越靠前
         ],
         style: {

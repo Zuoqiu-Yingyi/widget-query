@@ -15,6 +15,14 @@ export function cutString(str, len = null, row = null) {
     }
 }
 
+function HTMLDecode(text) {
+    // HTML 解码
+    // REF: [javascript处理HTML的Encode(转码)和Decode(解码)总结 - 孤傲苍狼 - 博客园](https://www.cnblogs.com/xdp-gacl/p/3722642.html)
+    let temp = document.createElement("div");
+    temp.innerHTML = text;
+    return temp.textContent;;
+}
+
 export function ialParser(ial) {
     // 解析 ial 字符串
     // ial 字符串格式： {: key="value" key="value" ...}
@@ -22,9 +30,13 @@ export function ialParser(ial) {
     if (ial == '' || ial == null) {
         return {};
     }
-    let IAL = ial.replace(/\s*(\S+)="(.*?)\s*"/g, ',"$1":"$2"');
+    let IAL = ial.replace(/\s*(\S+)="(.*?)"/g, ',"$1":"$2"');
     // console.log(IAL);
-    return JSON.parse(`{${IAL.substr(3)}`);
+    IAL = JSON.parse(`{${IAL.substr(3)}`);
+    for (let key of Object.keys(IAL)) {
+        IAL[key] = HTMLDecode(IAL[key]);
+    }
+    return IAL;
 }
 
 export function isEmptyString(str) {
