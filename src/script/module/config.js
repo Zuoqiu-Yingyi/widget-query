@@ -130,6 +130,7 @@ export var config = {
             // 'content', // 去除了 Markdown 标记符的文本
             'markdown', // 包含完整 Markdown 标记符的文本
             'hpath', // 人类可读的内容块所在文档路径
+            'ial', // 内联属性列表，形如 `{: name="value"}`
             'created', // 创建时间
             'updated', // 更新时间
 
@@ -144,7 +145,6 @@ export var config = {
             // 'hash', // content 字段的 SHA256 校验和
             // 'length', // markdown 字段文本长度
             // 'subtype', // 内容块子类型，参考((20210210103411-tcbcjja "子类型字段"))
-            'ial', // 内联属性列表，形如 `{: name="value"}`
             // 'sort', // 排序权重, 数值越小排序越靠前
         ],
         style: {
@@ -342,10 +342,10 @@ export var config = {
                         case 'updated':
                             continue;
                         case 'icon':
-                            ial_markdown.push(`\`${key}\`\: :${ial[key].replace(/\.\w+$/, '')}:`);
+                            ial_markdown.push(`<kbd>${key}</kbd>\::${ial[key].replace(/\.\w+$/, '')}:`);
                             break;
                         default:
-                            ial_markdown.push(`\`${key}\`\: \`${ial[key]}\``);
+                            ial_markdown.push(`<kbd>${key}</kbd>\:\`${ial[key]}\``);
                             break;
                     }
                 }

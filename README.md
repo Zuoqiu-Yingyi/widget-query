@@ -176,8 +176,9 @@ export var config = {
             table: 'query-table', // 查询结果表格块
         },
         regs: {
-            blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*$/i, // 块查询的正则表达式
-            limit: /\s+LIMIT\s+\d+/i, // SQL LIMIT 关键字正则表达式            sort: /^__(\d+)__(.*)$/i, // 手动排序字段正则表达式
+            blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*/i, // 块查询的正则表达式
+            limit: /\s+LIMIT\s+\d+/i, // SQL LIMIT 关键字正则表达式
+            sort: /^__(\d+)__(.*)$/i, // 手动排序字段正则表达式
         },
         sql: {
             // SQL 语句处理
@@ -250,6 +251,7 @@ export var config = {
             'type', // 内容块类型，参考((20210210103523-ombf290 "类型字段"))
             // 'content', // 去除了 Markdown 标记符的文本
             'markdown', // 包含完整 Markdown 标记符的文本
+            'ial', // 内联属性列表，形如 `{: name="value"}`
             'hpath', // 人类可读的内容块所在文档路径
             'created', // 创建时间
             'updated', // 更新时间
@@ -265,7 +267,6 @@ export var config = {
             // 'hash', // content 字段的 SHA256 校验和
             // 'length', // markdown 字段文本长度
             // 'subtype', // 内容块子类型，参考((20210210103411-tcbcjja "子类型字段"))
-            // 'ial', // 内联属性列表，形如 `{: name="value"}`
             // 'sort', // 排序权重, 数值越小排序越靠前
         ],
         style: {
@@ -344,9 +345,9 @@ export var config = {
                         // data: 挂件数据
                         // return: 返回 true 则过滤掉当前记录, 返回 false 则不过滤
                         switch (true) {
-                            case row.ial.indexOf(`custom-type="${data.config.query.attribute.code}"`) != -1:
-                            case row.ial.indexOf(`custom-type="${data.config.query.attribute.widget}"`) != -1:
-                            case row.ial.indexOf(`custom-type="${data.config.query.attribute.table}"`) != -1:
+                            case row.ial.indexOf(`custom-type="${config.query.attribute.code}"`) != -1:
+                            case row.ial.indexOf(`custom-type="${config.query.attribute.widget}"`) != -1:
+                            case row.ial.indexOf(`custom-type="${config.query.attribute.table}"`) != -1:
                                 return true;
                             default:
                                 return false;
@@ -463,10 +464,10 @@ export var config = {
                         case 'updated':
                             continue;
                         case 'icon':
-                            ial_markdown.push(`\`${key}\`\: :${ial[key].replace(/\.\w+$/, '')}:`);
+                            ial_markdown.push(`<kbd>${key}</kbd>\::${ial[key].replace(/\.\w+$/, '')}:`);
                             break;
                         default:
-                            ial_markdown.push(`\`${key}\`\: \`${ial[key]}\``);
+                            ial_markdown.push(`<kbd>${key}</kbd>\:\`${ial[key]}\``);
                             break;
                     }
                 }

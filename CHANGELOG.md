@@ -4,6 +4,7 @@
 - 优化部分正则表达式 | Optimize some regular expressions.
 - 查询结果表格添加滚动条(需要配合 [Dark+](https://github.com/Zuoqiu-Yingyi/siyuan-theme-dark-plus) 主题) | Add scroll bar to the query result table (requires [Dark+](https://github.com/Zuoqiu-Yingyi/siyuan-theme-dark-plus) theme).
 - 为 IAL 解析器添加 HTML 转义字符解析 | Add HTML escaping characters parsing for IAL parser.
+- 调整默认 IAL 渲染方法 | Adjust the default IAL rendering method.
 
 ## v0.2.1/2022-03-17
 
