@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+## v0.2.3/2022-03-20
+
+- [v0.2.2 <=> v0.2.3](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.2.2...v0.2.3)
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 优化部分正则表达式 | Optimize some regular expressions.
 - 查询结果表格添加滚动条(需要配合 [Dark+](https://github.com/Zuoqiu-Yingyi/siyuan-theme-dark-plus) 主题) | Add scroll bar to the query result table (requires [Dark+](https://github.com/Zuoqiu-Yingyi/siyuan-theme-dark-plus) theme).
@@ -8,7 +11,7 @@
 - 优化渲染速度 | Optimize rendering speed.
 - 扩展用于样式渲染的字段别名前缀 | Extend prefixes for field aliases for style rendering.
 
-## v0.2.1/2022-03-17
+## v0.2.2/2022-03-17
 
 - [v0.2.1 <=> v0.2.2](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.2.1...v0.2.2)
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
