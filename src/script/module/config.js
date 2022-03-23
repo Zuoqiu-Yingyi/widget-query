@@ -94,7 +94,7 @@ export var config = {
             // 非块查询的处理模式
             name: (key) => { // 字段名称处理函数
                 let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
-                return config.query.regs.render.test(name) ? config.query.regs.render.exec(name)[2] : key;
+                return config.query.regs.render.test(name) ? config.query.regs.render.exec(name)[2] : name;
             },
             handler: (key) => { // 其他查询结果默认处理方法生成函数, key 是字段名, 返回一个处理方法
                 let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
