@@ -12,9 +12,9 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#贡献者--contributor)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-</center>
-
 [English](./README_en.md)
+
+</center>
 
 一个将思源笔记数据库查询结果以表格样式渲染的挂件
 
@@ -151,7 +151,7 @@ import {
 
 import {
     templateParse
-} from '/widgets/Query/src/script/utils/templateParser.js'
+} from '/widgets/Query/src/script/utils/templateParser.js';
 
 export var config = {
     token: '', // API token, 无需填写
@@ -570,11 +570,11 @@ export var config = {
 
 ## 参考 & 感谢
 
-| 作者 \| Author                                      | 项目 \| Project                                                                                                                                       | 许可证 \| License |
-| :-------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------- |
-| **[leolee9086](https://github.com/leolee9086)**     | [leolee9086/cc-baselib](https://github.com/leolee9086/cc-baselib)                                                                                     | *Unknown*         |
+| 作者                                            | 项目                                                              | 许可证    |
+| :---------------------------------------------- | :---------------------------------------------------------------- | :-------- |
+| **[leolee9086](https://github.com/leolee9086)** | [leolee9086/cc-baselib](https://github.com/leolee9086/cc-baselib) | *Unknown* |
 
-注: 排序不分先后  
+注: 排序不分先后
 
 ## 贡献者
 

@@ -12,156 +12,125 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#贡献者--contributor)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+[简体中文](./README.md)
+
 </center>
 
-一个将思源笔记数据库查询结果以表格样式渲染的挂件  
 A widget that renders the query results of the Siyuan Notes database in tabular style.
 
-现已上架[思源笔记社区集市](https://github.com/siyuan-note/bazaar), 如果您需要订阅[思源笔记](https://github.com/siyuan-note/siyuan)增值服务，欢迎使用我的推荐码: **h0sc9rc**  
 It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.com/siyuan-note/bazaar). If you need to subscribe to the value-added services of [siyuan note](https://github.com/siyuan-note/siyuan/blob/master/README_en_US.md), please use my referral code: **h0sc9rc**
 
-## 预览 | PREVIEW
+## PREVIEW
 
 ![preview](https://cdn.jsdelivr.net/gh/Zuoqiu-Yingyi/widget-query/preview.png)
 
-背景颜色状态指示:  
 Background color status indication:
-- 白色 | White:
-  - 初始化 | Initialization.
-  - 正在处理查询 | Processing query.
-- 绿色 | Green:
-  - 查询成功 | Query success.
-- 蓝色 | Blue:
-  - 请继续操作 | Please continue to operate.
-- 黄色 | Yellow:
-  - 查询结果为空 | Query result is empty.
-- 红色 | Red:
-  - SQL 语句错误 | SQL statement error.
-  - 未知错误 | Unknown error.
+- White:
+  - Initialization.
+  - Processing query.
+- Green:
+  - Query success.
+- Blue:
+  - Please continue to operate.
+- Yellow:
+  - Query result is empty.
+- Red:
+  - SQL SQL statement error.
+  - Unknown error.
 
-## 功能 | FUNCTION
+## FUNCTION
 
-1. 符合正则表达式 `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` 的 SQL 语句将启用自定义渲染模式  
-   SQL statements that conform to the regular expression `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` will enable custom rendering mode.
-   - 这个正则表达式在 `/src/script/module/config.js` 中的 `config.query.regs.blocks` 配置  
-     This regular expression is configured in `config.query.regs.blocks` in `/src/script/module/config.js`
-2. 自定义渲染模式 | Custom rendering modes
-   - 可以在 `config.query.limit` 中设置过长查询结果的截取方案  
-     You can set the the interception scheme for query results that are too long in `config.query.limit`.
-     - `config.query.maxlen`: 最大长度 | Maximum length
-     - `config.query.maxrow`: 最多行数 | Maximum number of rows
-   - 可以在 `config.query.fields` 中设置想要显示的字段  
-     You can set the fields you want to display in `config.query.fields`.
-   - 可以在 `config.query.align` 中设置各字段的对齐方式  
-     You can set the alignment of each field in `config.query.align`.
-   - 可以在 `config.query.handler` 中设置各字段的处理方法  
-     You can set the handling method for each field in `config.query.handler`.
-3. 部分模板字段解析支持  
-   Partial template field parsing support.
+1. SQL statements that conform to the regular expression `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` will enable custom rendering mode.
+   - This regular expression is configured in `config.query.regs.blocks` in `/src/script/module/config.js`
+2. Custom rendering modes
+   - You can set the the interception scheme for query results that are too long in `config.query.limit`.
+     - `config.query.maxlen`: Maximum length
+     - `config.query.maxrow`: Maximum number of rows
+   - You can set the fields you want to display in `config.query.fields`.
+   - You can set the alignment of each field in `config.query.align`.
+   - You can set the handling method for each field in `config.query.handler`.
+3. Partial template field parsing support.
    - `.prefix{.field}`
-     - `prefix`: 前缀字段 | prefix field
-       - `block`: 挂件块 | Widget block.
-       - `parent`: 挂件块的上级块 | The parent block of the pendant block.
-       - `root`: 挂件块所在文档块 | The document block in which the pendant block resides.
-     - `field`: 属性字段 | attribute field
-       - 数据库中 `blocks` 表的字段名  
-         The field name of the `blocks` table in the database.
-4. 普通模式 | Normal mode
-   - 使用字段别名前缀定义查询显示样式  
-     Use field aliases prefix to define query display styles.
-     - `__ref__别名1` | `__ref__alias1`:
-       - 该字段渲染为块引用  
-         The field is rendered as a block reference.
-       - 示例 | example: `((<value> "<value>"))`
-     - `__link__别名2` | `__link__alias2`:
-       - 该字段渲染为块链接  
-         The field is rendered as a block link.
-       - 示例 | example: `[<value>](siyuan://blocks/<value>)`
-     - `__raw__别名3` | `__raw__alias3`:
-       - 该字段渲染为原始值(行内代码样式)  
-         The field is rendered as the original value (inline code style).
-       - 示例 | example: `` `<value>` ``
-     - `__date__别名4` | `__date__alias4`:
-       - 该字段渲染为日期  
-         The field is rendered as a date.
-       - 示例 | example: `yyyy-MM-dd`
-     - `__time__别名5` | `__time__alias5`:
-       - 该字段渲染为时间  
-         The field is rendered as a time.
-       - 示例 | example: `HH:mm:ss`
-     - `__datetime__别名6` | `__datetime__alias6`:
-       - 该字段渲染为日期时间  
-         The field is rendered as a datetime.
-       - 示例 | example: `yyyy-MM-dd HH:mm:ss`
-     - `__s__别名7` | `___s__alias7`:
-       - 该字段渲染为删除线  
-         The field is rendered as strikethrough.
-       - 示例 | example: `~~<value>~~`
-     - `__u__别名8` | `___u__alias8`:
-       - 该字段渲染为下划线  
-         The field is rendered as underline.
-       - 示例 | example: `<u><value></u>`
-     - `__em__别名9` | `___em__alias9`:
-       - 该字段渲染为斜体  
-         The field is rendered as emphasis.
-       - 示例 | example: `*<value>*`
-     - `__tag__别名10` | `__tag__alias10`:
-       - 该字段渲染为标签  
-         The field is rendered as tag.
-       - 示例 | example: `<kbd><value></kbd>`
-     - `__kbd__别名11` | `__kbd__alias11`:
-       - 该字段渲染为按键样式  
-         The field is rendered as keyboard.
-       - 示例 | example: `~<value>~`
-     - `__sub__别名12` | `__sub__alias12`:
-       - 该字段渲染为下标样式  
-         The field is rendered as subscript.
-       - 示例 | example: `^<value>^`
-     - `__sup__别名13` | `__sup__alias13`:
-       - 该字段渲染为上标样式  
-         The field is rendered as superscript.
-       - 示例 | example: `#<value>#`
-     - `__code__别名14` | `__code__alias14`:
-       - 该字段渲染为行内代码  
-         The field is rendered as inline code.
-       - 示例 | example: `` `<value>` ``
-     - `__mark__别名15` | `__mark__alias15`:
-       - 该字段渲染为标记  
-         The field is rendered as mark.
-       - 示例 | example: `==<value>==`
-     - `__math__别名16` | `__math__alias16`:
-       - 该字段渲染为公式  
-         The field is rendered as math formula.
-       - 示例 | example: `$<value>$`
-     - `__strong__别名17` | `__strong__alias17`:
-       - 该字段渲染为粗体  
-         The field is rendered as weightbold.
-       - 示例 | example: `**<value>**`
-     - `__pre__别名18` | `__pre__alias7`:
-       - 该字段渲染为预览(渲染 markdown 行级标识符)  
-         The field is rendered as a preview (rendering the markdown row-level identifier).
-       - 示例 | example: `<value>`
-   - 使用字段别名前缀定义查询结果字段顺序  
-     Use field aliases prefix to define query result field order.
-     - `__<数字>__别名8` | `__<number>__alias8`:
-       - 该字段可以放置在查询样式前缀字段的前面  
-         The field can be placed in front of the query style prefix field.
-       - 示例 | example:
-         - `__1____pre__别名9` | `__1____pre__alias9`
-         - `__02____raw__别名10` | `__02____raw__alias10`
-   - 默认显示查询结果原始值(使用行内代码)  
-     Displays the original value of the query result by default (using inline code).
+     - `prefix`: prefix field
+       - `block`: Widget block.
+       - `parent`: The parent block of the pendant block.
+       - `root`: The document block in which the pendant block resides.
+     - `field`: attribute field
+       - The field name of the `blocks` table in the database.
+4. Normal mode
+   - Use field aliases prefix to define query display styles.
+     - `__hidden__alias0`:
+       - This field does not appear in the query results.
+     - `__ref__alias1`:
+       - The field is rendered as a block reference.
+       - example: `((<value> "<value>"))`
+     - `__link__alias2`:
+       - The field is rendered as a block link.
+       - example: `[<value>](siyuan://blocks/<value>)`
+     - `__raw__alias3`:
+       - The field is rendered as the original value (inline code style).
+       - example: `` `<value>` ``
+     - `__date__alias4`:
+       - The field is rendered as a date.
+       - example: `yyyy-MM-dd`
+     - `__time__alias5`:
+       - The field is rendered as a time.
+       - example: `HH:mm:ss`
+     - `__datetime__alias6`:
+       - The field is rendered as a datetime.
+       - example: `yyyy-MM-dd HH:mm:ss`
+     - `___s__alias7`:
+       - The field is rendered as strikethrough.
+       - example: `~~<value>~~`
+     - `___u__alias8`:
+       - The field is rendered as underline.
+       - example: `<u><value></u>`
+     - `___em__alias9`:
+       - The field is rendered as emphasis.
+       - example: `*<value>*`
+     - `__tag__alias10`:
+       - The field is rendered as tag.
+       - example: `<kbd><value></kbd>`
+     - `__kbd__alias11`:
+       - The field is rendered as keyboard.
+       - example: `~<value>~`
+     - `__sub__alias12`:
+       - The field is rendered as subscript.
+       - example: `^<value>^`
+     - `__sup__alias13`:
+       - The field is rendered as superscript.
+       - example: `#<value>#`
+     - `__code__alias14`:
+       - The field is rendered as inline code.
+       - example: `` `<value>` ``
+     - `__mark__alias15`:
+       - The field is rendered as mark.
+       - example: `==<value>==`
+     - `__math__alias16`:
+       - The field is rendered as math formula.
+       - example: `$<value>$`
+     - `__strong__alias17`:
+       - The field is rendered as weightbold.
+       - example: `**<value>**`
+     - `__pre__alias7`:
+       - The field is rendered as a preview (rendering the markdown row-level identifier).
+       - example: `<value>`
+   - Use field aliases prefix to define query result field order.
+     - `__<number>__alias8`:
+       - The field can be placed in front of the query style prefix field.
+       - example:
+         - `__1____pre__alias9`
+         - `__02____raw__alias10`
+   - Displays the original value of the query result by default (using inline code).
 
-## 自定义配置 | CUSTOM CONFIG
+## CUSTOM CONFIG
 
-### 全局自定义配置 | GLOBAL CUSTOM CONFIG
+### GLOBAL CUSTOM CONFIG
 
-1. 创建文件 `<工作空间>/data/widgets/custom.js`  
-   Create a file `<workspace>/data/widgets/custom.js`
-2. 在文件 `<工作空间>/data/widgets/custom.js` 中定义的值将覆盖 `<工作空间>/data/widgets/Query/src/script/module/config.js` 中对应的值  
-   The value defined in file `<workspace>/data/widgets/custom.js` overwrites the corresponding value in file `<workspace>/data/widgets/Query/src/script/module/config.js`.
+1. Create a file `<workspace>/data/widgets/custom.js`
+2. The value defined in file `<workspace>/data/widgets/custom.js` overwrites the corresponding value in file `<workspace>/data/widgets/Query/src/script/module/config.js`.
 
-#### 配置示例 | CONFIG EXAMPLE
+#### 配置CONFIG EXAMPLE
 
 ```js
 /* 路径 | Path
@@ -182,7 +151,7 @@ import {
 
 import {
     templateParse
-} from '/widgets/Query/src/script/utils/templateParser.js'
+} from '/widgets/Query/src/script/utils/templateParser.js';
 
 export var config = {
     token: '', // API token, 无需填写
@@ -197,6 +166,9 @@ export var config = {
             warning: 'rgb(255, 213, 153)', // 警告颜色
             error: 'rgb(250, 179, 174)', // 错误颜色
         },
+        index: {
+            enable: true, // 查询结果是否显示索引序号
+        },
         render: {
             // 块查询部分字段渲染方案, 可以设置为 'ref' (渲染为块引用) 或 'link' (渲染为块超链接)
             type: 'link', // 块类型
@@ -207,6 +179,8 @@ export var config = {
         },
         prefix: {
             // 非默认查询时字段别名前缀
+            hidden: '__hidden__', // 不显示此字段，仅用于数据查询
+
             ref: '__ref__', // 该字段渲染为引用
             link: '__link__', // 该字段渲染为链接
             pre: '__pre__', // 该字段渲染为预览
@@ -584,32 +558,27 @@ export var config = {
 
 ```
 
-### 块自定义配置 | BLOCK CUSTOM CONFIG
+### BLOCK CUSTOM CONFIG
 
-- 在挂件块（笔记中的Query按钮）中设置自定义块属性  
-  Set custom block attributes in the widget block(the Query button in your note).
-  - 自定义属性名称为 `src/script/module/config.js` 文件中 `config` 对象中的属性  
-    Custom block attribute names are property in the `config` object under the file `src/script/module/config.js`.
-  - 例如, 如果想要自定义查询结果字段列表, 可以设置自定义块属性 `query-fields`: `["hpath", "type", "markdown"]`, 在该块中将会替换 `config.query.fields` 字段  
-    For example, if you want to customize the query result field list, you can set the custom block attribute `query-fields`: `["hpath", "type", "markdown"]`, where the `config.query.fields` property will be replaced in this block.
+- Set custom block attributes in the widget block(the Query button in your note).
+  - Custom block attribute names are property in the `config` object under the file `src/script/module/config.js`.
+  - For example, if you want to customize the query result field list, you can set the custom block attribute `query-fields`: `["hpath", "type", "markdown"]`, where the `config.query.fields` property will be replaced in this block.
 
-## 开始 | START
+## START
 
-该挂件已在[思源笔记社区集市](https://github.com/siyuan-note/bazaar)上架, 可直接在集市中安装  
 The widget has been put on the shelves at [SiYuan community bazaar](https://github.com/siyuan-note/bazaar) and can be installed directly in the Bazaar.
 
-## 参考 & 感谢 | REFERENCE & THANKS
+## REFERENCE & THANKS
 
-| 作者 \| Author                                      | 项目 \| Project                                                                                                                                       | 许可证 \| License |
-| :-------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------- |
-| **[leolee9086](https://github.com/leolee9086)**     | [leolee9086/cc-baselib](https://github.com/leolee9086/cc-baselib)                                                                                     | *Unknown*         |
+| Author                                          | Project                                                           | License   |
+| :---------------------------------------------- | :---------------------------------------------------------------- | :-------- |
+| **[leolee9086](https://github.com/leolee9086)** | [leolee9086/cc-baselib](https://github.com/leolee9086/cc-baselib) | *Unknown* |
 
-注: 排序不分先后  
-ps: Sort in no particular order.
+PS: Sort in no particular order.
 
-## 贡献者 | CONTRIBUTOR
+## CONTRIBUTOR
 
-<!-- [![贡献者](https://contrib.rocks/image?repo=Zuoqiu-Yingyi/widget-query)](https://github.com/Zuoqiu-Yingyi/widget-query/graphs/contributors) -->
+<!-- [![CONTRIBUTOR](https://contrib.rocks/image?repo=Zuoqiu-Yingyi/widget-query)](https://github.com/Zuoqiu-Yingyi/widget-query/graphs/contributors) -->
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -621,6 +590,7 @@ ps: Sort in no particular order.
     <td align="center"><a href="https://www.cnblogs.com/duanguyuan/"><img src="https://avatars.githubusercontent.com/u/5968678?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wang Yong</b></sub></a><br /><a href="https://github.com/Zuoqiu-Yingyi/widget-query/commits?author=whuwangyong" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/banjuer"><img src="https://avatars.githubusercontent.com/u/18739609?v=4?s=100" width="100px;" alt=""/><br /><sub><b>banjuer</b></sub></a><br /><a href="#ideas-banjuer" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/Tlonglan"><img src="https://avatars.githubusercontent.com/u/38731172?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tlonglan</b></sub></a><br /><a href="#ideas-Tlonglan" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://git.io/k.r"><img src="https://avatars.githubusercontent.com/u/2762704?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tim Zhang</b></sub></a><br /><a href="#ideas-ttimasdf" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/Zuoqiu-Yingyi/widget-query/commits?author=ttimasdf" title="Code">💻</a></td>
   </tr>
 </table>
 
@@ -629,9 +599,8 @@ ps: Sort in no particular order.
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-注: 该表格使用 [All Contributors · GitHub](https://github.com/all-contributors) 自动生成, 请到 [emoji key](https://allcontributors.org/docs/en/emoji-key) 查看贡献类型   
-ps: The table is generated automatically using [All Contributors · GitHub](https://github.com/all-contributors), go to [emoji key](https://allcontributors.org/docs/en/emoji-key) to see the contribution type.
+PS: The table is generated automatically using [All Contributors · GitHub](https://github.com/all-contributors), go to [emoji key](https://allcontributors.org/docs/en/emoji-key) to see the contribution type.
 
-## 更改日志 | CHANGE LOG
+## CHANGE LOG
 
 [CHANGE LOG](./CHANGELOG.md)
