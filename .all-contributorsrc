@@ -51,6 +51,16 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "ttimasdf",
+      "name": "Tim Zhang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2762704?v=4",
+      "profile": "https://git.io/k.r",
+      "contributions": [
+        "ideas",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
