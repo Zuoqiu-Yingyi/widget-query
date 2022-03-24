@@ -1,6 +1,6 @@
 # 更改日志 | CHANGE LOG
 
-## v0.2.4/2022-03-20
+## v0.2.4/2022-03-23
 
 - [v0.2.3 <=> v0.2.4](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.2.3...v0.2.4)
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
