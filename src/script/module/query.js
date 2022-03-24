@@ -204,6 +204,9 @@ export async function widgetBlock(data) {
                 align.push(' -: |');
             }
             for (var key of keys) {
+                if (key.startsWith(data.config.query.prefix.hidden)) // 不显示该字段
+                    continue;
+
                 header.push(` ${data.config.query.default.name(key)}${data.config.query.default.style.column} |`);
                 align.push(` ${data.config.query.default.style.align} |`);
                 renderer[key] = data.config.query.default.handler(key);
@@ -222,6 +225,9 @@ export async function widgetBlock(data) {
                         row_markdown.push(`${index} |`);
                     }
                     for (var key of keys) {
+                        if (key.startsWith(data.config.query.prefix.hidden)) // 不显示该字段
+                            continue;
+
                         if (row[key] == "" || row[key] == null || row[key] == undefined) {
                             row_markdown.push(` |`);
                         } else {

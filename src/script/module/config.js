@@ -43,6 +43,8 @@ export var config = {
         },
         prefix: {
             // 非默认查询时字段别名前缀
+            hidden: '__hidden__', // 不显示此字段，仅用于数据查询
+
             ref: '__ref__', // 该字段渲染为引用
             link: '__link__', // 该字段渲染为链接
             pre: '__pre__', // 该字段渲染为预览
