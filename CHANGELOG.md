@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
+- 添加配置选项 `config.query.index` 用于控制是否显示查询结果序号 | Add configuration option `config.query.index` to control whether to display the query result ordinal.
+
 ## v0.2.4/2022-03-23
 
 - [v0.2.3 <=> v0.2.4](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.2.3...v0.2.4)

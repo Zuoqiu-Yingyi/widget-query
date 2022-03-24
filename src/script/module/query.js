@@ -138,10 +138,12 @@ export async function widgetBlock(data) {
 
     if (data.config.query.regs.blocks.test(data.sql)) {
         // 匹配指定正则的 SQL 查询, 是 `SELECT * FROM blocks ...` 语句
-        let header = []; // 表头
-        let align = []; // 对齐样式
-        header.push("|    |");
-        align.push("| -: |");
+        let header = ['|']; // 表头
+        let align = ['|']; // 对齐样式
+        if (data.config.query.index.enable) {
+            header.push("    |");
+            align.push(" -: |");
+        }
         for (let field of data.config.query.fields) {
             // 根据自定义字段列表，构造表头
             header.push(` ${field}${data.config.query.style.column[field]} |`);
@@ -173,8 +175,10 @@ export async function widgetBlock(data) {
                 // 解析内联属性列表(inline attribute list, IAL)
                 let ial = ialParser(row.ial);
 
-                let row_markdown = [];
-                row_markdown.push(`| ${index} |`);
+                let row_markdown = ['|'];
+                if (data.config.query.index.enable) {
+                    row_markdown.push(` ${index} |`);
+                }
                 for (let field of data.config.query.fields) {
                     // 根据自定义字段列表，构造表格
                     row_markdown.push(` ${data.config.query.handler[field](row, ial)} |`);
@@ -191,12 +195,14 @@ export async function widgetBlock(data) {
         let header_row = null;
         if (data.rows.length > 0) {
             header_row = data.rows[0];
-            let header = []; // 表头
-            let align = []; // 对齐样式
+            let header = ['|']; // 表头
+            let align = ['|']; // 对齐样式
             let renderer = {}; // 渲染器
             let keys = Object.keys(header_row);
-            header.push(`|    |`);
-            align.push(`| -: |`);
+            if (data.config.query.index.enable) {
+                header.push('    |');
+                align.push(' -: |');
+            }
             for (var key of keys) {
                 header.push(` ${data.config.query.default.name(key)}${data.config.query.default.style.column} |`);
                 align.push(` ${data.config.query.default.style.align} |`);
@@ -206,13 +212,15 @@ export async function widgetBlock(data) {
             markdown.push(align.join("")); // 对齐样式
 
             if (data.rows.length > 0) {
-                for (let i = 1, len = data.rows.length; i <= len; i++) {
+                for (let index = 1, len = data.rows.length; index <= len; index++) {
                     // 每一条查询记录
-                    let row = data.rows[i - 1];
+                    let row = data.rows[index - 1];
                     // console.log(row);
 
-                    let row_markdown = [];
-                    row_markdown.push(`| ${i} |`);
+                    let row_markdown = [`|`];
+                    if (data.config.query.index.enable) {
+                        row_markdown.push(`${index} |`);
+                    }
                     for (var key of keys) {
                         if (row[key] == "" || row[key] == null || row[key] == undefined) {
                             row_markdown.push(` |`);

@@ -15,7 +15,7 @@ import {
 
 import {
     templateParse
-} from './../utils/templateParser.js'
+} from './../utils/templateParser.js';
 
 export var config = {
     token: '', // API token, 无需填写
@@ -29,6 +29,9 @@ export var config = {
             info: 'rgb(166, 213, 250)', // 信息颜色
             warning: 'rgb(255, 213, 153)', // 警告颜色
             error: 'rgb(250, 179, 174)', // 错误颜色
+        },
+        index: {
+            enable: true, // 查询结果是否显示索引序号
         },
         render: {
             // 块查询部分字段渲染方案, 可以设置为 'ref' (渲染为块引用) 或 'link' (渲染为块超链接)
