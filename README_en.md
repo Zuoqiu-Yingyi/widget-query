@@ -9,7 +9,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/Zuoqiu-Yingyi/widget-query?style=flat-square)
 ![hits](https://hits.b3log.org/Zuoqiu-Yingyi/widget-query.svg)
 [![GitHub all releases](https://img.shields.io/github/downloads/Zuoqiu-Yingyi/widget-query/total?style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/releases)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#贡献者--contributor)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributor)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [简体中文](./README.md)
@@ -40,7 +40,7 @@ Background color status indication:
 
 ## FUNCTION
 
-1. SQL statements that conform to the regular expression `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` will enable custom rendering mode.
+1. SQL statements that conform to the regular expression `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` will enable the default block query mode.
    - This regular expression is configured in `config.query.regs.blocks` in `/src/script/module/config.js`
 2. Custom rendering modes
    - You can set the the interception scheme for query results that are too long in `config.query.limit`.
@@ -130,7 +130,7 @@ Background color status indication:
 1. Create a file `<workspace>/data/widgets/custom.js`
 2. The value defined in file `<workspace>/data/widgets/custom.js` overwrites the corresponding value in file `<workspace>/data/widgets/Query/src/script/module/config.js`.
 
-#### 配置CONFIG EXAMPLE
+#### CONFIG EXAMPLE
 
 ```js
 /* 路径 | Path

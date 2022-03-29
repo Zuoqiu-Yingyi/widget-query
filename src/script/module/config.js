@@ -30,6 +30,31 @@ export var config = {
             warning: 'rgb(255, 213, 153)', // 警告颜色
             error: 'rgb(250, 179, 174)', // 错误颜色
         },
+        regs: {
+            blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*/i, // 块查询的正则表达式
+            limit: /\s+LIMIT\s+\d+/i, // SQL LIMIT 关键字正则表达式
+            sort: /^__(\d+)__(.*)$/i, // 手动排序字段正则表达式
+            render: /^__(\w+)__(.*)$/i, // 渲染控制字段正则表达式
+        },
+        attribute: { // 块属性
+            code: 'query-code', // 查询代码块
+            widget: 'query-widget', // 查询挂件块
+            table: 'query-table', // 查询结果表格块
+        },
+        sql: {
+            // SQL 语句处理
+            limit: { // 查询记录数量限制, 若启用且为设置 LIMIT 语句, 则在查询语句末尾添加 "LIMIT begin, end"
+                enable: false, // 是否启用限制
+                begin: 0, // 开始记录数
+                end: 100, // 结束记录数
+            },
+        },
+        template: { // 类似模板字段解析支持, 类似 .prefix{.field}, 目前支持的有 .root{.<挂件所在文档块的字段名>} .parent{.<挂件上级块的字段名>} .block{挂件块的字段名}
+            enable: true, // 是否启用模板解析
+            handler: async (data) => { // 模板解析处理函数
+                return await templateParse(data);
+            }
+        },
         index: {
             enable: true, // 查询结果是否显示索引序号
         },
@@ -41,114 +66,11 @@ export var config = {
             parent_id: 'link', // 块的上级块 ID
             root_id: 'link', // 块所在文档 ID
         },
-        prefix: {
-            // 非默认查询时字段别名前缀
-            hidden: '__hidden__', // 不显示此字段，仅用于数据查询
-
-            ref: '__ref__', // 该字段渲染为引用
-            link: '__link__', // 该字段渲染为链接
-            pre: '__pre__', // 该字段渲染为预览
-            raw: '__raw__', // 该字段渲染为原始值
-            date: '__date__', // 该字段渲染为日期
-            time: '__time__', // 该字段渲染为时间
-            datetime: '__datetime__', // 该字段渲染为日期时间
-
-            s: '__s__', // 该字段渲染为删除线
-            u: '__u__', // 该字段渲染为下划线
-            em: '__em__', // 该字段渲染为斜体
-            tag: '__tag__', // 该字段渲染为标签
-            kbd: '__kbd__', // 该字段渲染为按键样式
-            sub: '__sub__', // 该字段渲染为下标样式
-            sup: '__sup__', // 该字段渲染为上标样式
-            code: '__code__', // 该字段渲染为行内代码
-            mark: '__mark__', // 该字段渲染为标记
-            math: '__math__', // 该字段渲染为公式
-            strong: '__strong__', // 该字段渲染为粗体
-        },
-        attribute: { // 块属性
-            code: 'query-code', // 查询代码块
-            widget: 'query-widget', // 查询挂件块
-            table: 'query-table', // 查询结果表格块
-        },
-        regs: {
-            blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*/i, // 块查询的正则表达式
-            limit: /\s+LIMIT\s+\d+/i, // SQL LIMIT 关键字正则表达式
-            sort: /^__(\d+)__(.*)$/i, // 手动排序字段正则表达式
-            render: /^__(\w+)__(.*)$/i, // 渲染控制字段正则表达式
-        },
-        sql: {
-            // SQL 语句处理
-            limit: { // 查询记录数量限制, 若启用且为设置 LIMIT 语句, 则在查询语句末尾添加 "LIMIT begin, end"
-                enable: false, // 是否启用限制
-                begin: 0, // 开始记录数
-                end: 100, // 结束记录数
-            },
-        },
+        limit: 'row', // 查询结果字段限制, (null 为不限制, 'len' 为限制长度, 'row' 为限制行数)
         maxlen: 64, // 查询结果每个字段最大长度
         maxrow: 3, // 查询结果每个字段最大行数
-        limit: 'row', // 查询结果字段限制, (null 为不限制, 'len' 为限制长度, 'row' 为限制行数)
         CRLF: '<br />', // 换行符替换
         space: ' ', // 空白字符替换
-        template: { // 类似模板字段解析支持, 类似 .prefix{.field}, 目前支持的有 .root{.<挂件所在文档块的字段名>} .parent{.<挂件上级块的字段名>} .block{挂件块的字段名}
-            enable: true, // 是否启用模板解析
-            handler: async (data) => { // 模板解析处理函数
-                return await templateParse(data);
-            }
-        },
-        default: {
-            // 非块查询的处理模式
-            name: (key) => { // 字段名称处理函数
-                let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
-                return config.query.regs.render.test(name) ? config.query.regs.render.exec(name)[2] : name;
-            },
-            handler: (key) => { // 其他查询结果默认处理方法生成函数, key 是字段名, 返回一个处理方法
-                let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
-                switch (true) {
-                    case name.startsWith(config.query.prefix.ref):
-                        return (row, key) => `((${row[key]} "${row[key]}"))`;
-                    case name.startsWith(config.query.prefix.link):
-                        return (row, key) => `[${row[key]}](siyuan://blocks/${row[key]})`;
-                    case name.startsWith(config.query.prefix.pre):
-                        return (row, key) => markdown2span(row[key]);
-                    case name.startsWith(config.query.prefix.date):
-                        return (row, key) => dateFormat(row[key]);
-                    case name.startsWith(config.query.prefix.time):
-                        return (row, key) => timeFormat(row[key]);
-                    case name.startsWith(config.query.prefix.datetime):
-                        return (row, key) => timestampFormat(row[key]);
-
-                    case name.startsWith(config.query.prefix.s):
-                        return (row, key) => `~~${row[key]}~~`;
-                    case name.startsWith(config.query.prefix.u):
-                        return (row, key) => `<u>${row[key]}</u>`;
-                    case name.startsWith(config.query.prefix.em):
-                        return (row, key) => `*${row[key]}*`;
-                    case name.startsWith(config.query.prefix.kbd):
-                        return (row, key) => `<kbd>${row[key]}</kbd>`;
-                    case name.startsWith(config.query.prefix.sub):
-                        return (row, key) => `~${row[key]}~`;
-                    case name.startsWith(config.query.prefix.sup):
-                        return (row, key) => `^${row[key]}^`;
-                    case name.startsWith(config.query.prefix.tag):
-                        return (row, key) => `#${row[key]}#`;
-                    case name.startsWith(config.query.prefix.mark):
-                        return (row, key) => `==${row[key]}==`;
-                    case name.startsWith(config.query.prefix.math):
-                        return (row, key) => `$${row[key]}$`;
-                    case name.startsWith(config.query.prefix.strong):
-                        return (row, key) => `**${row[key]}**`;
-
-                    case name.startsWith(config.query.prefix.raw):
-                    case name.startsWith(config.query.prefix.code):
-                    default:
-                        return (row, key) => `\`${row[key]}\``;
-                }
-            },
-            style: {
-                column: '',
-                align: ':-',
-            },
-        },
         fields: [ // 需渲染的 blocks 表的字段, 顺序分先后
             'type', // 内容块类型，参考((20210210103523-ombf290 "类型字段"))
             // 'content', // 去除了 Markdown 标记符的文本
@@ -415,6 +337,84 @@ export var config = {
                 '': '',
                 null: '',
                 undefined: '',
+            },
+        },
+        prefix: {
+            // 非默认查询时字段别名前缀
+            hidden: '__hidden__', // 不显示此字段，仅用于数据查询
+
+            ref: '__ref__', // 该字段渲染为引用
+            link: '__link__', // 该字段渲染为链接
+            pre: '__pre__', // 该字段渲染为预览
+            raw: '__raw__', // 该字段渲染为原始值
+            date: '__date__', // 该字段渲染为日期
+            time: '__time__', // 该字段渲染为时间
+            datetime: '__datetime__', // 该字段渲染为日期时间
+
+            s: '__s__', // 该字段渲染为删除线
+            u: '__u__', // 该字段渲染为下划线
+            em: '__em__', // 该字段渲染为斜体
+            tag: '__tag__', // 该字段渲染为标签
+            kbd: '__kbd__', // 该字段渲染为按键样式
+            sub: '__sub__', // 该字段渲染为下标样式
+            sup: '__sup__', // 该字段渲染为上标样式
+            code: '__code__', // 该字段渲染为行内代码
+            mark: '__mark__', // 该字段渲染为标记
+            math: '__math__', // 该字段渲染为公式
+            strong: '__strong__', // 该字段渲染为粗体
+        },
+        default: {
+            // 非块查询的处理模式
+            name: (key) => { // 字段名称处理函数
+                let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
+                return config.query.regs.render.test(name) ? config.query.regs.render.exec(name)[2] : name;
+            },
+            handler: (key) => { // 其他查询结果默认处理方法生成函数, key 是字段名, 返回一个处理方法
+                let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
+                switch (true) {
+                    case name.startsWith(config.query.prefix.ref):
+                        return (row, key) => `((${row[key]} "${row[key]}"))`;
+                    case name.startsWith(config.query.prefix.link):
+                        return (row, key) => `[${row[key]}](siyuan://blocks/${row[key]})`;
+                    case name.startsWith(config.query.prefix.pre):
+                        return (row, key) => markdown2span(row[key]);
+                    case name.startsWith(config.query.prefix.date):
+                        return (row, key) => dateFormat(row[key]);
+                    case name.startsWith(config.query.prefix.time):
+                        return (row, key) => timeFormat(row[key]);
+                    case name.startsWith(config.query.prefix.datetime):
+                        return (row, key) => timestampFormat(row[key]);
+
+                    case name.startsWith(config.query.prefix.s):
+                        return (row, key) => `~~${row[key]}~~`;
+                    case name.startsWith(config.query.prefix.u):
+                        return (row, key) => `<u>${row[key]}</u>`;
+                    case name.startsWith(config.query.prefix.em):
+                        return (row, key) => `*${row[key]}*`;
+                    case name.startsWith(config.query.prefix.kbd):
+                        return (row, key) => `<kbd>${row[key]}</kbd>`;
+                    case name.startsWith(config.query.prefix.sub):
+                        return (row, key) => `~${row[key]}~`;
+                    case name.startsWith(config.query.prefix.sup):
+                        return (row, key) => `^${row[key]}^`;
+                    case name.startsWith(config.query.prefix.tag):
+                        return (row, key) => `#${row[key]}#`;
+                    case name.startsWith(config.query.prefix.mark):
+                        return (row, key) => `==${row[key]}==`;
+                    case name.startsWith(config.query.prefix.math):
+                        return (row, key) => `$${row[key]}$`;
+                    case name.startsWith(config.query.prefix.strong):
+                        return (row, key) => `**${row[key]}**`;
+
+                    case name.startsWith(config.query.prefix.raw):
+                    case name.startsWith(config.query.prefix.code):
+                    default:
+                        return (row, key) => `\`${row[key]}\``;
+                }
+            },
+            style: {
+                column: '',
+                align: ':-',
             },
         },
     },
