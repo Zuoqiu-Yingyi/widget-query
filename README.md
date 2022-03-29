@@ -54,19 +54,19 @@
     * 示例: `SELECT * FROM blocks WHERE content LIKE '%内容块%'`
     * 该模式下, 查询结果渲染样式将以如下配置选项进行控制
 
-      | *                                     | 字段                                                                                                                                                            | 字段说明                                                          | 字段值                                                                           | 字段值说明 |
-      | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-      | `config.query.render.*`               | 定义部分字段渲染样式<br />超链接样式形如 `[锚文本](siyuan://blocks/<块ID>)`, 不会显示在反链面板中<br />块引用样式形如 `((<块ID> "锚文本"))`, 会显示在反面面板中 | `'link'`<br />`'ref'`                                             | 以超链接形式渲染字段<br />以块引用形式渲染字段                                   |
-      | `config.query.limit`                  | 定义 `content` 或 `markdown` 字段查询结果显示样式                                                                                                               | `null`<br />`'row'`<br />`'len'`<br />                            | 无限制<br />限制行数<br />限制长度                                               |
-      | `config.query.maxlen`                 | 定义 `content` 或 `markdown` 字段查询结果最大长度<br />                                                                                                         | 正整数                                                            | `config.query.limit: 'len'` 时启用                                               |
-      | `config.query.maxrow`                 | 定义 `content` 或 `markdown` 字段查询结果最大行数<br />                                                                                                         | 正整数                                                            | `config.query.limit: 'row'` 时启用                                               |
-      | `config.query.fields`                 | 定义查询结果需要显示的字段与字段排列顺序                                                                                                                        | `['字段名', ...]`                                                 | 字段名详情请参考 [blocks](https://www.yuque.com/siyuannote/docs/go7uom#276bd8cf) |
-      | `config.query.style.table.attributes` | 定义查询结果表格的块属性, 可用于设置自定义样式                                                                                                                  | `[{enable: true/false, key: '块属性名', value: '块属性值'}, ...]` |                                                                                  |
-      | `config.query.style.column.*`         | 定义查询结果表格某一列的样式                                                                                                                                    | `{: style="width: 512px"}`                                        | 指定查询结果某一列的宽度                                                         |
-      | `config.query.style.align.*`          | 定义查询结果表格某一列的对齐方式                                                                                                                                | `:-`<br />`:-:`<br />`-:`                                         | 左对齐<br />居中<br />右对齐                                                     |
-      | `config.query.filter.blocks`          | 定义过滤器序列, 过滤一些查询结果                                                                                                                                | `{enable: true/flase, handlers: [(row, data) => {}, ...]}`        | 需要过滤的返回 `true`, 需要保留的返回 `false`                                    |
-      | `config.query.handler.*`              | 定义具体字段值的处理函数                                                                                                                                        | `(row, ial) => {}`                                                | `row`: 当前记录<br />`ial`: 当前查询记录解析后的内联属性列表                     |
-      | `config.query.map.*`                  | 查询结果映射表, 将某些查询结果字段值替换为人类可读的字段                                                                                                        |                                                                   |                                                                                  |
+      * |字段|字段说明|字段值|字段值说明|
+        | -----------------------------------------| -------------------------------------------------------------------------------------------------------------------------------------------------------------| ---------------------------------------------------------------------| ----------------------------------------------------------------------------------|
+        |`config.query.render.*`|定义部分字段渲染样式<br />超链接样式形如 `[锚文本](siyuan://blocks/<块ID>)`, 不会显示在反链面板中<br />块引用样式形如 `((<块ID> "锚文本"))`, 会显示在反面面板中|`'link'`<br />`'ref'`|以超链接形式渲染字段<br />以块引用形式渲染字段|
+        |`config.query.limit`|定义 `content` 或 `markdown` 字段查询结果显示样式|`null`<br />`'row'`<br />`'len'`<br />|无限制<br />限制行数<br />限制长度|
+        |`config.query.maxlen`|定义 `content` 或 `markdown` 字段查询结果最大长度<br />|正整数|`config.query.limit: 'len'` 时启用|
+        |`config.query.maxrow`|定义 `content` 或 `markdown` 字段查询结果最大行数<br />|正整数|`config.query.limit: 'row'` 时启用|
+        |`config.query.fields`|定义查询结果需要显示的字段与字段排列顺序|`['字段名', ...]`|字段名详情请参考 [blocks](https://www.yuque.com/siyuannote/docs/go7uom#276bd8cf)|
+        |`config.query.style.table.attributes`|定义查询结果表格的块属性, 可用于设置自定义样式|`[{enable: true/false, key: '块属性名', value: '块属性值'}, ...]`||
+        |`config.query.style.column.*`|定义查询结果表格某一列的样式|`{: style="width: 512px"}`|指定查询结果某一列的宽度|
+        |`config.query.style.align.*`|定义查询结果表格某一列的对齐方式|`:-`<br />`:-:`<br />`-:`|左对齐<br />居中<br />右对齐|
+        |`config.query.filter.blocks`|定义过滤器序列, 过滤一些查询结果|`{enable: true/flase, handlers: [(row, data) => {}, ...]}`|需要过滤的返回 `true`, 需要保留的返回 `false`|
+        |`config.query.handler.*`|定义具体字段值的处理函数|`(row, ial) => {}`|`row`: 当前记录<br />`ial`: 当前查询记录解析后的内联属性列表|
+        |`config.query.map.*`|查询结果映射表, 将某些查询结果字段值替换为人类可读的字段|||
 2. 不符合<kbd>默认块查询模式</kbd>的查询均为<kbd>普通查询模式</kbd>
 
     * 示例
@@ -87,18 +87,18 @@
         LIMIT 10
         ```
 
-        |      | 文档标题                                                       | 文档路径                                    |
-        | ---: | :------------------------------------------------------------- | :------------------------------------------ |
-        |    1 | [请从这里开始](siyuan://blocks/20200812220555-lj3enxa)         | `/请从这里开始`                             |
-        |    2 | [编辑器](siyuan://blocks/20210808180320-abz7w6k)               | `/请从这里开始/编辑器`                      |
-        |    3 | [排版元素](siyuan://blocks/20200825162036-4dx365o)             | `/请从这里开始/编辑器/排版元素`             |
-        |    4 | [内容块](siyuan://blocks/20210808180320-fqgskfj)               | `/请从这里开始/内容块`                      |
-        |    5 | [什么是内容块](siyuan://blocks/20200813004931-q4cu8na)         | `/请从这里开始/内容块/什么是内容块`         |
-        |    6 | [引用内容块](siyuan://blocks/20200813013559-sgbzl5k)           | `/请从这里开始/内容块/引用内容块`           |
-        |    7 | [在内容块中遨游](siyuan://blocks/20200813131152-0wk5akh)       | `/请从这里开始/内容块/在内容块中遨游`       |
-        |    8 | [内容块类型](siyuan://blocks/20200905090211-2vixtlf)           | `/请从这里开始/内容块/内容块类型`           |
-        |    9 | [嵌入内容块](siyuan://blocks/20201117101902-2ewjjum)           | `/请从这里开始/内容块/嵌入内容块`           |
-        |   10 | [文档块和标题块的转换](siyuan://blocks/20201210103036-1x3vm8t) | `/请从这里开始/内容块/文档块和标题块的转换` |
+        ||文档标题|文档路径|
+        | ---: | :---------------------------------------------------------------| :----------------------------------------------|
+        |1|[请从这里开始](siyuan://blocks/20200812220555-lj3enxa)|`/请从这里开始`|
+        |2|[编辑器](siyuan://blocks/20210808180320-abz7w6k)|`/请从这里开始/编辑器`|
+        |3|[排版元素](siyuan://blocks/20200825162036-4dx365o)|`/请从这里开始/编辑器/排版元素`|
+        |4|[内容块](siyuan://blocks/20210808180320-fqgskfj)|`/请从这里开始/内容块`|
+        |5|[什么是内容块](siyuan://blocks/20200813004931-q4cu8na)|`/请从这里开始/内容块/什么是内容块`|
+        |6|[引用内容块](siyuan://blocks/20200813013559-sgbzl5k)|`/请从这里开始/内容块/引用内容块`|
+        |7|[在内容块中遨游](siyuan://blocks/20200813131152-0wk5akh)|`/请从这里开始/内容块/在内容块中遨游`|
+        |8|[内容块类型](siyuan://blocks/20200905090211-2vixtlf)|`/请从这里开始/内容块/内容块类型`|
+        |9|[嵌入内容块](siyuan://blocks/20201117101902-2ewjjum)|`/请从这里开始/内容块/嵌入内容块`|
+        |10|[文档块和标题块的转换](siyuan://blocks/20201210103036-1x3vm8t)|`/请从这里开始/内容块/文档块和标题块的转换`|
       * 查询思源数据库所有表
 
         ```sql
@@ -108,42 +108,42 @@
             sqlite_master
         ```
 
-        |      | name                   | rootpage | sql                                                                                                                                                              | tbl_name               | type    |
-        | ---: | :--------------------- | :------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------- | :------ |
-        |    1 | `stat`                 | `2`      | `CREATE TABLE stat (key, value)`                                                                                                                                 | `stat`                 | `table` |
-        |    2 | `blocks`               | `3`      | `CREATE TABLE blocks (id, parent_id, root_id, hash, box, path, hpath, name, alias, memo, content, markdown, length, type, subtype, ial, sort, created, updated)` | `blocks`               | `table` |
-        |    3 | `spans`                | `4`      | `CREATE TABLE spans (id, block_id, root_id, box, path, content, markdown, type, ial)`                                                                            | `spans`                | `table` |
-        |    4 | `assets`               | `5`      | `CREATE TABLE assets (id, block_id, root_id, box, docpath, path, name, title, hash)`                                                                             | `assets`               | `table` |
-        |    5 | `attributes`           | `6`      | `CREATE TABLE attributes (id, name, value, type, block_id, root_id, box, path)`                                                                                  | `attributes`           | `table` |
-        |    6 | `refs`                 | `7`      | `CREATE TABLE refs (id, def_block_id, def_block_parent_id, def_block_root_id, def_block_path, block_id, root_id, box, path, content, markdown, type)`            | `refs`                 | `table` |
-        |    7 | `file_annotation_refs` | `8`      | `CREATE TABLE file_annotation_refs (id, file_path, annotation_id, block_id, root_id, box, path, content, type)`                                                  | `file_annotation_refs` | `table` |
+        ||name|rootpage|sql|tbl_name|type|
+        | --: | :-------------------------| :---------| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------| :-------------------------| :----------|
+        |1|`stat`|`2`|`CREATE TABLE stat (key, value)`|`stat`|`table`|
+        |2|`blocks`|`3`|`CREATE TABLE blocks (id, parent_id, root_id, hash, box, path, hpath, name, alias, memo, content, markdown, length, type, subtype, ial, sort, created, updated)`|`blocks`|`table`|
+        |3|`spans`|`4`|`CREATE TABLE spans (id, block_id, root_id, box, path, content, markdown, type, ial)`|`spans`|`table`|
+        |4|`assets`|`5`|`CREATE TABLE assets (id, block_id, root_id, box, docpath, path, name, title, hash)`|`assets`|`table`|
+        |5|`attributes`|`6`|`CREATE TABLE attributes (id, name, value, type, block_id, root_id, box, path)`|`attributes`|`table`|
+        |6|`refs`|`7`|`CREATE TABLE refs (id, def_block_id, def_block_parent_id, def_block_root_id, def_block_path, block_id, root_id, box, path, content, markdown, type)`|`refs`|`table`|
+        |7|`file_annotation_refs`|`8`|`CREATE TABLE file_annotation_refs (id, file_path, annotation_id, block_id, root_id, box, path, content, type)`|`file_annotation_refs`|`table`|
       * 查询思源数据库 `blocks` 表中所有字段  
 
         ```sql
         PRAGMA table_info('blocks')
         ```
 
-        |      | cid  | dflt_value | name        | notnull | pk   | type |
-        | ---: | :--- | :--------- | :---------- | :------ | :--- | :--- |
-        |    1 |      |            | `id`        |         |      |      |
-        |    2 | `1`  |            | `parent_id` |         |      |      |
-        |    3 | `2`  |            | `root_id`   |         |      |      |
-        |    4 | `3`  |            | `hash`      |         |      |      |
-        |    5 | `4`  |            | `box`       |         |      |      |
-        |    6 | `5`  |            | `path`      |         |      |      |
-        |    7 | `6`  |            | `hpath`     |         |      |      |
-        |    8 | `7`  |            | `name`      |         |      |      |
-        |    9 | `8`  |            | `alias`     |         |      |      |
-        |   10 | `9`  |            | `memo`      |         |      |      |
-        |   11 | `10` |            | `content`   |         |      |      |
-        |   12 | `11` |            | `markdown`  |         |      |      |
-        |   13 | `12` |            | `length`    |         |      |      |
-        |   14 | `13` |            | `type`      |         |      |      |
-        |   15 | `14` |            | `subtype`   |         |      |      |
-        |   16 | `15` |            | `ial`       |         |      |      |
-        |   17 | `16` |            | `sort`      |         |      |      |
-        |   18 | `17` |            | `created`   |         |      |      |
-        |   19 | `18` |            | `updated`   |         |      |      |
+        ||cid|dflt_value|name|notnull|pk|type|
+        | ---: | :-------| :-----------| :--------------| :--------| :---| :-----|
+        |1|||`id`||||
+        |2|`1`||`parent_id`||||
+        |3|`2`||`root_id`||||
+        |4|`3`||`hash`||||
+        |5|`4`||`box`||||
+        |6|`5`||`path`||||
+        |7|`6`||`hpath`||||
+        |8|`7`||`name`||||
+        |9|`8`||`alias`||||
+        |10|`9`||`memo`||||
+        |11|`10`||`content`||||
+        |12|`11`||`markdown`||||
+        |13|`12`||`length`||||
+        |14|`13`||`type`||||
+        |15|`14`||`subtype`||||
+        |16|`15`||`ial`||||
+        |17|`16`||`sort`||||
+        |18|`17`||`created`||||
+        |19|`18`||`updated`||||
     * 使用字段别名前缀定义查询显示样式
 
       * `__hidden__别名0`:
@@ -725,9 +725,9 @@ export var config = {
 
 ## 参考 & 感谢
 
-| 作者                                            | 项目                                                              | 许可证    |
-| :---------------------------------------------- | :---------------------------------------------------------------- | :-------- |
-| **[leolee9086](https://github.com/leolee9086)** | [leolee9086/cc-baselib](https://github.com/leolee9086/cc-baselib) | *Unknown* |
+|作者|项目|许可证|
+| :------------------------------------------------------| :------------------------------------------------------------------| :------------|
+|**[leolee9086](https://github.com/leolee9086)**|[leolee9086/cc-baselib](https://github.com/leolee9086/cc-baselib)|*Unknown*|
 
 注: 排序不分先后
 
