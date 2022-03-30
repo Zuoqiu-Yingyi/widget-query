@@ -42,14 +42,8 @@ Background color status indication:
 
 1. SQL statements that conform to the regular expression `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` will enable the default block query mode.
    - This regular expression is configured in `config.query.regs.blocks` in `/src/script/module/config.js`
-2. Custom rendering modes
-   - You can set the the interception scheme for query results that are too long in `config.query.limit`.
-     - `config.query.maxlen`: Maximum length
-     - `config.query.maxrow`: Maximum number of rows
-   - You can set the fields you want to display in `config.query.fields`.
-   - You can set the alignment of each field in `config.query.align`.
-   - You can set the handling method for each field in `config.query.handler`.
-3. Partial template field parsing support.
+   - example: `SELECT * FROM blocks WHERE content LIKE '%Content block%'`
+2. Partial template field parsing support.
    - `.prefix{.field}`
      - `prefix`: prefix field
        - `block`: Widget block.
@@ -57,7 +51,7 @@ Background color status indication:
        - `root`: The document block in which the pendant block resides.
      - `field`: attribute field
        - The field name of the `blocks` table in the database.
-4. Normal mode
+3. Normal mode
    - Use field aliases prefix to define query display styles.
      - `__hidden__alias0`:
        - This field does not appear in the query results.
