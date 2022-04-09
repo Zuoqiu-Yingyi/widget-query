@@ -106,15 +106,16 @@ export async function codeBlock(data) {
 
 export async function widgetBlock(data) {
     // 获取配置,并合并到配置对象
-    let attrs = await mergeConfig(data);
+    await mergeConfig(data);
+    // console.log(data.config);
 
     // 主要目的是为了更新custom-sql属性
     await setBlockAttrs(
         data.id,
-        Object.assign(attrs, {
+        {
             "custom-sql": data.sql,
             "custom-type": data.config.query.attribute.widget,
-        })
+        }
     );
 
     if (data.config.query.sql.limit.enable) {
@@ -193,7 +194,7 @@ export async function widgetBlock(data) {
                 // 解析内联属性列表(inline attribute list, IAL)
                 let ial = ialParser(row.ial);
                 if (ial.icon) {
-                    if (data.config.query.regs.hex.test(ial.icon)) { 
+                    if (data.config.query.regs.hex.test(ial.icon)) {
                         // 如果是 UTF-32 编码的字符
                         ial.icon = utf32Decode(ial.icon);
                     }
@@ -316,7 +317,6 @@ export async function tableBlock(data) {
 }
 
 async function mergeConfig(data) {
-    let ats = {}
     await getBlockAttrs(data.id).then((attrs) => {
         1; // 合并展示的字段
         Object.getOwnPropertyNames(attrs).forEach(function (key) {
@@ -326,23 +326,19 @@ async function mergeConfig(data) {
                     let keys = key.substring(7).replaceAll("-", ".");
 
                     // 获取表达式
-                    let expr = "data.config" + "." + keys;
+                    let expr = `data.config.${keys}`;
                     try {
                         v = v.replaceAll("&quot;", '"');
-                        let atsT = ats
-                        keys.split(".").forEach(element => {
-                            if (atsT[element] != null && atsT[element] != undefined) {
-                                return
-                            } else {
-                                atsT[element] = {}
-                            }
-                            atsT = atsT[element]
-                        });
-                        eval("ats." + keys + "= v")
-                        if (eval("typeof " + expr + ' === "object"')) {
-                            eval(expr + "=" + "JSON.parse(v)");
+                        try {
+                            if (eval(`${expr} == null || ${expr} == undefined`))
+                                throw new Error(expr);
+                        } catch (e) {
+                            return;
+                        }
+                        if (eval(`typeof ${expr} === "object"`)) {
+                            eval(`${expr} = JSON.parse(v)`);
                         } else {
-                            eval(expr + "= v");
+                            eval(`${expr} = ${v}`);
                         }
                     } catch (err) {
                         console.error(err);
@@ -351,8 +347,8 @@ async function mergeConfig(data) {
             });
         });
     });
-    return ats;
 }
+
 function assignIfNotNull(obj, callback) {
     if (obj == null || obj === undefined) {
         return;
