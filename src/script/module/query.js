@@ -322,26 +322,24 @@ async function mergeConfig(data) {
         Object.getOwnPropertyNames(attrs).forEach(function (key) {
             assignIfNotNull(attrs[key], (v) => {
                 if (key.startsWith("custom-")) {
-                    // 按照-分割,依次解析
-                    let keys = key.substring(7).replaceAll("-", ".");
-
-                    // 获取表达式
-                    let expr = `data.config.${keys}`;
                     try {
+                        // 按照-分割,依次解析
+                        let keys = key.substring(7).replaceAll("-", ".");
+
+                        // 获取表达式
+                        let expr = `data.config.${keys}`;
+
+                        // 替换转义字符
                         v = v.replaceAll("&quot;", '"');
-                        try {
-                            if (eval(`${expr} == null || ${expr} == undefined`))
-                                throw new Error(expr);
-                        } catch (e) {
-                            return;
-                        }
-                        if (eval(`typeof ${expr} === "object"`)) {
-                            eval(`${expr} = JSON.parse(v)`);
-                        } else {
-                            eval(`${expr} = ${v}`);
-                        }
-                    } catch (err) {
-                        console.error(err);
+
+                        // 判断该属性是否合法
+                        if (eval(`${expr} == null || ${expr} == undefined`))
+                            throw new Error(expr);
+
+                        // 覆盖属性
+                        eval(`${expr} = ${v}`);
+                    } catch (e) {
+                        return;
                     }
                 }
             });
