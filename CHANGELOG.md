@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+## v0.3.0/2022-04-09
+
+- [v0.2.4 <=> v0.3.0](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.2.4...v0.3.0)
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 添加配置选项 `config.query.index` 用于控制是否显示查询结果序号 | Add configuration option `config.query.index` to control whether to display the query result ordinal.
 - 使用字段别名前缀 `__hidden__` 在查询结果中隐藏该字段 | Use the field alias prefix `__hidden__` to hide the field in the query result.
