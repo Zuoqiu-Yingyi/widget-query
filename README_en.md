@@ -356,7 +356,9 @@ export var config = {
                 ignore: new Set([ // 忽略的 IAL 键
                     'id',
                     'fold',
+                    'style',
                     'updated',
+                    'heading-fold',
                 ]),
             }
         },
@@ -468,19 +470,19 @@ export var config = {
                             if (!config.query.rows.ials.ignore.has(key) && ial[key]) {
                                 switch (key) {
                                     case 'id':
-                                    case 'updated':
                                     case 'fold':
+                                    case 'style':
+                                    case 'updated':
+                                    case 'heading-fold':
                                         ial_markdown.push('');
                                         break;
 
                                     case 'icon':
-                                        if (config.query.regs.hex.test(ial[key])) {
-                                            // UTF 32 编码
-                                            ial_markdown.push('');
+                                        if (ial[key].startsWith(':') && ial[key].endsWith(':')) {
+                                            // 自定义图标
+                                            ial_markdown.push(ial[key]);
                                             break;
                                         }
-                                        ial_markdown.push(`:${ial[key].replace(/\.\w+$/, '')}:`);
-                                        break;
                                     default:
                                         ial_markdown.push(markdown2span(ial[key], config.query.render.ial.style));
                                         break;
@@ -495,16 +497,17 @@ export var config = {
                             if (config.query.rows.ials.ignore.has(key)) continue;
                             switch (key) {
                                 case 'id':
-                                case 'updated':
                                 case 'fold':
+                                case 'style':
+                                case 'updated':
+                                case 'heading-fold':
                                     continue;
                                 case 'icon':
-                                    if (config.query.regs.hex.test(ial[key])) {
-                                        // UTF 32 编码
+                                    if (ial[key].startsWith(':') && ial[key].endsWith(':')) {
+                                        // 自定义图标
+                                        ial_markdown.push(`<kbd>${key}</kbd>\:${ial[key]}`);
                                         break;
                                     }
-                                    ial_markdown.push(`<kbd>${key}</kbd>\::${ial[key].replace(/\.\w+$/, '')}:`);
-                                    break;
                                 default:
                                     ial_markdown.push(`<kbd>${key}</kbd>\:\`${ial[key]}\``);
                                     break;

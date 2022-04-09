@@ -226,7 +226,9 @@ export var config = {
                 ignore: new Set([ // 忽略的 IAL 键
                     'id',
                     'fold',
+                    'style',
                     'updated',
+                    'heading-fold',
                 ]),
             }
         },
@@ -338,8 +340,10 @@ export var config = {
                             if (!config.query.rows.ials.ignore.has(key) && ial[key]) {
                                 switch (key) {
                                     case 'id':
-                                    case 'updated':
                                     case 'fold':
+                                    case 'style':
+                                    case 'updated':
+                                    case 'heading-fold':
                                         ial_markdown.push('');
                                         break;
 
@@ -363,8 +367,10 @@ export var config = {
                             if (config.query.rows.ials.ignore.has(key)) continue;
                             switch (key) {
                                 case 'id':
-                                case 'updated':
                                 case 'fold':
+                                case 'style':
+                                case 'updated':
+                                case 'heading-fold':
                                     continue;
                                 case 'icon':
                                     if (ial[key].startsWith(':') && ial[key].endsWith(':')) {
