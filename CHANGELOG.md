@@ -6,6 +6,7 @@
 - 修复 `.all-contributorsrc` 文件配置问题 | Fix the configuration problem of the `.all-contributorsrc` file.
 - 添加多列显示块属性功能 | Add multiple column display block attribute function.
 - 解析 UTF-32 编码的图标 | Parse UTF-32 encoding icon.
+- 修复查询结果中自定义图标显示问题 | Fixed the issue of custom icons' display in the search results.
 
 ## v0.2.4/2022-03-23
 
