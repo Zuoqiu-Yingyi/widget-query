@@ -76,7 +76,7 @@ export var config = {
                  * 'rows': 一列中分行显示
                  * 'columns': 一行中分列显示
                  */
-                shape: 'rows',
+                shape: 'columns',
                 /**样式
                  * 's': 该字段渲染为删除线
                  * 'u': 该字段渲染为下划线
@@ -344,13 +344,6 @@ export var config = {
                                         break;
 
                                     case 'icon':
-                                        if (config.query.regs.hex.test(ial[key])) {
-                                            // UTF 32 编码
-                                            ial_markdown.push('');
-                                            break;
-                                        }
-                                        ial_markdown.push(`:${ial[key].replace(/\.\w+$/, '')}:`);
-                                        break;
                                     default:
                                         ial_markdown.push(markdown2span(ial[key], config.query.render.ial.style));
                                         break;
@@ -369,12 +362,6 @@ export var config = {
                                 case 'fold':
                                     continue;
                                 case 'icon':
-                                    if (config.query.regs.hex.test(ial[key])) {
-                                        // UTF 32 编码
-                                        break;
-                                    }
-                                    ial_markdown.push(`<kbd>${key}</kbd>\::${ial[key].replace(/\.\w+$/, '')}:`);
-                                    break;
                                 default:
                                     ial_markdown.push(`<kbd>${key}</kbd>\:\`${ial[key]}\``);
                                     break;

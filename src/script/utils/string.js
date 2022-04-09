@@ -132,3 +132,12 @@ export function markdown2span(markdown, mode = 'raw', reg = /[\r\n]+/g, br = '<b
     return markdown;
 }
 
+/**
+ * UTF-32 解码
+ * REF [javascript 的 字符串编码 - 知乎](https://zhuanlan.zhihu.com/p/386511092)
+ * @param {string} hex: 16 进制 UTF-32 字符串
+ * @return {string}: 解码后字符串
+ */
+export function utf32Decode(hex) {
+    return String.fromCodePoint(parseInt(hex, 16));
+}

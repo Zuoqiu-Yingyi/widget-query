@@ -1,6 +1,9 @@
 /* 使用表格显示 SQL 查询结果 */
 
-import { ialParser } from './../utils/string.js';
+import {
+    ialParser,
+    utf32Decode,
+} from './../utils/string.js';
 import {
     getBlockAttrs,
     setBlockAttrs,
@@ -189,6 +192,15 @@ export async function widgetBlock(data) {
 
                 // 解析内联属性列表(inline attribute list, IAL)
                 let ial = ialParser(row.ial);
+                if (ial.icon) {
+                    if (data.config.query.regs.hex.test(ial.icon)) { 
+                        // 如果是 UTF-32 编码的字符
+                        ial.icon = utf32Decode(ial.icon);
+                    }
+                    else {
+                        ial.icon = `:${ial.icon.replace(/\.\w+$/, '')}:`;
+                    }
+                }
 
                 let row_markdown = ['|'];
                 if (data.config.query.index.enable) {

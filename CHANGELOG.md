@@ -5,6 +5,7 @@
 - 使用字段别名前缀 `__hidden__` 在查询结果中隐藏该字段 | Use the field alias prefix `__hidden__` to hide the field in the query result.
 - 修复 `.all-contributorsrc` 文件配置问题 | Fix the configuration problem of the `.all-contributorsrc` file.
 - 添加多列显示块属性功能 | Add multiple column display block attribute function.
+- 解析 UTF-32 编码的图标 | Parse UTF-32 encoding icon.
 
 ## v0.2.4/2022-03-23
 
