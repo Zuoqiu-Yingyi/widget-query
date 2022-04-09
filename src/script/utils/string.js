@@ -66,11 +66,69 @@ export function timeFormat(timestamp) {
     return timestamp.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/, "$4:$5:$6");
 }
 
-export function markdown2span(markdown) {
-    // markdown 转 span
+/**
+ * markdown 转 span (格式化)
+ * @param {string} markdown: Markdown 文本
+ * @param {string} mode: 格式化样式
+ * @param {regexp} reg: 需要被替换文本的正则
+ * @param {string} br: 替换文本
+ * @return {string}: 格式化后的文本
+ */
+export function markdown2span(markdown, mode = 'raw', reg = /[\r\n]+/g, br = '<br/>') {
     if (typeof (markdown) == 'string') {
-        let temp = markdown.replaceAll('|', '\\|');
-        return ReplaceCRLF(temp, '<br />');
+        let prefix, suffix;
+        switch (mode) {
+            case 's': // 该字段渲染为删除线
+                prefix = '~~';
+                suffix = '~~';
+                break;
+            case 'u': // 该字段渲染为下划线
+                prefix = '<u>';
+                suffix = '</u>';
+                break;
+            case 'em': // 该字段渲染为斜体
+                prefix = '*';
+                suffix = '*';
+                break;
+            case 'tag': // 该字段渲染为标签
+                prefix = '#';
+                suffix = '#';
+                break;
+            case 'kbd': // 该字段渲染为按键样式
+                prefix = '<kbd>';
+                suffix = '</kbd>';
+                break;
+            case 'sub': // 该字段渲染为下标样式
+                prefix = '~';
+                suffix = '~';
+                break;
+            case 'sup': // 该字段渲染为上标样式
+                prefix = '^';
+                suffix = '^';
+                break;
+            case 'code': // 该字段渲染为行内代码
+                prefix = '`';
+                suffix = '`';
+                break;
+            case 'mark': // 该字段渲染为标记
+                prefix = '==';
+                suffix = '==';
+                break;
+            case 'math': // 该字段渲染为公式
+                prefix = '$';
+                suffix = '$';
+                break;
+            case 'strong': // 该字段渲染为粗体
+                prefix = '**';
+                suffix = '**';
+                break;
+            case 'raw': // 仅替换换行符
+            default:
+                let temp = markdown.replaceAll('|', '\\|');
+                return temp.replace(reg, br);
+        }
+        return `${prefix}${markdown}${suffix}`.replace(reg, `${prefix}${br}${suffix}`);
     }
     return markdown;
 }
+

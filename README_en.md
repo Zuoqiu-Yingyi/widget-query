@@ -160,51 +160,17 @@ export var config = {
             warning: 'rgb(255, 213, 153)', // 警告颜色
             error: 'rgb(250, 179, 174)', // 错误颜色
         },
-        index: {
-            enable: true, // 查询结果是否显示索引序号
-        },
-        render: {
-            // 块查询部分字段渲染方案, 可以设置为 'ref' (渲染为块引用) 或 'link' (渲染为块超链接)
-            type: 'link', // 块类型
-            hpath: 'link', // 块所在文档路径
-            id: 'link', // 块 ID
-            parent_id: 'link', // 块的上级块 ID
-            root_id: 'link', // 块所在文档 ID
-        },
-        prefix: {
-            // 非默认查询时字段别名前缀
-            hidden: '__hidden__', // 不显示此字段，仅用于数据查询
-
-            ref: '__ref__', // 该字段渲染为引用
-            link: '__link__', // 该字段渲染为链接
-            pre: '__pre__', // 该字段渲染为预览
-            raw: '__raw__', // 该字段渲染为原始值
-            date: '__date__', // 该字段渲染为日期
-            time: '__time__', // 该字段渲染为时间
-            datetime: '__datetime__', // 该字段渲染为日期时间
-
-            s: '__s__', // 该字段渲染为删除线
-            u: '__u__', // 该字段渲染为下划线
-            em: '__em__', // 该字段渲染为斜体
-            tag: '__tag__', // 该字段渲染为标签
-            kbd: '__kbd__', // 该字段渲染为按键样式
-            sub: '__sub__', // 该字段渲染为下标样式
-            sup: '__sup__', // 该字段渲染为上标样式
-            code: '__code__', // 该字段渲染为行内代码
-            mark: '__mark__', // 该字段渲染为标记
-            math: '__math__', // 该字段渲染为公式
-            strong: '__strong__', // 该字段渲染为粗体
-        },
-        attribute: { // 块属性
-            code: 'query-code', // 查询代码块
-            widget: 'query-widget', // 查询挂件块
-            table: 'query-table', // 查询结果表格块
-        },
         regs: {
             blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*/i, // 块查询的正则表达式
             limit: /\s+LIMIT\s+\d+/i, // SQL LIMIT 关键字正则表达式
             sort: /^__(\d+)__(.*)$/i, // 手动排序字段正则表达式
             render: /^__(\w+)__(.*)$/i, // 渲染控制字段正则表达式
+            hex: /^[0-9a-fA-F]+$/, // 16 进制正则表达式 
+        },
+        attribute: { // 块属性
+            code: 'query-code', // 查询代码块
+            widget: 'query-widget', // 查询挂件块
+            table: 'query-table', // 查询结果表格块
         },
         sql: {
             // SQL 语句处理
@@ -214,71 +180,54 @@ export var config = {
                 end: 100, // 结束记录数
             },
         },
-        maxlen: 64, // 查询结果每个字段最大长度
-        maxrow: 3, // 查询结果每个字段最大行数
-        limit: 'row', // 查询结果字段限制, (null 为不限制, 'len' 为限制长度, 'row' 为限制行数)
-        CRLF: '<br />', // 换行符替换
-        space: ' ', // 空白字符替换
         template: { // 类似模板字段解析支持, 类似 .prefix{.field}, 目前支持的有 .root{.<挂件所在文档块的字段名>} .parent{.<挂件上级块的字段名>} .block{挂件块的字段名}
             enable: true, // 是否启用模板解析
             handler: async (data) => { // 模板解析处理函数
                 return await templateParse(data);
             }
         },
-        default: {
-            // 非块查询的处理模式
-            name: (key) => { // 字段名称处理函数
-                let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
-                return config.query.regs.render.test(name) ? config.query.regs.render.exec(name)[2] : name;
-            },
-            handler: (key) => { // 其他查询结果默认处理方法生成函数, key 是字段名, 返回一个处理方法
-                let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
-                switch (true) {
-                    case name.startsWith(config.query.prefix.ref):
-                        return (row, key) => `((${row[key]} "${row[key]}"))`;
-                    case name.startsWith(config.query.prefix.link):
-                        return (row, key) => `[${row[key]}](siyuan://blocks/${row[key]})`;
-                    case name.startsWith(config.query.prefix.pre):
-                        return (row, key) => markdown2span(row[key]);
-                    case name.startsWith(config.query.prefix.date):
-                        return (row, key) => dateFormat(row[key]);
-                    case name.startsWith(config.query.prefix.time):
-                        return (row, key) => timeFormat(row[key]);
-                    case name.startsWith(config.query.prefix.datetime):
-                        return (row, key) => timestampFormat(row[key]);
+        index: {
+            enable: true, // 查询结果是否显示索引序号
+        },
+        render: {
+            // 块查询部分字段渲染方案
+            /**
+             * 'ref': 渲染为块引用
+             * 'link': 渲染为块超链接
+             */
+            type: 'link', // 块类型
+            hpath: 'link', // 块所在文档路径
+            id: 'link', // 块 ID
+            parent_id: 'link', // 块的上级块 ID
+            root_id: 'link', // 块所在文档 ID
 
-                    case name.startsWith(config.query.prefix.s):
-                        return (row, key) => `~~${row[key]}~~`;
-                    case name.startsWith(config.query.prefix.u):
-                        return (row, key) => `<u>${row[key]}</u>`;
-                    case name.startsWith(config.query.prefix.em):
-                        return (row, key) => `*${row[key]}*`;
-                    case name.startsWith(config.query.prefix.kbd):
-                        return (row, key) => `<kbd>${row[key]}</kbd>`;
-                    case name.startsWith(config.query.prefix.sub):
-                        return (row, key) => `~${row[key]}~`;
-                    case name.startsWith(config.query.prefix.sup):
-                        return (row, key) => `^${row[key]}^`;
-                    case name.startsWith(config.query.prefix.tag):
-                        return (row, key) => `#${row[key]}#`;
-                    case name.startsWith(config.query.prefix.mark):
-                        return (row, key) => `==${row[key]}==`;
-                    case name.startsWith(config.query.prefix.math):
-                        return (row, key) => `$${row[key]}$`;
-                    case name.startsWith(config.query.prefix.strong):
-                        return (row, key) => `**${row[key]}**`;
-
-                    case name.startsWith(config.query.prefix.raw):
-                    case name.startsWith(config.query.prefix.code):
-                    default:
-                        return (row, key) => `\`${row[key]}\``;
-                }
-            },
-            style: {
-                column: '',
-                align: ':-',
+            ial: { // 内联属性样式
+                /**形状
+                 * 'rows': 一列中分行显示
+                 * 'columns': 一行中分列显示
+                 */
+                shape: 'rows',
+                /**样式
+                 * 's': 该字段渲染为删除线
+                 * 'u': 该字段渲染为下划线
+                 * 'em': 该字段渲染为斜体
+                 * 'tag': 该字段渲染为标签
+                 * 'kbd': 该字段渲染为按键样式
+                 * 'sub': 该字段渲染为下标样式
+                 * 'sup': 该字段渲染为上标样式
+                 * 'code': 该字段渲染为行内代码
+                 * 'mark': 该字段渲染为标记
+                 * 'math': 该字段渲染为公式
+                 * 'strong': 该字段渲染为粗体
+                 */
+                style: 'kbd', // 内联属性样式
             },
         },
+        limit: 'row', // 查询结果字段限制, (null 为不限制, 'len' 为限制长度, 'row' 为限制行数)
+        maxlen: 64, // 查询结果每个字段最大长度
+        maxrow: 3, // 查询结果每个字段最大行数
+        CRLF: '<br />', // 换行符替换
+        space: ' ', // 空白字符替换
         fields: [ // 需渲染的 blocks 表的字段, 顺序分先后
             'type', // 内容块类型，参考((20210210103523-ombf290 "类型字段"))
             // 'content', // 去除了 Markdown 标记符的文本
@@ -388,8 +337,31 @@ export var config = {
                 ],
             }
         },
+        rows: { // 查询结果处理方法
+            ials: { // IAL 处理方法
+                keys: (rows, ialParser) => {
+                    // 获得查询结果所有记录 IAL 键
+                    let keys = new Set();
+                    if (rows.length > 0) {
+                        for (let i = 0, len = rows.length; i < len; i++) {
+                            let ial = ialParser(rows[i].ial);
+                            Object.keys(ial).forEach(key => {
+                                if (config.query.rows.ials.ignore.has(key)) return;
+                                keys.add(key);
+                            });
+                        }
+                    }
+                    return keys;
+                },
+                ignore: new Set([ // 忽略的 IAL 键
+                    'id',
+                    'fold',
+                    'updated',
+                ]),
+            }
+        },
         handler: { // 块查询结果各字段处理方法
-            content: (row, ial) => {
+            content: (row, ial, ...args) => {
                 switch (config.query.limit) {
                     case 'len':
                         return markdown2span(cutString(ReplaceSpace(row.content, config.query.space), config.query.maxlen));
@@ -399,7 +371,7 @@ export var config = {
                         return markdown2span(row.content);
                 }
             },
-            markdown: (row, ial) => {
+            markdown: (row, ial, ...args) => {
                 switch (config.query.limit) {
                     case 'len':
                         return markdown2span(cutString(ReplaceSpace(row.markdown, config.query.space), config.query.maxlen));
@@ -409,13 +381,13 @@ export var config = {
                         return markdown2span(row.markdown);
                 }
             },
-            created: (row, ial) => {
+            created: (row, ial, ...args) => {
                 return timestampFormat(row.created);
             },
-            updated: (row, ial) => {
+            updated: (row, ial, ...args) => {
                 return timestampFormat(row.updated);
             },
-            type: (row, ial) => {
+            type: (row, ial, ...args) => {
                 switch (config.query.render.type) {
                     case 'link':
                         return `[${config.query.map.blocktype[row.type]}](siyuan://blocks/${row.id})`;
@@ -424,7 +396,7 @@ export var config = {
                         return `((${row.id} "${config.query.map.blocktype[row.type]}"))`;
                 }
             },
-            hpath: (row, ial) => {
+            hpath: (row, ial, ...args) => {
                 switch (config.query.render.hpath) {
                     case 'link':
                         return `[${row.hpath}](siyuan://blocks/${row.root_id})`;
@@ -434,7 +406,7 @@ export var config = {
                 }
             },
 
-            id: (row, ial) => {
+            id: (row, ial, ...args) => {
                 switch (config.query.render.id) {
                     case 'link':
                         return `[${row.id}](siyuan://blocks/${row.id})`;
@@ -443,7 +415,7 @@ export var config = {
                         return `((${row.id} "${row.id}"))`;
                 }
             },
-            parent_id: (row, ial) => {
+            parent_id: (row, ial, ...args) => {
                 if (isEmptyString(row.parent_id)) return '';
                 else {
                     switch (config.query.render.parent_id) {
@@ -455,7 +427,7 @@ export var config = {
                     }
                 }
             },
-            root_id: (row, ial) => {
+            root_id: (row, ial, ...args) => {
                 switch (config.query.render.root_id) {
                     case 'link':
                         return `[${row.root_id}](siyuan://blocks/${row.root_id})`;
@@ -464,48 +436,84 @@ export var config = {
                         return `((${row.root_id} "${row.root_id}"))`;
                 }
             },
-            hash: (row, ial) => {
+            hash: (row, ial, ...args) => {
                 return `\`${row.hash}\``;
             },
-            box: (row, ial) => {
+            box: (row, ial, ...args) => {
                 return `\`${row.box}\``;
             },
-            path: (row, ial) => {
+            path: (row, ial, ...args) => {
                 return `\`${row.path}\``;
             },
-            name: (row, ial) => {
-                return markdown2span(row.name);
+            name: (row, ial, ...args) => {
+                return markdown2span(row.name, 'kbd');
             },
-            alias: (row, ial) => {
-                return markdown2span(row.alias);
+            alias: (row, ial, ...args) => {
+                return markdown2span(row.alias, 'kbd', /\\s+,\\s+/g);
             },
-            memo: (row, ial) => {
+            memo: (row, ial, ...args) => {
                 return markdown2span(row.memo);
             },
-            length: (row, ial) => {
+            length: (row, ial, ...args) => {
                 return row.length;
             },
-            subtype: (row, ial) => {
+            subtype: (row, ial, ...args) => {
                 return config.query.map.subtype[row.subtype];
             },
-            ial: (row, ial) => {
+            ial: (row, ial, ...args) => {
                 let ial_markdown = [];
-                for (let key of Object.keys(ial)) {
-                    switch (key) {
-                        case 'id':
-                        case 'updated':
-                            continue;
-                        case 'icon':
-                            ial_markdown.push(`<kbd>${key}</kbd>\::${ial[key].replace(/\.\w+$/, '')}:`);
-                            break;
-                        default:
-                            ial_markdown.push(`<kbd>${key}</kbd>\:\`${ial[key]}\``);
-                            break;
-                    }
+                switch (config.query.render.ial.shape) {
+                    case 'columns':
+                        args[0].forEach((key) => {
+                            if (!config.query.rows.ials.ignore.has(key) && ial[key]) {
+                                switch (key) {
+                                    case 'id':
+                                    case 'updated':
+                                    case 'fold':
+                                        ial_markdown.push('');
+                                        break;
+
+                                    case 'icon':
+                                        if (config.query.regs.hex.test(ial[key])) {
+                                            // UTF 32 编码
+                                            ial_markdown.push('');
+                                            break;
+                                        }
+                                        ial_markdown.push(`:${ial[key].replace(/\.\w+$/, '')}:`);
+                                        break;
+                                    default:
+                                        ial_markdown.push(markdown2span(ial[key], config.query.render.ial.style));
+                                        break;
+                                }
+                            }
+                            else ial_markdown.push('');
+                        });
+                        return ial_markdown.join(' | ');
+                    case 'rows':
+                    default:
+                        for (let key of Object.keys(ial)) {
+                            if (config.query.rows.ials.ignore.has(key)) continue;
+                            switch (key) {
+                                case 'id':
+                                case 'updated':
+                                case 'fold':
+                                    continue;
+                                case 'icon':
+                                    if (config.query.regs.hex.test(ial[key])) {
+                                        // UTF 32 编码
+                                        break;
+                                    }
+                                    ial_markdown.push(`<kbd>${key}</kbd>\::${ial[key].replace(/\.\w+$/, '')}:`);
+                                    break;
+                                default:
+                                    ial_markdown.push(`<kbd>${key}</kbd>\:\`${ial[key]}\``);
+                                    break;
+                            }
+                        }
+                        return ial_markdown.join(config.query.CRLF);
                 }
-                return ial_markdown.join(config.query.CRLF);
             },
-            sort: (row, ial) => {
+            sort: (row, ial, ...args) => {
                 return row.sort;
             },
         },
@@ -545,6 +553,84 @@ export var config = {
                 '': '',
                 null: '',
                 undefined: '',
+            },
+        },
+        prefix: {
+            // 非默认查询时字段别名前缀
+            hidden: '__hidden__', // 不显示此字段，仅用于数据查询
+
+            ref: '__ref__', // 该字段渲染为引用
+            link: '__link__', // 该字段渲染为链接
+            pre: '__pre__', // 该字段渲染为预览
+            raw: '__raw__', // 该字段渲染为原始值
+            date: '__date__', // 该字段渲染为日期
+            time: '__time__', // 该字段渲染为时间
+            datetime: '__datetime__', // 该字段渲染为日期时间
+
+            s: '__s__', // 该字段渲染为删除线
+            u: '__u__', // 该字段渲染为下划线
+            em: '__em__', // 该字段渲染为斜体
+            tag: '__tag__', // 该字段渲染为标签
+            kbd: '__kbd__', // 该字段渲染为按键样式
+            sub: '__sub__', // 该字段渲染为下标样式
+            sup: '__sup__', // 该字段渲染为上标样式
+            code: '__code__', // 该字段渲染为行内代码
+            mark: '__mark__', // 该字段渲染为标记
+            math: '__math__', // 该字段渲染为公式
+            strong: '__strong__', // 该字段渲染为粗体
+        },
+        default: {
+            // 非块查询的处理模式
+            name: (key) => { // 字段名称处理函数
+                let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
+                return config.query.regs.render.test(name) ? config.query.regs.render.exec(name)[2] : name;
+            },
+            handler: (key) => { // 其他查询结果默认处理方法生成函数, key 是字段名, 返回一个处理方法
+                let name = config.query.regs.sort.test(key) ? config.query.regs.sort.exec(key)[2] : key;
+                switch (true) {
+                    case name.startsWith(config.query.prefix.ref):
+                        return (row, key) => `((${row[key]} "${row[key]}"))`;
+                    case name.startsWith(config.query.prefix.link):
+                        return (row, key) => `[${row[key]}](siyuan://blocks/${row[key]})`;
+                    case name.startsWith(config.query.prefix.pre):
+                        return (row, key) => markdown2span(row[key]);
+                    case name.startsWith(config.query.prefix.date):
+                        return (row, key) => dateFormat(row[key]);
+                    case name.startsWith(config.query.prefix.time):
+                        return (row, key) => timeFormat(row[key]);
+                    case name.startsWith(config.query.prefix.datetime):
+                        return (row, key) => timestampFormat(row[key]);
+
+                    case name.startsWith(config.query.prefix.s):
+                        return (row, key) => markdown2span(row[key], 's');
+                    case name.startsWith(config.query.prefix.u):
+                        return (row, key) => markdown2span(row[key], 'u');
+                    case name.startsWith(config.query.prefix.em):
+                        return (row, key) => markdown2span(row[key], 'em');
+                    case name.startsWith(config.query.prefix.kbd):
+                        return (row, key) => markdown2span(row[key], 'kbd');
+                    case name.startsWith(config.query.prefix.sub):
+                        return (row, key) => markdown2span(row[key], 'sub');
+                    case name.startsWith(config.query.prefix.sup):
+                        return (row, key) => markdown2span(row[key], 'sup');
+                    case name.startsWith(config.query.prefix.tag):
+                        return (row, key) => markdown2span(row[key], 'tag');
+                    case name.startsWith(config.query.prefix.mark):
+                        return (row, key) => markdown2span(row[key], 'mark');
+                    case name.startsWith(config.query.prefix.math):
+                        return (row, key) => markdown2span(row[key], 'math');
+                    case name.startsWith(config.query.prefix.strong):
+                        return (row, key) => markdown2span(row[key], 'strong');
+
+                    case name.startsWith(config.query.prefix.raw):
+                    case name.startsWith(config.query.prefix.code):
+                    default:
+                        return (row, key) => markdown2span(row[key], 'code');
+                }
+            },
+            style: {
+                column: '',
+                align: ':-',
             },
         },
     },

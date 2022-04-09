@@ -140,12 +140,27 @@ export async function widgetBlock(data) {
         // 匹配指定正则的 SQL 查询, 是 `SELECT * FROM blocks ...` 语句
         let header = ['|']; // 表头
         let align = ['|']; // 对齐样式
+        let ial_keys = null; // IAL 的有效键名
         if (data.config.query.index.enable) {
             header.push("    |");
             align.push(" -: |");
         }
         for (let field of data.config.query.fields) {
             // 根据自定义字段列表，构造表头
+            if (field === 'ial') {
+                switch (data.config.query.render.ial.shape) {
+                    case 'columns':
+                        ial_keys = Array.from(data.config.query.rows.ials.keys(data.rows, ialParser)).sort();
+                        ial_keys.forEach((key) => {
+                            header.push(` ${key}${data.config.query.style.column[field]} |`);
+                            align.push(` ${data.config.query.style.align[field]} |`);
+                        });
+                        continue;
+                    case 'rows':
+                    default:
+                        break;
+                }
+            }
             header.push(` ${field}${data.config.query.style.column[field]} |`);
             align.push(` ${data.config.query.style.align[field]} |`);
         }
@@ -181,10 +196,11 @@ export async function widgetBlock(data) {
                 }
                 for (let field of data.config.query.fields) {
                     // 根据自定义字段列表，构造表格
-                    row_markdown.push(` ${data.config.query.handler[field](row, ial)} |`);
+                    row_markdown.push(` ${data.config.query.handler[field](row, ial, ial_keys)} |`);
                 }
 
                 markdown.push(row_markdown.join(""));
+                // console.log(markdown[markdown.length - 1]);
             }
         }
         else {
