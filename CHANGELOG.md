@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
+- 适配 `blocks` 表新字段 `fcontent` | Adapt `blocks` table to new field `fcontent`.
+
 ## v0.3.0/2022-04-09
 
 - [v0.2.4 <=> v0.3.0](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.2.4...v0.3.0)

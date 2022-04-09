@@ -101,6 +101,7 @@ export var config = {
         fields: [ // 需渲染的 blocks 表的字段, 顺序分先后
             'type', // 内容块类型，参考((20210210103523-ombf290 "类型字段"))
             // 'content', // 去除了 Markdown 标记符的文本
+            // 'fcontent', // 容器块第一个子块的内容
             'markdown', // 包含完整 Markdown 标记符的文本
             'ial', // 内联属性列表，形如 `{: name="value"}`
             'hpath', // 人类可读的内容块所在文档路径
@@ -116,7 +117,7 @@ export var config = {
             // 'alias', // 内容块别名
             // 'memo', // 内容块备注
             // 'hash', // content 字段的 SHA256 校验和
-            // 'length', // markdown 字段文本长度
+            // 'length', // content 字段文本长度
             // 'subtype', // 内容块子类型，参考((20210210103411-tcbcjja "子类型字段"))
             // 'sort', // 排序权重, 数值越小排序越靠前
         ],
@@ -143,6 +144,7 @@ export var config = {
             column: {
                 // 列样式, 自定义宽度的字段可以设置为 '{: style="width: 512px"}'
                 content: '',
+                fcontent: '',
                 markdown: '',
                 created: '',
                 updated: '',
@@ -165,6 +167,7 @@ export var config = {
             },
             align: { // 查询结果字段对齐样式(':-' 左对齐, ':-:' 居中, '-:' 右对齐)
                 content: ':-',
+                fcontent: ':-',
                 markdown: ':-',
                 created: ':-:',
                 updated: ':-:',
@@ -241,6 +244,16 @@ export var config = {
                         return markdown2span(ReplaceCRLF(cutString(row.content, undefined, config.query.maxrow), config.query.CRLF));
                     default:
                         return markdown2span(row.content);
+                }
+            },
+            fcontent: (row, ial, ...args) => {
+                switch (config.query.limit) {
+                    case 'len':
+                        return markdown2span(cutString(ReplaceSpace(row.fcontent, config.query.space), config.query.maxlen));
+                    case 'row':
+                        return markdown2span(ReplaceCRLF(cutString(row.fcontent, undefined, config.query.maxrow), config.query.CRLF));
+                    default:
+                        return markdown2span(row.fcontent);
                 }
             },
             markdown: (row, ial, ...args) => {
