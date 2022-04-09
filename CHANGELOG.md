@@ -10,6 +10,7 @@
 - 添加多列显示块属性功能 | Add multiple column display block attribute function.
 - 解析 UTF-32 编码的图标 | Parse UTF-32 encoding icon.
 - 修复查询结果中自定义图标显示问题 | Fixed the issue of custom icons' display in the search results.
+- 优化自定义块属性覆盖默认设置项的方式 | Optimized the way of overriding default config of custom block attributes.
 
 ## v0.2.4/2022-03-23
 
