@@ -144,7 +144,7 @@ export async function widgetBlock(data) {
         // 匹配指定正则的 SQL 查询, 是 `SELECT * FROM blocks ...` 语句
         let header = ['|']; // 表头
         let align = ['|']; // 对齐样式
-        let ial_keys = data.config.query.rows.ials.fields.forced; // IAL 的有效键名
+        let ial_keys = data.config.query.render.ial.fields.forced; // IAL 的有效键名
         if (data.config.query.index.enable) {
             header.push("    |");
             align.push(" -: |");
