@@ -220,7 +220,18 @@ export var config = {
                  * 'math': 该字段渲染为公式
                  * 'strong': 该字段渲染为粗体
                  */
-                style: 'kbd', // 内联属性样式
+                style: {
+                    rows: {
+                        key: 'kbd', // 内联属性键样式
+                        value: 'code', // 内联属性值样式
+                        null: 'NULL', // 内联属性为空时占位符
+                    },
+                    columns: {
+                        key: 'kbd', // 内联属性键样式
+                        value: 'kbd', // 内联属性值样式
+                        null: '', // 内联属性为空时占位符
+                    },
+                },
                 fields: { // 内联属性字段
                     forced: [], // 强制显示的 IAL 键, 为空则使用黑白名单
                     ignore: [ // 需渲染的 IAL 键黑名单
@@ -228,6 +239,7 @@ export var config = {
                         'fold',
                         'style',
                         'updated',
+                        'colgroup',
                         'heading-fold',
                     ],
                     valid: [], // 按照顺序渲染的 IAL 键白名单, 为空则全部渲染
@@ -491,27 +503,34 @@ export var config = {
                                             break;
                                         }
                                     default:
-                                        ial_markdown.push(markdown2span(ial[key], config.query.render.ial.style));
+                                        ial_markdown.push(markdown2span(ial[key], config.query.render.ial.style.columns.value));
                                         break;
                                 }
                             }
-                            else ial_markdown.push('');
+                            else ial_markdown.push(config.query.render.ial.style.columns.null
+                                ? markdown2span(config.query.render.ial.style.columns.null, config.query.render.ial.style.columns.value)
+                                : '');
                         });
                         return ial_markdown.join(' | ');
                     case 'rows':
                     default:
                         ial_keys.forEach((key) => {
-                            if (config.query.rows.ials.fields.forced.length > 0 || ial[key]) {
-                                let value = ial[key] || 'NULL';
+                            if (config.query.render.ial.fields.forced.length > 0 || ial[key])
+                                console.log(key, config.query.render.ial.fields.forced, ial[key], ial);
+                            if (config.query.render.ial.fields.forced.length > 0 || ial[key] !== undefined) {
+                                let ial_key = markdown2span(key, config.query.render.ial.style.rows.key)
+                                let ial_value = ial[key] || (config.query.render.ial.style.rows.null
+                                    ? markdown2span(config.query.render.ial.style.rows.null, config.query.render.ial.style.rows.value)
+                                    : '');
                                 switch (key) {
                                     case 'icon':
-                                        if (value.startsWith(':') && value.endsWith(':')) {
+                                        if (ial_value.startsWith(':') && ial_value.endsWith(':')) {
                                             // 自定义图标
-                                            ial_markdown.push(`<kbd>${key}</kbd>\:${value}`);
+                                            ial_markdown.push(`${ial_key}\:${ial_value}`);
                                             break;
                                         }
                                     default:
-                                        ial_markdown.push(`<kbd>${key}</kbd>\:\`${value}\``);
+                                        ial_markdown.push(`${ial_key}\:${markdown2span(ial_value, config.query.render.ial.style.rows.value)}`);
                                         break;
                                 }
                             }

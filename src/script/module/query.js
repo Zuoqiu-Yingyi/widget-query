@@ -2,6 +2,7 @@
 
 import {
     ialParser,
+    markdown2span,
     utf32Decode,
 } from './../utils/string.js';
 import {
@@ -142,10 +143,31 @@ export async function widgetBlock(data) {
 
     if (data.config.query.regs.blocks.test(data.sql)) {
         // 匹配指定正则的 SQL 查询, 是 `SELECT * FROM blocks ...` 语句
+
         let header = ['|']; // 表头
         let align = ['|']; // 对齐样式
-        let ial_keys = data.config.query.render.ial.fields.forced; // IAL 的有效键名
+        let ial_keys = data.config.query.render.ial.fields.forced.length
+            ? data.config.query.render.ial.fields.forced
+            : []; // IAL 的有效键名
+
+        // 过滤查询结果
+        if (data.config.query.filter.blocks.enable) {
+            // 启用查询结果过滤
+            data.rows = data.rows.filter(row => {
+                let flag_filtrate = false; // 是否过滤
+                for (let handler of data.config.query.filter.blocks.handlers) {
+                    if (handler(row, data)) {
+                        flag_filtrate = true;
+                        break;
+                    }
+                }
+                return !flag_filtrate;
+            });
+        }
+
+        // 表头
         if (data.config.query.index.enable) {
+            // 是否启用编号
             header.push("    |");
             align.push(" -: |");
         }
@@ -166,12 +188,12 @@ export async function widgetBlock(data) {
                             if (!ial_keys_ignore.has(key)) ial_keys.push(key);
                         }
                     }
-                    console.log(ial_keys);
+                    // console.log(ial_keys);
                 }
                 switch (data.config.query.render.ial.shape) {
                     case 'columns':
                         ial_keys.forEach((key) => {
-                            header.push(` ${key}${data.config.query.style.column[field]} |`);
+                            header.push(` ${markdown2span(key, data.config.query.render.ial.style.columns.key)}${data.config.query.style.column[field]} |`);
                             align.push(` ${data.config.query.style.align[field]} |`);
                         });
                         continue;
@@ -188,22 +210,9 @@ export async function widgetBlock(data) {
 
         if (data.rows.length > 0) {
             // REF [JS几种数组遍历方式以及性能分析对比 - 撒网要见鱼 - 博客园](https://www.cnblogs.com/dailc/p/6103091.html)
-            for (let i = 0, index = 0, len = data.rows.length; i < len; i++) {
+            for (let i = 0, len = data.rows.length; i < len; i++) {
                 // 每一条查询记录
                 let row = data.rows[i];
-                // console.log(row);
-                if (data.config.query.filter.blocks.enable) {
-                    // 过滤器开启
-                    let flag_filtrate = false; // 是否过滤
-                    for (let handler of data.config.query.filter.blocks.handlers) {
-                        if (handler(row, data)) {
-                            flag_filtrate = true;
-                            break;
-                        }
-                    }
-                    if (flag_filtrate) continue;
-                    else index++;
-                } else index++;
                 // console.log(row);
 
                 // 解析内联属性列表(inline attribute list, IAL)
@@ -220,7 +229,7 @@ export async function widgetBlock(data) {
 
                 let row_markdown = ['|'];
                 if (data.config.query.index.enable) {
-                    row_markdown.push(` ${index} |`);
+                    row_markdown.push(` ${i + 1} |`);
                 }
                 for (let field of data.config.query.fields) {
                     // 根据自定义字段列表，构造表格
