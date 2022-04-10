@@ -2,6 +2,9 @@
 
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 适配 `blocks` 表新字段 `fcontent` | Adapt `blocks` table to new field `fcontent`.
+- 添加配置选项 `config.query.render.ial.fields.forced` 设置强制渲染的 IAL 键 | Add configuration option `config.query.render.ial.fields.forced` to define IAL keys that force rendering.
+- 添加配置选项 `config.query.render.ial.fields.ignore` 设置不渲染的 IAL 键(黑名单) | Add configuration option `config.query.render.ial.fields.ignore` to define IAL keys that don't be rendered (blacklist).
+- 添加配置选项 `config.query.render.ial.fields.valid` 设置可渲染的 IAL 键(白名单) | Add configuration option `config.query.render.ial.fields.ignore` to define IAL keys that can be rendered (whitelist).
 
 ## v0.3.0/2022-04-09
 

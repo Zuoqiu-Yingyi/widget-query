@@ -91,6 +91,17 @@ export var config = {
                  * 'strong': 该字段渲染为粗体
                  */
                 style: 'kbd', // 内联属性样式
+                fields: { // 内联属性字段
+                    forced: [], // 强制显示的 IAL 键, 为空则使用黑白名单
+                    ignore: [ // 需渲染的 IAL 键黑名单
+                        'id',
+                        'fold',
+                        'style',
+                        'updated',
+                        'heading-fold',
+                    ],
+                    valid: [], // 按照顺序渲染的 IAL 键白名单, 为空则全部渲染
+                },
             },
         },
         limit: 'row', // 查询结果字段限制, (null 为不限制, 'len' 为限制长度, 'row' 为限制行数)
@@ -218,22 +229,12 @@ export var config = {
                     if (rows.length > 0) {
                         for (let i = 0, len = rows.length; i < len; i++) {
                             let ial = ialParser(rows[i].ial);
-                            Object.keys(ial).forEach(key => {
-                                if (config.query.rows.ials.ignore.has(key)) return;
-                                keys.add(key);
-                            });
+                            Object.keys(ial).forEach(key => keys.add(key));
                         }
                     }
                     return keys;
                 },
-                ignore: new Set([ // 忽略的 IAL 键
-                    'id',
-                    'fold',
-                    'style',
-                    'updated',
-                    'heading-fold',
-                ]),
-            }
+            },
         },
         handler: { // 块查询结果各字段处理方法
             content: (row, ial, ...args) => {
@@ -347,19 +348,12 @@ export var config = {
             },
             ial: (row, ial, ...args) => {
                 let ial_markdown = [];
+                let ial_keys = args[0];
                 switch (config.query.render.ial.shape) {
                     case 'columns':
-                        args[0].forEach((key) => {
-                            if (!config.query.rows.ials.ignore.has(key) && ial[key]) {
+                        ial_keys.forEach((key) => {
+                            if (ial[key]) {
                                 switch (key) {
-                                    case 'id':
-                                    case 'fold':
-                                    case 'style':
-                                    case 'updated':
-                                    case 'heading-fold':
-                                        ial_markdown.push('');
-                                        break;
-
                                     case 'icon':
                                         if (ial[key].startsWith(':') && ial[key].endsWith(':')) {
                                             // 自定义图标
@@ -376,26 +370,22 @@ export var config = {
                         return ial_markdown.join(' | ');
                     case 'rows':
                     default:
-                        for (let key of Object.keys(ial)) {
-                            if (config.query.rows.ials.ignore.has(key)) continue;
-                            switch (key) {
-                                case 'id':
-                                case 'fold':
-                                case 'style':
-                                case 'updated':
-                                case 'heading-fold':
-                                    continue;
-                                case 'icon':
-                                    if (ial[key].startsWith(':') && ial[key].endsWith(':')) {
-                                        // 自定义图标
-                                        ial_markdown.push(`<kbd>${key}</kbd>\:${ial[key]}`);
+                        ial_keys.forEach((key) => {
+                            if (config.query.rows.ials.fields.forced.length > 0 || ial[key]) {
+                                let value = ial[key] || 'NULL';
+                                switch (key) {
+                                    case 'icon':
+                                        if (value.startsWith(':') && value.endsWith(':')) {
+                                            // 自定义图标
+                                            ial_markdown.push(`<kbd>${key}</kbd>\:${value}`);
+                                            break;
+                                        }
+                                    default:
+                                        ial_markdown.push(`<kbd>${key}</kbd>\:\`${value}\``);
                                         break;
-                                    }
-                                default:
-                                    ial_markdown.push(`<kbd>${key}</kbd>\:\`${ial[key]}\``);
-                                    break;
+                                }
                             }
-                        }
+                        });
                         return ial_markdown.join(config.query.CRLF);
                 }
             },

@@ -144,7 +144,7 @@ export async function widgetBlock(data) {
         // 匹配指定正则的 SQL 查询, 是 `SELECT * FROM blocks ...` 语句
         let header = ['|']; // 表头
         let align = ['|']; // 对齐样式
-        let ial_keys = null; // IAL 的有效键名
+        let ial_keys = data.config.query.rows.ials.fields.forced; // IAL 的有效键名
         if (data.config.query.index.enable) {
             header.push("    |");
             align.push(" -: |");
@@ -152,9 +152,24 @@ export async function widgetBlock(data) {
         for (let field of data.config.query.fields) {
             // 根据自定义字段列表，构造表头
             if (field === 'ial') {
+                if (ial_keys.length === 0) {
+                    let ial_keys_raw = new Set(data.config.query.rows.ials.keys(data.rows, ialParser));
+                    let ial_keys_ignore = new Set(data.config.query.render.ial.fields.ignore);
+                    let ial_keys_valid = data.config.query.render.ial.fields.valid;
+                    if (ial_keys_valid.length > 0) { // 白名单非空, 白名单 - 黑名单是有效的
+                        for (let key of ial_keys_valid) {
+                            if (ial_keys_raw.has(key) && !ial_keys_ignore.has(key)) ial_keys.push(key);
+                        }
+                    }
+                    else { // 白名单为空时，黑名单外是有效的
+                        for (let key of Array.from(ial_keys_raw).sort()) {
+                            if (!ial_keys_ignore.has(key)) ial_keys.push(key);
+                        }
+                    }
+                    console.log(ial_keys);
+                }
                 switch (data.config.query.render.ial.shape) {
                     case 'columns':
-                        ial_keys = Array.from(data.config.query.rows.ials.keys(data.rows, ialParser)).sort();
                         ial_keys.forEach((key) => {
                             header.push(` ${key}${data.config.query.style.column[field]} |`);
                             align.push(` ${data.config.query.style.align[field]} |`);
@@ -337,7 +352,7 @@ async function mergeConfig(data) {
                             throw new Error(expr);
 
                         // 覆盖属性
-                        eval(`${expr} = ${v}`);
+                        eval(`${expr} = ${v};`);
                     } catch (e) {
                         return;
                     }

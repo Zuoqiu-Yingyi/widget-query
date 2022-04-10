@@ -74,7 +74,7 @@ export function timeFormat(timestamp) {
  * @param {string} br: 替换文本
  * @return {string}: 格式化后的文本
  */
-export function markdown2span(markdown, mode = 'raw', reg = /[\r\n]+/g, br = '<br/>') {
+export function markdown2span(markdown, mode = 'raw', reg = /[\r\n]+/g, br = '<br />') {
     if (typeof (markdown) == 'string') {
         let prefix, suffix;
         switch (mode) {
