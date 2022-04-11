@@ -1,8 +1,10 @@
 # 更改日志 | CHANGE LOG
 
+- 更新自定义属性视图示例 | Update the example of Custom Properties View.
+
 ## v0.3.1/2022-04-10
 
-- [v0.3.0 <=> v0.3.1](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.2.4...v0.3.1)
+- [v0.3.0 <=> v0.3.1](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.3.0...v0.3.1)
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 适配 `blocks` 表新字段 `fcontent` | Adapt `blocks` table to new field `fcontent`.
 - 添加配置选项 `config.query.render.ial.fields.forced` 设置强制渲染的 IAL 键 | Add configuration option `config.query.render.ial.fields.forced` to define IAL keys that force rendering.
