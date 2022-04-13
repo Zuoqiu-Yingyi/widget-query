@@ -3,28 +3,72 @@ import {
 } from './api.js';
 
 export async function templateParse(data) {
-    // 部分解析 SQL 语句中的模板参数
-    let sql = data.sql;
-
-    let block = await getBlockByID(data.id);
-    sql = parseBlock(sql, block, ".block");
-
-    let parent_block = await getBlockByID(block.parent_id);
-    parent_block ? sql = parseBlock(sql, parent_block, ".parent") : null;
-
-    let doc_block = await getBlockByID(block.root_id);
-    doc_block ? sql = parseBlock(sql, doc_block, ".root") : null;
-    // console.log(sql);
-    return sql;
+    return await parseBlock(data.sql, data.id);
 }
 
-function parseBlock(sql, block, prefix) {
-    for (let attributeName in block) {
-        let templateAction = `${prefix}{.${attributeName}}`;
-        // console.log(templateAction);
-        let blockAttribute = block[attributeName];
-        sql = sql.replaceAll(templateAction, blockAttribute);
-        // console.log(sql);
+const PREFIXS = [
+    'block',
+    'parent',
+    'root',
+];
+const ATTRIBUTE_NAMES = [
+    'id',
+    'parent_id',
+    'root_id',
+    'hash',
+    'box',
+    'path',
+    'hpath',
+    'name',
+    'alias',
+    'memo',
+    'content',
+    'fcontent',
+    'markdown',
+    'length',
+    'type',
+    'subtype',
+    'ial',
+    'sort',
+    'created',
+    'updated',
+];
+
+async function parseBlock(sql, id) {
+    let widget_block = null;
+    let parent_block = null;
+    let root_block = null;
+    let block = null;
+    for (let prefix of PREFIXS) {
+        for (let attrName of ATTRIBUTE_NAMES) {
+            let templateAction = `.${prefix}{.${attrName}}`;
+
+            // console.log(templateAction);
+            if (sql.includes(templateAction)) {
+                switch (prefix) {
+                    case PREFIXS[0]:
+                        if (!widget_block) widget_block = await getBlockByID(id);
+                        block = widget_block;
+                        break;
+                    case PREFIXS[1]:
+                        if (!widget_block) widget_block = await getBlockByID(id);
+                        if (!parent_block) parent_block = await getBlockByID(widget_block.parent_id);
+                        block = parent_block;
+                        break;
+                    case PREFIXS[2]:
+                        if (!widget_block) widget_block = await getBlockByID(id);
+                        if (!root_block) root_block = await getBlockByID(widget_block.root_id);
+                        block = root_block;
+                        break;
+                    default:
+                        continue;
+                }
+                // console.log(block);
+                let blockAttribute = block[attrName];
+                sql = sql.replaceAll(templateAction, blockAttribute);
+            }
+            // console.log(sql);
+        }
     }
     return sql;
 }

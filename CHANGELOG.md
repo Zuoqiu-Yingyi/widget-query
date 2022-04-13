@@ -1,6 +1,7 @@
 # 更改日志 | CHANGE LOG
 
 - 更新自定义属性视图示例 | Update the example of Custom Properties View.
+- 优化模板字段替换方案 | Optimize the replacement scheme of template fields.
 
 ## v0.3.1/2022-04-10
 
