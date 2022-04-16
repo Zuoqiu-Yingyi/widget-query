@@ -2,6 +2,7 @@
 
 - 更新自定义属性视图示例 | Update the example of Custom Properties View.
 - 优化模板字段替换方案 | Optimize the replacement scheme of template fields.
+- 添加更多字段至 IAL 黑名单 | Add more fields to the IAL Blacklist.
 
 ## v0.3.1/2022-04-10
 

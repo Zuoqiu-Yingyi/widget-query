@@ -429,12 +429,16 @@ export var config = {
                 fields: { // 内联属性字段
                     forced: [], // 强制显示的 IAL 键, 为空则使用黑白名单
                     ignore: [ // 需渲染的 IAL 键黑名单
-                        'id',
-                        'fold',
-                        'style',
-                        'updated',
-                        'colgroup',
-                        'heading-fold',
+                        'id', // 块 ID
+                        'fold', // 是否折叠
+                        'style', // 块样式
+                        'updated', // 块更新时间
+                        'linewrap', // 代码块是否换行
+                        'ligatures', // 代码块是否启用连字符
+                        'linenumber', // 代码块是否显示行号
+                        'colgroup', // 表格块列组
+                        'title-img', // 文档块题头图
+                        'heading-fold', // 折叠标题块下级块
                     ],
                     valid: [], // 按照顺序渲染的 IAL 键白名单, 为空则全部渲染
                 },
