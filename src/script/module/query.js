@@ -15,9 +15,20 @@ import {
     sql,
 } from "./../utils/api.js";
 
+/* 更新块属性 */
+export async function updateAttrs(data, attrs) {
+    /* 更新 DOM 树中的块属性 */
+    for (let key of Object.keys(attrs)) {
+        data.node.setAttribute(key, attrs[key]);
+    }
+    /* 更新原数据中的块属性 */
+    setBlockAttrs(data.id, attrs);
+}
+
 export async function initWidgetBlock(data) {
-    window.document.getElementById("query").style["border-radius"] =
-        data.config.query.radius;
+    let query = window.document.getElementById("query");
+    query.style.borderRadius = data.config.query.radius;
+    window.document.body.style.borderRadius = data.config.query.radius;
     // window.document.querySelector('html').style.width = data.config.query.width;
     // window.document.querySelector('html').style.height = data.config.query.height;
     window.frameElement.style.width = data.config.query.width;
@@ -31,6 +42,11 @@ export async function initWidgetBlock(data) {
                 "custom-type": data.config.query.attribute.widget,
             });
         } else data.sql = attrs["custom-sql"];
+
+        // 是否启用自动查询
+        if (attrs["custom-query-auto"] === 'true') data.config.query.auto = true;
+        window.document.getElementById('checkbox').checked = data.config.query.auto;
+        if (data.config.query.auto) setTimeout(() => query.click(), 0);
     });
 }
 

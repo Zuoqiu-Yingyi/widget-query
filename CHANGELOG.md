@@ -1,8 +1,10 @@
 # 更改日志 | CHANGE LOG
 
+- 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 更新自定义属性视图示例 | Update the example of Custom Properties View.
 - 优化模板字段替换方案 | Optimize the replacement scheme of template fields.
 - 添加更多字段至 IAL 黑名单 | Add more fields to the IAL Blacklist.
+- 添加加载完成自动查询开关 | Add a switch to automatically query when loading is completed.
 
 ## v0.3.1/2022-04-10
 

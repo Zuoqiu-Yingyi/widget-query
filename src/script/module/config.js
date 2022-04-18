@@ -20,9 +20,10 @@ import {
 export var config = {
     token: '', // API token, 无需填写
     query: { // 查询配置
-        width: '128px', // 挂件宽度
-        height: '32px', // 挂件高度
-        radius: '8px', // 挂件圆角
+        width: '8em', // 挂件宽度
+        height: '2em', // 挂件高度
+        radius: '2em', // 挂件圆角
+        auto: false, // 是否在加载完成后自动运行一次查询
         color: {
             default: 'rgb(255, 255, 255)', // 默认颜色
             success: 'rgb(183, 223, 185)', // 成功颜色
