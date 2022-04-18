@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+## v0.3.2/2022-04-18
+
+- [v0.3.1 <=> v0.3.2](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.3.1...v0.3.2)
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 更新自定义属性视图示例 | Update the example of Custom Properties View.
 - 优化模板字段替换方案 | Optimize the replacement scheme of template fields.
