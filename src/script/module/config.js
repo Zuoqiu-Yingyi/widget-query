@@ -45,6 +45,7 @@ export var config = {
         },
         sql: {
             // SQL 语句处理
+            default: `SELECT * FROM blocks WHERE `, // 默认 SQL 语句
             limit: { // 查询记录数量限制, 若启用且为设置 LIMIT 语句, 则在查询语句末尾添加 "LIMIT begin, end"
                 enable: false, // 是否启用限制
                 begin: 0, // 开始记录数
