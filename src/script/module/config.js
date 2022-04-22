@@ -32,7 +32,7 @@ export var config = {
             error: 'rgb(250, 179, 174)', // 错误颜色
         },
         regs: {
-            blocks: /^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*/i, // 块查询的正则表达式
+            blocks: /^\s*SELECT\s+\*\s+FROM\s+(blocks|blocks_fts|blocks_fts_case_insensitive)\s+.*/i, // 块查询的正则表达式
             limit: /\s+LIMIT\s+\d+/i, // SQL LIMIT 关键字正则表达式
             sort: /^__(\d+)__(.*)$/i, // 手动排序字段正则表达式
             render: /^__(\w+)__(.*)$/i, // 渲染控制字段正则表达式
@@ -45,7 +45,7 @@ export var config = {
         },
         sql: {
             // SQL 语句处理
-            default: `SELECT * FROM blocks WHERE `, // 默认 SQL 语句
+            default: `SELECT * FROM blocks WHERE false;`, // 默认 SQL 语句
             limit: { // 查询记录数量限制, 若启用且为设置 LIMIT 语句, 则在查询语句末尾添加 "LIMIT begin, end"
                 enable: false, // 是否启用限制
                 begin: 0, // 开始记录数
@@ -543,7 +543,7 @@ try {
         config = merge(config, custom.config);
     }
 } catch (err) {
-    console.log(err);
+    console.warn(err);
 } finally {
     console.log(config);
 }

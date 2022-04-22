@@ -2,6 +2,7 @@
 
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 添加代码块默认内容 | Added default content for code blocks.
+- 正则表达式兼容 FTS | Regexp is compatible with FTS.
 
 ## v0.3.2/2022-04-18
 
