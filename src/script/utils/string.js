@@ -40,26 +40,25 @@ export function ialParser(ial) {
     // 解析 ial 字符串
     // ial 字符串格式： {: key="value" key="value" ...}
     // 返回对象：{key: value, key: value, ...}
-    if (ial == '' || ial == null) {
-        return {};
-    }
-    let IAL = ial.replace(/\s*(\S+)="(.*?)"/g, ',"$1":"$2"');
-    // console.log(IAL);
-    IAL = JSON.parse(`{${IAL.substr(3)}`);
-    for (let key of Object.keys(IAL)) {
-        IAL[key] = HTMLDecode(IAL[key]);
-    }
+    if (ial == '' || ial == null) return {};
+    let IAL = ial
+        .replace(/\\/g, '\\\\')
+        .replace(/\s*(\S+)="(.*?)"/g, ',"$1":"$2"')
+        .replace(/^\{\:\s*\,\s*/, '{');
+    // console.log(ial, IAL);
+    IAL = JSON.parse(IAL);
+    for (const key in IAL) IAL[key] = HTMLDecode(IAL[key]);
     return IAL;
 }
 
 /**
  * 内联属性表创建
  * @params {object} obj: 属性表对象
- * @return {string}: 字符串, 格式： {: key="value" key="value" ...}
+ * @return {string}: ial 字符串, 格式： {: key="value" key="value" ...}
  */
 export function ialCreate(obj) {
     let IAL = [];
-    for (let key of Object.keys(obj)) {
+    for (const key in obj) {
         IAL.push(`${key}="${HTMLEncode(obj[key]).replaceAll('\n', '_esc_newline_')}"`);
     }
     return `{: ${IAL.join(' ')}}`;

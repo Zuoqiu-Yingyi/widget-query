@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- 修复 IAL 解析器无法解析 `\` 字符的问题 | Fix the issue that IAL parser cannot parse `\` character.
+
 ## v0.3.3/2022-05-02
 
 - [v0.3.2 <=> v0.3.3](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.3.2...v0.3.3)
