@@ -344,7 +344,19 @@ export async function tableBlock(data) {
         response = await getBlockAttrs(id);
         if (response) { // 合并原有块自定义属性
             for (const key in response) { // 移除所有非自定义属性
-                if (!key.startsWith("custom-")) delete response[key];
+                switch (key) {
+                    case 'bookmark':
+                    case 'name':
+                    case 'alias':
+                    case 'memo':
+                    case 'fold':
+                    case 'style':
+                        continue; // 保留部分内置属性
+
+                    default: // 移除其他非自定义属性
+                        if (!key.startsWith("custom-")) delete response[key];
+                        break;
+                }
             }
             merge(table_ial, response); // 合并原自定义属性
         };
