@@ -391,8 +391,8 @@ export var config = {
                     case 'rows':
                     default:
                         ial_keys.forEach((key) => {
-                            if (config.query.render.ial.fields.forced.length > 0 || ial[key])
-                                console.log(key, config.query.render.ial.fields.forced, ial[key], ial);
+                            // if (config.query.render.ial.fields.forced.length > 0 || ial[key])
+                            //     console.log(key, config.query.render.ial.fields.forced, ial[key], ial);
                             if (config.query.render.ial.fields.forced.length > 0 || ial[key] !== undefined) {
                                 let ial_key = markdown2span(key, config.query.render.ial.style.rows.key)
                                 let ial_value = ial[key] || (config.query.render.ial.style.rows.null

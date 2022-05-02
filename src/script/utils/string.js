@@ -15,14 +15,27 @@ export function cutString(str, len = null, row = null) {
     }
 }
 
-function HTMLDecode(text) {
-    // HTML 解码
+/* HTML 转义 */
+export function HTMLEncode(text) {
+    // REF: [javascript处理HTML的Encode(转码)和Decode(解码)总结 - 孤傲苍狼 - 博客园](https://www.cnblogs.com/xdp-gacl/p/3722642.html)
+    let temp = document.createElement("div");
+    temp.textContent = text;
+    return temp.innerHTML;;
+}
+
+/* HTML 反转义 */
+export function HTMLDecode(text) {
     // REF: [javascript处理HTML的Encode(转码)和Decode(解码)总结 - 孤傲苍狼 - 博客园](https://www.cnblogs.com/xdp-gacl/p/3722642.html)
     let temp = document.createElement("div");
     temp.innerHTML = text;
     return temp.textContent;;
 }
 
+/**
+ * 内联属性表解析
+ * @params {string} ial: 字符串, 格式： {: key="value" key="value" ...}
+ * @return {object}: 属性表对象
+ */
 export function ialParser(ial) {
     // 解析 ial 字符串
     // ial 字符串格式： {: key="value" key="value" ...}
@@ -37,6 +50,19 @@ export function ialParser(ial) {
         IAL[key] = HTMLDecode(IAL[key]);
     }
     return IAL;
+}
+
+/**
+ * 内联属性表创建
+ * @params {object} obj: 属性表对象
+ * @return {string}: 字符串, 格式： {: key="value" key="value" ...}
+ */
+export function ialCreate(obj) {
+    let IAL = [];
+    for (let key of Object.keys(obj)) {
+        IAL.push(`${key}="${HTMLEncode(obj[key]).replaceAll('\n', '_esc_newline_')}"`);
+    }
+    return `{: ${IAL.join(' ')}}`;
 }
 
 export function isEmptyString(str) {
@@ -68,10 +94,10 @@ export function timeFormat(timestamp) {
 
 /**
  * markdown 转 span (格式化)
- * @param {string} markdown: Markdown 文本
- * @param {string} mode: 格式化样式
- * @param {regexp} reg: 需要被替换文本的正则
- * @param {string} br: 替换文本
+ * @params {string} markdown: Markdown 文本
+ * @params {string} mode: 格式化样式
+ * @params {regexp} reg: 需要被替换文本的正则
+ * @params {string} br: 替换文本
  * @return {string}: 格式化后的文本
  */
 export function markdown2span(markdown, mode = 'raw', reg = /[\r\n]+/g, br = '<br />') {
@@ -135,7 +161,7 @@ export function markdown2span(markdown, mode = 'raw', reg = /[\r\n]+/g, br = '<b
 /**
  * UTF-32 解码
  * REF [javascript 的 字符串编码 - 知乎](https://zhuanlan.zhihu.com/p/386511092)
- * @param {string} hex: 16 进制 UTF-32 字符串
+ * @params {string} hex: 16 进制 UTF-32 字符串
  * @return {string}: 解码后字符串
  */
 export function utf32Decode(hex) {

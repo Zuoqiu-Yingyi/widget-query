@@ -1,7 +1,9 @@
 /* 使用表格显示 SQL 查询结果 */
 
+import { merge } from './../utils/misc.js';
 import {
     ialParser,
+    ialCreate,
     markdown2span,
     utf32Decode,
 } from './../utils/string.js';
@@ -312,17 +314,8 @@ export async function widgetBlock(data) {
             return 2;
         }
     }
-    let table_attrs = [];
-    table_attrs.push(`custom-type="${data.config.query.attribute.table}"`);
-    if (data.config.query.style.table.enable) {
-        for (let attribute of data.config.query.style.table.attributes) {
-            if (attribute.enable) {
-                table_attrs.push(`${attribute.key}="${attribute.value}"`);
-            }
-        }
-    }
-    markdown.push(`{: ${table_attrs.join(" ")} }`);
-    data.markdown = markdown.join("\n");
+
+    data.markdown = markdown;
     // console.log(data.markdown);
     return 0;
 }
@@ -332,28 +325,44 @@ export async function tableBlock(data) {
     let next_block = data.node.nextElementSibling;
     // console.log(next_block);
 
-    if (
-        next_block &&
-        next_block.getAttribute("custom-type") ==
-        data.config.query.attribute.table &&
-        next_block.dataset.type == "NodeTable"
+    let table_ial = {};
+    table_ial['custom-type'] = data.config.query.attribute.table;
+    if (data.config.query.style.table.enable) {
+        for (let attribute of data.config.query.style.table.attributes) {
+            if (attribute.enable) table_ial[attribute.key] = attribute.value;
+        }
+    }
+
+    let response, id, fn;
+    if (next_block
+        && next_block.getAttribute("custom-type") === data.config.query.attribute.table
+        && next_block.dataset.type == "NodeTable"
     ) {
         // 若下一节点有查询结果
-        // 更新查询结果节点
-        let id = next_block.dataset.nodeId;
-        updateBlock(id, "markdown", data.markdown).then((block) => {
-            if (block == null) return -1;
-            data.next_id = block[0].doOperations[0].id;
-        });
+        // 保持块属性不变的情况下更新查询结果节点
+        id = next_block.dataset.nodeId;
+        response = await getBlockAttrs(id);
+        if (response) { // 合并原有块自定义属性
+            for (const key in response) { // 移除所有非自定义属性
+                if (!key.startsWith("custom-")) delete response[key];
+            }
+            merge(table_ial, response); // 合并原自定义属性
+        };
+        // console.log(table_ial);
+        fn = updateBlock;
     } else {
         // 若下一节点无查询结果
         // 创建查询结果节点
-        insertBlock(data.id, "markdown", data.markdown).then((block) => {
-            if (block == null) return -2;
-            data.next_id = block[0].doOperations[0].id;
-        });
+        id = data.id;
+        fn = insertBlock;
     }
-    return 0;
+    data.markdown.push(ialCreate(table_ial));
+    response = await fn(id, "markdown", data.markdown.join('\n'));
+    if (response) {
+        data.next_id = response[0].doOperations[0].id;
+        return 0;
+    }
+    else return -1;
 }
 
 async function mergeConfig(data) {
