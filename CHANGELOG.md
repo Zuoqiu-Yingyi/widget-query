@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+## v0.3.3/2022-05-02
+
+- [v0.3.2 <=> v0.3.3](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.3.2...v0.3.3)
 - 配置文件 `config.js` 有变更 | There are changes to the configuration file `config.js`.
 - 添加代码块默认内容 | Added default content for code blocks.
 - 正则表达式兼容 FTS | Regexp is compatible with FTS.
