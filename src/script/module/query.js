@@ -2,7 +2,7 @@
 
 import { merge } from './../utils/misc.js';
 import {
-    ialParser,
+    ialParse,
     ialCreate,
     markdown2span,
     utf32Decode,
@@ -193,7 +193,7 @@ export async function widgetBlock(data) {
             // 根据自定义字段列表，构造表头
             if (field === 'ial') {
                 if (ial_keys.length === 0) {
-                    let ial_keys_raw = new Set(data.config.query.rows.ials.keys(data.rows, ialParser));
+                    let ial_keys_raw = new Set(data.config.query.rows.ials.keys(data.rows, ialParse));
                     let ial_keys_ignore = new Set(data.config.query.render.ial.fields.ignore);
                     let ial_keys_valid = data.config.query.render.ial.fields.valid;
                     if (ial_keys_valid.length > 0) { // 白名单非空, 白名单 - 黑名单是有效的
@@ -234,7 +234,7 @@ export async function widgetBlock(data) {
                 // console.log(row);
 
                 // 解析内联属性列表(inline attribute list, IAL)
-                let ial = ialParser(row.ial);
+                let ial = ialParse(row.ial);
                 if (ial.icon) {
                     if (data.config.query.regs.hex.test(ial.icon)) {
                         // 如果是 UTF-32 编码的字符

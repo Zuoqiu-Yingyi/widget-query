@@ -1,6 +1,7 @@
 # 更改日志 | CHANGE LOG
 
 - 修复 IAL 解析器无法解析 `\` 字符的问题 | Fix the issue that IAL parser cannot parse `\` character.
+- 提供对 `blocks` 表中字段 `tag` 的解析支持 | Provide support for parsing `blocks` table field `tag`.
 
 ## v0.3.3/2022-05-02
 

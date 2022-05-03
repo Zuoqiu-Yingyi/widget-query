@@ -145,6 +145,7 @@ export var config = {
             // 'name', // 内容块名称
             // 'alias', // 内容块别名
             // 'memo', // 内容块备注
+            // 'tag', // 标签
             // 'hash', // content 字段的 SHA256 校验和
             // 'length', // content 字段文本长度
             // 'subtype', // 内容块子类型，参考((20210210103411-tcbcjja "子类型字段"))
@@ -189,6 +190,7 @@ export var config = {
                 name: '',
                 alias: '',
                 memo: '',
+                tag: '',
                 length: '',
                 subtype: '',
                 ial: '',
@@ -212,6 +214,7 @@ export var config = {
                 name: ':-',
                 alias: ':-',
                 memo: ':-',
+                tag: ':-',
                 length: '-:',
                 subtype: '-:',
                 ial: ':-',
@@ -241,12 +244,12 @@ export var config = {
         },
         rows: { // 查询结果处理方法
             ials: { // IAL 处理方法
-                keys: (rows, ialParser) => {
+                keys: (rows, ialParse) => {
                     // 获得查询结果所有记录 IAL 键
                     let keys = new Set();
                     if (rows.length > 0) {
                         for (let i = 0, len = rows.length; i < len; i++) {
-                            let ial = ialParser(rows[i].ial);
+                            let ial = ialParse(rows[i].ial);
                             Object.keys(ial).forEach(key => keys.add(key));
                         }
                     }
@@ -357,6 +360,9 @@ export var config = {
             },
             memo: (row, ial, ...args) => {
                 return markdown2span(row.memo);
+            },
+            tag: (row, ial, ...args) => {
+                return markdown2span(row.tag, 'raw', /(?<=#)\s+(?=#)/g);
             },
             length: (row, ial, ...args) => {
                 return row.length;
