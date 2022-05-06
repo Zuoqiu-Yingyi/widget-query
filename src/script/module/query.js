@@ -33,23 +33,32 @@ export async function initWidgetBlock(data) {
     window.document.body.style.borderRadius = data.config.query.radius;
     // window.document.querySelector('html').style.width = data.config.query.width;
     // window.document.querySelector('html').style.height = data.config.query.height;
+
+    /* 设置块样式 */
     window.frameElement.style.width = data.config.query.width;
     window.frameElement.style.height = data.config.query.height;
+    window.frameElement.style.border = 'none';
+    window.frameElement.style.backgroundColor = 'transparent';
 
     // console.log(data.id);
-    getBlockAttrs(data.id).then((attrs) => {
-        if (attrs["custom-sql"] == null) {
-            setBlockAttrs(data.id, {
-                "custom-sql": data.sql,
-                "custom-type": data.config.query.attribute.widget,
-            });
-        } else data.sql = attrs["custom-sql"];
+    return getBlockAttrs(data.id)
+        .then((attrs) => {
+            if (attrs["custom-sql"] == null) {
+                setBlockAttrs(data.id, {
+                    "custom-sql": data.sql,
+                    "custom-type": data.config.query.attribute.widget,
+                });
+            } else data.sql = attrs["custom-sql"];
 
-        // 是否启用自动查询
-        if (attrs["custom-query-auto"] === 'true') data.config.query.auto = true;
-        window.document.getElementById('checkbox').checked = data.config.query.auto;
-        if (data.config.query.auto) setTimeout(() => query.click(), 0);
-    });
+            // 是否启用自动查询
+            if (attrs["custom-query-auto"] === 'true') data.config.query.auto = true;
+            window.document.getElementById('checkbox').checked = data.config.query.auto;
+            if (data.config.query.auto) setTimeout(() => query.click(), 0);
+            return 0;
+        })
+        .catch(err => {
+            return err;
+        });
 }
 
 export async function codeBlock(data) {

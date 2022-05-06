@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- 完善异常捕获 | Improve exception capture.
+
 ## v0.3.4/2022-05-04
 
 - [v0.3.3 <=> v0.3.4](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.3.3...v0.3.4)
