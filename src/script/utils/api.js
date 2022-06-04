@@ -219,7 +219,7 @@ async function 以id获取思源块属性(内容块id) {
 async function 以id获取思源块信息(内容块id) {
     let sql = `select * from blocks where id ='${内容块id}'`
     let data = await 以sql向思源请求块数据(sql)
-    return data[0]
+    return data.length === 1 ? data[0] : null;
 }
 
 async function 设置思源块属性(内容块id, 属性对象) {

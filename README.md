@@ -18,7 +18,7 @@
 
 一个将思源笔记数据库查询结果以表格样式渲染的挂件
 
-现已上架[思源笔记社区集市](https://github.com/siyuan-note/bazaar), 如果您需要订阅[思源笔记](https://github.com/siyuan-note/siyuan)增值服务，欢迎使用我的推荐码: **h0sc9rc**
+现已上架[思源笔记社区集市](https://github.com/siyuan-note/bazaar), 如果您喜欢本挂件, 欢迎为本项目点亮一个⭐!
 
 思源数据库表与字段详情请见: [思源数据库表与字段 · 语雀](https://www.yuque.com/siyuannote/docs/go7uom)
 
@@ -49,7 +49,15 @@
 ## 功能
 
 1. 点选自动查询复选框, 下次打开该页面时自动进行一次查询
-2. 符合正则表达式 `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` 的 SQL 语句将启用<kbd>默认块查询模式</kbd>
+2. 为挂件块设置自定义属性 <kbd>input</kbd> 可以指定某个代码块或嵌入块中的 SQL 语句作为查询语句
+
+    * 例如在其他文档中有一个代码块或嵌入块 ID 为 `20220418210605-ibussa1`, 那么为挂件块设置自定义块属性 <kbd>input</kbd>: `20220418210605-ibussa1` 可以引用该块的 SQL 语句进行查询
+    * 只有挂件块前一个块不是具有自定义属性 <kbd>type</kbd>: `query-code` 的代码块时才会触发
+2. 为挂件块设置自定义属性 <kbd>output</kbd> 可以指定某个表格块作为查询结果展示块
+
+    * 例如在其他文档中有一个表格块 ID 为 `20220604112815-sfiwyi7`, 那么为挂件块设置自定义块属性 <kbd>output</kbd>: `20220604112815-sfiwyi7` 可以将查询结果渲染到该表格中
+    * 只有挂件块后一个块不是具有自定义属性 <kbd>type</kbd>: `query-table` 的表格块时才会触发
+3. 符合正则表达式 `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` 的 SQL 语句将启用<kbd>默认块查询模式</kbd>
 
     * 该正则表达式在 `/src/script/module/config.js` 文件中 `config.query.regs.blocks` 定义
     * 示例: `SELECT * FROM blocks WHERE content LIKE '%内容块%'`
@@ -72,7 +80,7 @@
         |`config.query.filter.blocks`|定义过滤器序列, 过滤一些查询结果|`{enable: true/flase, handlers: [(row, data) => {}, ...]}`|需要过滤的返回 `true`, 需要保留的返回 `false`|
         |`config.query.handler.*`|定义具体字段值的处理函数|`(row, ial) => {}`|`row`: 当前记录<br />`ial`: 当前查询记录解析后的内联属性列表|
         |`config.query.map.*`|查询结果映射表, 将某些查询结果字段值替换为人类可读的字段|||
-3. 不符合<kbd>默认块查询模式</kbd>的查询均为<kbd>普通查询模式</kbd>
+4. 不符合<kbd>默认块查询模式</kbd>的查询均为<kbd>普通查询模式</kbd>
 
     * 示例
 
@@ -315,7 +323,7 @@
         ```
 
         ![字段别名前缀示例](https://cdn.jsdelivr.net/gh/Zuoqiu-Yingyi/widget-query//image/README/1648568044659.png)
-4. 部分模板字段解析支持
+5. 部分模板字段解析支持
 
     * `.<prefix>{.<field>}`
 
@@ -382,7 +390,7 @@ export const config = {
 
 注: 排序不分先后
 
-## contributors
+## CONTRIBUTORS
 
 <!-- [![贡献者](https://contrib.rocks/image?repo=Zuoqiu-Yingyi/widget-query)](https://github.com/Zuoqiu-Yingyi/widget-query/graphs/contributors) -->
 

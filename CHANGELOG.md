@@ -1,6 +1,7 @@
 # 更改日志 | CHANGE LOG
 
 - 完善异常捕获 | Improve exception capture.
+- 支持使用自定义块属性 `custom-input` 与 `custom-output` 所对应的块作为代码块与查询结果表格块(在没有前置代码块与后置查询结果表格块时启用) | Support custom block `custom-input` and `custom-query-table-id` as code block and query result table block (Enabled when there is no pre-code block and post-table block).
 
 ## v0.3.4/2022-05-04
 

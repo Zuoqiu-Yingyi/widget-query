@@ -43,6 +43,7 @@ export async function initWidgetBlock(data) {
     // console.log(data.id);
     return getBlockAttrs(data.id)
         .then((attrs) => {
+            data.attrs = attrs;
             if (attrs["custom-sql"] == null) {
                 setBlockAttrs(data.id, {
                     "custom-sql": data.sql,
@@ -62,39 +63,66 @@ export async function initWidgetBlock(data) {
 }
 
 export async function codeBlock(data) {
-    let previous_block = data.node.previousElementSibling;
-    let id = null;
-    let mode = 0;
-    if (previous_block == null) {
+    let mode = 0; // 模式
+    const previous_block = data.node.previousElementSibling; // 前置块
+    let id = data.attrs['custom-input']; // 关联的代码块 ID
+    let sql_block; // 含有 SQL 的块(代码块/嵌入块)
+    // let code_block_attrs; // 前置块属性
+    if (data.config.query.regs.id.test(id)) {
+        sql_block = await getBlockByID(id); // 关联的代码块
+        // code_block_attrs = await getBlockAttrs(id); // 关联的代码块属性
+
+        console.log(sql_block)
+    }
+
+    if (previous_block
+        && previous_block.getAttribute("custom-type") === data.config.query.attribute.code
+        && previous_block.dataset.type == "NodeCodeBlock"
+    ) {
+        // 挂件前的块是查询代码块
+        id = previous_block.dataset.nodeId; // 代码块 ID
+        mode = 4;
+    }
+    else if (sql_block
+        && sql_block.type === 'c'
+        // && code_block_attrs
+        // && code_block_attrs['custom-type'] === data.config.query.attribute.code
+    ) {
+        // 存在关联的代码块
+        await setBlockAttrs(sql_block.id, { 'custom-type': data.config.query.attribute.code }); // 设置代码块属性
+        mode = 6;
+    }
+    else if (sql_block
+        && sql_block.type === 'query_embed'
+        // && code_block_attrs
+        // && code_block_attrs['custom-type'] === data.config.query.attribute.code
+    ) {
+        // 存在关联的嵌入块
+        await setBlockAttrs(sql_block.id, { 'custom-type': data.config.query.attribute.code }); // 设置代码块属性
+        mode = 7;
+    }
+    else if (previous_block == null) {
         // 挂件位于文档/引用块/超级快首部
         if (data.node.parentElement.dataset.nodeId == null) {
             // 挂件位于文档首
             id = data.node.parentElement.parentElement
                 .querySelector("div[data-node-id]")
-                .dataset.nodeId;
+                .dataset.nodeId; // 上级块 ID
             mode = 1;
         } else {
             // 挂件位于引用块/超级快首部
-            id = data.node.parentElement.dataset.nodeId;
+            id = data.node.parentElement.dataset.nodeId; // 上级块 ID
             mode = 2;
         }
     } else if (
         previous_block.getAttribute("class").search("protyle-action") != -1
     ) {
         // 挂件位于列表项中第一个块
-        id = data.node.parentElement.dataset.nodeId;
+        id = data.node.parentElement.dataset.nodeId; // 上级块 ID
         mode = 3;
-    } else if (
-        previous_block.getAttribute("custom-type") ==
-        data.config.query.attribute.code &&
-        previous_block.dataset.type == "NodeCodeBlock"
-    ) {
-        // 挂件前的块是查询代码块
-        id = previous_block.dataset.nodeId;
-        mode = 4;
     } else {
         // 挂件前的块不是代码块/不是查询代码块
-        id = previous_block.dataset.nodeId;
+        id = previous_block.dataset.nodeId; // 代码块 ID
         mode = 5;
     }
     switch (mode) {
@@ -112,7 +140,7 @@ export async function codeBlock(data) {
             });
             return 2;
         case 4:
-            let sql_block = await getBlockByID(id);
+            sql_block = await getBlockByID(id);
             data.previous_id = sql_block.id;
             data.sql = sql_block.content;
             return 0;
@@ -127,6 +155,18 @@ export async function codeBlock(data) {
                 return 3;
             });
             return 4;
+        case 6: // 存在关联的代码块
+            data.previous_id = sql_block.id;
+            data.sql = sql_block.content;
+            return 0;
+        case 7: // 存在关联的嵌入块
+            const match = data.config.query.regs.query.exec(sql_block.markdown);
+            if (match && match.length === 2) {
+                data.previous_id = sql_block.id;
+                data.sql = match[1];
+                return 0;
+            }
+            else return -4;
         default:
             return -3;
     }
@@ -334,25 +374,41 @@ export async function tableBlock(data) {
     let next_block = data.node.nextElementSibling;
     // console.log(next_block);
 
-    let table_ial = {};
-    table_ial['custom-type'] = data.config.query.attribute.table;
+    /* 获取使用 ID 关联的表格 */
+    let table_id = data.attrs['custom-output']; // 表格块 ID
+    let table_block; // 表格块
+    let table_attrs, id, fn;
+
+    if (data.config.query.regs.id.test(table_id)) table_block = await getBlockByID(table_id);
+
+    if (next_block
+        && next_block.getAttribute("custom-type") === data.config.query.attribute.table
+        && next_block.dataset.type == "NodeTable"
+    ) { // 下一节点为查询结果, 那么更改该块
+        id = next_block.dataset.nodeId;
+    }
+    else if (table_block && table_block.type === 't') {
+        // 下一节点不为查询结果, 且存在关联的表格块, 那么更新该表格块
+        id = table_id;
+    }
+    else id = null; // 下一节点不为查询结果, 且不存在关联的表格块, 那么需要在下方插入新的表格块
+
+    /* 表格块的 IAL */
+    let table_ial = {
+        'custom-type': data.config.query.attribute.table,
+    };
     if (data.config.query.style.table.enable) {
+        // 添加 config 中设置的自定义属性
         for (let attribute of data.config.query.style.table.attributes) {
             if (attribute.enable) table_ial[attribute.key] = attribute.value;
         }
     }
 
-    let response, id, fn;
-    if (next_block
-        && next_block.getAttribute("custom-type") === data.config.query.attribute.table
-        && next_block.dataset.type == "NodeTable"
-    ) {
-        // 若下一节点有查询结果
+    if (id) {
         // 保持块属性不变的情况下更新查询结果节点
-        id = next_block.dataset.nodeId;
-        response = await getBlockAttrs(id);
-        if (response) { // 合并原有块自定义属性
-            for (const key in response) { // 移除所有非自定义属性
+        table_attrs = await getBlockAttrs(id);
+        if (table_attrs) { // 合并原有块自定义属性
+            for (const key in table_attrs) { // 移除所有非自定义属性
                 switch (key) {
                     case 'bookmark':
                     case 'name':
@@ -363,11 +419,11 @@ export async function tableBlock(data) {
                         continue; // 保留部分内置属性
 
                     default: // 移除其他非自定义属性
-                        if (!key.startsWith("custom-")) delete response[key];
+                        if (!key.startsWith("custom-")) delete table_attrs[key];
                         break;
                 }
             }
-            merge(table_ial, response); // 合并原自定义属性
+            merge(table_ial, table_attrs); // 合并原自定义属性
         };
         // console.log(table_ial);
         fn = updateBlock;
@@ -378,7 +434,7 @@ export async function tableBlock(data) {
         fn = insertBlock;
     }
     data.markdown.push(ialCreate(table_ial));
-    response = await fn(id, "markdown", data.markdown.join('\n'));
+    const response = await fn(id, "markdown", data.markdown.join('\n'));
     if (response) {
         data.next_id = response[0].doOperations[0].id;
         return 0;
@@ -388,10 +444,11 @@ export async function tableBlock(data) {
 
 async function mergeConfig(data) {
     await getBlockAttrs(data.id).then((attrs) => {
+        data.attrs = attrs;
         1; // 合并展示的字段
         Object.getOwnPropertyNames(attrs).forEach(function (key) {
             assignIfNotNull(attrs[key], (v) => {
-                if (key.startsWith("custom-")) {
+                if (key.startsWith("custom-query-")) {
                     try {
                         // 按照-分割,依次解析
                         let keys = key.substring(7).replaceAll("-", ".");
@@ -403,7 +460,7 @@ async function mergeConfig(data) {
                         v = v.replaceAll("&quot;", '"');
 
                         // 判断该属性是否合法
-                        if (eval(`${expr} == null || ${expr} == undefined`))
+                        if (eval(`${expr} === undefined`))
                             throw new Error(expr);
 
                         // 覆盖属性

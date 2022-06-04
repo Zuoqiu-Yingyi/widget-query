@@ -18,7 +18,7 @@
 
 A widget that renders the query results of the Siyuan Notes database in tabular style.
 
-It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.com/siyuan-note/bazaar). If you need to subscribe to the value-added services of [siyuan note](https://github.com/siyuan-note/siyuan/blob/master/README_en_US.md), please use my referral code: **h0sc9rc**
+It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.com/siyuan-note/bazaar). If you like this widget, welcome to light up ⭐ for this project!
 
 ## PREVIEW
 
@@ -47,14 +47,22 @@ Background color status indication:
 ## FUNCTION
 
 1. Click the Auto query check box to automatically query once the next time you open the page.
-2. SQL statements that conform to the regular expression `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` will enable the default block query mode.
+2. Set custom attribute <kbd>input</kbd> for a widget block can specify the content of a SQL code block or an embedded block as a query statement.
+
+    * For example, in other documents there is a code block or an embedded block ID which ID is `20220418210605-ibussa1`, then set the custom block attribute <kbd>input</kbd>: `20220418210605-ibussa1` for the widget block can reference the block's SQL statement for query.
+    * Only if the pre-block of the widget block is not a code block with the custom attribute <kbd>type</kbd>: `query-code`.
+2. Set custom attribute <kbd>output</kbd> for a widget block can specify a table block as a display block for query results.
+
+    * For example, in other documents there is a table block ID which ID is `20220604112815-sfiwyi7`, then set the custom block attribute <kbd>output</kbd>: `20220604112815-sfiwyi7` for the widget block can render the query results into the table.
+    * Only if the post-block of the widget block is not a table block with the custom attribute <kbd>type</kbd>: `query-table`.
+3. SQL statements that conform to the regular expression `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` will enable the default block query mode.
 
     * This regular expression is configured in `config.query.regs.blocks` in `/src/script/module/config.js`
     * Example: `SELECT * FROM blocks WHERE content LIKE '%Content block%'`
     * In this mode, the query result rendering style is controlled with the following configuration options.
 
       * **TODO**
-3. Queries that do not conform to the <kbd>default block query mode</kbd> are <kbd>normal query mode</kbd>
+4. Queries that do not conform to the <kbd>default block query mode</kbd> are <kbd>normal query mode</kbd>
 
     * Example:
 
@@ -250,8 +258,8 @@ Background color status indication:
         ```
 
         ![字段别名前缀示例](https://cdn.jsdelivr.net/gh/Zuoqiu-Yingyi/widget-query//image/README/1648568044659.png)
-4. Partial template field parsing support
-5. Partial template field parsing support.
+5. Partial template field parsing support
+6. Partial template field parsing support.
 
     * `.<prefix>{.<field>}`
 
