@@ -71,8 +71,7 @@ export async function codeBlock(data) {
     if (data.config.query.regs.id.test(id)) {
         sql_block = await getBlockByID(id); // 关联的代码块
         // code_block_attrs = await getBlockAttrs(id); // 关联的代码块属性
-
-        console.log(sql_block)
+        // console.log(sql_block)
     }
 
     if (previous_block
