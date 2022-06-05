@@ -46,7 +46,6 @@ export async function initWidgetBlock(data) {
             data.attrs = attrs;
             if (attrs["custom-sql"] == null) {
                 setBlockAttrs(data.id, {
-                    "custom-sql": data.sql,
                     "custom-type": data.config.query.attribute.widget,
                 });
             } else data.sql = attrs["custom-sql"];
@@ -65,6 +64,7 @@ export async function initWidgetBlock(data) {
 export async function codeBlock(data) {
     let mode = 0; // 模式
     const previous_block = data.node.previousElementSibling; // 前置块
+    data.attrs = await getBlockAttrs(data.id);
     let id = data.attrs['custom-input']; // 关联的代码块 ID
     let sql_block; // 含有 SQL 的块(代码块/嵌入块)
     // let code_block_attrs; // 前置块属性

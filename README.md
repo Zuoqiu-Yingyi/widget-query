@@ -24,8 +24,7 @@
 
 ## 预览
 
-![preview](https://cdn.jsdelivr.net/gh/Zuoqiu-Yingyi/widget-query/preview.png)  
-​![preview-location](/widgets/Query/preview.png)
+![preview-relative](./preview.png)<br />​![preview-location](/widgets/Query/preview.png)
 
 背景颜色状态指示:
 
@@ -207,7 +206,7 @@
             10;
         ```
 
-        ![自定义属性视图-jsdelivr](https://cdn.jsdelivr.net/gh/Zuoqiu-Yingyi/widget-query/image/README/1649676356928.png)  
+        ![自定义属性视图-relative](./image/README/1649676356928.png)  
         ​![自定义属性视图-location](/widgets/Query/image/README/1649676356928.png)
     * 使用字段别名前缀定义查询显示样式
 
@@ -324,7 +323,7 @@
             id = '.root{.id}'
         ```
 
-        ![字段别名前缀示例-jsdelivr](https://cdn.jsdelivr.net/gh/Zuoqiu-Yingyi/widget-query/image/README/1648568044659.png)  
+        ![字段别名前缀示例-relative](./image/README/1648568044659.png)  
         ​![字段别名前缀示例-location](/widgets/Query/image/README/1648568044659.png)
 5. 部分模板字段解析支持
 
