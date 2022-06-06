@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+## v0.4.1/2022-06-06
+
+- [v0.4.0 <=> v0.4.1](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.4.0...v0.4.1)
 - 修复读取 `custom-input` 属性时机问题 | Fixed the issue of reading `custom-input` attribute timing.
 
 ## v0.4.0/2022-06-04

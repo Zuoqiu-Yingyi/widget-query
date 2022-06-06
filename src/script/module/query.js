@@ -44,11 +44,7 @@ export async function initWidgetBlock(data) {
     return getBlockAttrs(data.id)
         .then((attrs) => {
             data.attrs = attrs;
-            if (attrs["custom-sql"] == null) {
-                setBlockAttrs(data.id, {
-                    "custom-type": data.config.query.attribute.widget,
-                });
-            } else data.sql = attrs["custom-sql"];
+            data.sql = attrs["custom-sql"];
 
             // 是否启用自动查询
             if (attrs["custom-query-auto"] === 'true') data.config.query.auto = true;
