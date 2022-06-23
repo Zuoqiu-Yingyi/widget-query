@@ -44,7 +44,7 @@ export async function initWidgetBlock(data) {
     return getBlockAttrs(data.id)
         .then((attrs) => {
             data.attrs = attrs;
-            data.sql = attrs["custom-sql"];
+            data.sql = attrs["custom-sql"] || data.sql;
 
             // 是否启用自动查询
             if (attrs["custom-query-auto"] === 'true') data.config.query.auto = true;

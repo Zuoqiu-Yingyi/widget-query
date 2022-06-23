@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- 修复代码块初始化时默认内容为空的问题 | Fixed the issue that the code block init content is empty.
+
 ## v0.4.1/2022-06-06
 
 - [v0.4.0 <=> v0.4.1](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.4.0...v0.4.1)
