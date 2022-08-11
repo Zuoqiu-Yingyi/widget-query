@@ -36,7 +36,7 @@ export var config = {
             limit: /\s+LIMIT\s+\d+/i, // SQL LIMIT 关键字正则表达式
             sort: /^__(\d+)__(.*)$/i, // 手动排序字段正则表达式
             render: /^__(\w+)__(.*)$/i, // 渲染控制字段正则表达式
-            hex: /^[0-9a-fA-F]+$/, // 16 进制正则表达式 
+            hex: /^[0-9a-fA-F]+$/, // 16 进制正则表达式
             id: /^\d{14}\-[0-9a-z]{7}$/, // 块 ID 正则表达式
             query: /^\s*\{\{(.*)\}\}\s*$/, // 嵌入块正则表达式
         },
@@ -112,6 +112,7 @@ export var config = {
                         'id', // 块 ID
                         'fold', // 是否折叠
                         'style', // 块样式
+                        'scroll', // 阅读位置
                         'updated', // 块更新时间
                         'linewrap', // 代码块是否换行
                         'ligatures', // 代码块是否启用连字符
