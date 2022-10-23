@@ -117,8 +117,9 @@ export var config = {
                         'linewrap', // 代码块是否换行
                         'ligatures', // 代码块是否启用连字符
                         'linenumber', // 代码块是否显示行号
-                        'colgroup', // 表格块列组
+                        'colgroup', // 表格块列数
                         'title-img', // 文档块题头图
+                        'breadcrumb', // 是否渲染嵌入块
                         'heading-fold', // 折叠标题块下级块
                     ],
                     valid: [], // 按照顺序渲染的 IAL 键白名单, 为空则全部渲染
