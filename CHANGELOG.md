@@ -3,6 +3,7 @@
 - 修复代码块初始化时默认内容为空的问题 | Fixed the issue that the code block init content is empty.
 - IAL 忽略记录当前文档浏览位置的属性 `scroll` | IAL ignores the attribute `scroll` which records the current document position.
 - IAL 忽略记录是否显示嵌入块面包屑的属性 `breadcrumb` | IAL ignores the attribute `breadcrumb` whether to display the breadcrumb of embedded block.
+- 文档块的 `markdown` 字段显示文档标题 | The `markdown` field of the document block displays the document title.
 
 ## v0.4.1/2022-06-06
 

@@ -111,16 +111,18 @@ export var config = {
                     ignore: [ // 需渲染的 IAL 键黑名单
                         'id', // 块 ID
                         'fold', // 是否折叠
+                        'type', // <文档块>类型("doc")
                         'style', // 块样式
-                        'scroll', // 阅读位置
+                        'title', // <文档块>文档标题
+                        'scroll', // <文档块>阅读位置
                         'updated', // 块更新时间
-                        'linewrap', // 代码块是否换行
-                        'ligatures', // 代码块是否启用连字符
-                        'linenumber', // 代码块是否显示行号
-                        'colgroup', // 表格块列数
-                        'title-img', // 文档块题头图
-                        'breadcrumb', // 是否渲染嵌入块
-                        'heading-fold', // 折叠标题块下级块
+                        'linewrap', // <代码块>代码块是否换行
+                        'ligatures', // <代码块>代码块是否启用连字符
+                        'linenumber', // <代码块>代码块是否显示行号
+                        'colgroup', // <表格块>表格块列数
+                        'title-img', // <代码块>文档块题头图
+                        'breadcrumb', // <嵌入块>是否渲染嵌入块
+                        'heading-fold', // <嵌入块>折叠标题块下级块
                     ],
                     valid: [], // 按照顺序渲染的 IAL 键白名单, 为空则全部渲染
                 },
@@ -283,6 +285,8 @@ export var config = {
                 }
             },
             markdown: (row, ial, ...args) => {
+                if (row.type === 'd') // 文档块的 markdown 字段显示为标题
+                    row.markdown = ial.title;
                 switch (config.query.limit) {
                     case 'len':
                         return markdown2span(cutString(ReplaceSpace(row.markdown, config.query.space), config.query.maxlen));
