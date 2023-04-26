@@ -12,7 +12,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-[English](./README_en.md)
+简体中文 \| [English](./README_en.md)
 
 </center>
 
@@ -411,7 +411,7 @@ export const config = {
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/lmmxj"><img src="https://avatars.githubusercontent.com/u/13883162?v=4?s=100" width="100px;" alt="lmmxj"/><br /><sub><b>lmmxj</b></sub></a><br /><a href="#ideas-lmmxj" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/frostime"><img src="https://avatars.githubusercontent.com/u/27268127?v=4?s=100" width="100px;" alt="Frostime"/><br /><sub><b>Frostime</b></sub></a><br /><a href="https://github.com/Zuoqiu-Yingyi/widget-query/commits?author=frostime" title="Documentation">📖</a> <a href="https://github.com/Zuoqiu-Yingyi/widget-query/commits?author=frostime" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/frostime"><img src="https://avatars.githubusercontent.com/u/27268127?v=4?s=100" width="100px;" alt="Frostime"/><br /><sub><b>Frostime</b></sub></a><br /><a href="https://github.com/Zuoqiu-Yingyi/widget-query/commits?author=frostime" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
