@@ -1,6 +1,6 @@
 # widget-query
 
-<center>
+<div align="center">
 
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Zuoqiu-Yingyi/widget-query?include_prereleases&style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/releases/latest)
 [![GitHub Release Date](https://img.shields.io/github/release-date/Zuoqiu-Yingyi/widget-query?style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/releases/latest)
@@ -12,10 +12,12 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+---
 [简体中文](./README.md) \| English
 
-</center>
+</div>
 
+---
 A widget that renders the query results of the Siyuan Notes database in tabular style.
 
 It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.com/siyuan-note/bazaar). If you like this widget, welcome to light up ⭐ for this project!

@@ -1,6 +1,7 @@
 # 更改日志 | CHANGE LOG
 
 - 默认查询结果中的 `box` 字段显示笔记本名称 | The `box` field in the default query result displays the notebook name.
+- 优化 README 徽标 | Optimize README badges.
 
 ## v0.4.2/2022-10-07
 

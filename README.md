@@ -1,6 +1,6 @@
 # widget-query
 
-<center>
+<div align="center">
 
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Zuoqiu-Yingyi/widget-query?include_prereleases&style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/releases/latest)
 [![GitHub Release Date](https://img.shields.io/github/release-date/Zuoqiu-Yingyi/widget-query?style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/releases/latest)
@@ -12,10 +12,12 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+---
 简体中文 \| [English](./README_en.md)
 
-</center>
+</div>
 
+---
 一个将思源笔记数据库查询结果以表格样式渲染的挂件
 
 现已上架[思源笔记社区集市](https://github.com/siyuan-note/bazaar), 如果您喜欢本挂件, 欢迎为本项目点亮一个⭐!
