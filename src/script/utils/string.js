@@ -147,7 +147,7 @@ export function markdown2span(markdown, mode = 'raw', reg = /[\r\n]+/g, br = '<b
                 prefix = '**';
                 suffix = '**';
                 break;
-            case 'raw': // 仅替换换行符
+            case 'raw': // 仅替换换行符与列表分隔符
             default:
                 let temp = markdown.replaceAll('|', '\\|');
                 return temp.replace(reg, br);

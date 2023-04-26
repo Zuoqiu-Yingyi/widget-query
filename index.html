@@ -77,15 +77,15 @@ import {
 // console.log(window);
 try {
 
-    var icon = document.getElementById('icon');
-    var query = document.getElementById('query');
-    var checkbox = document.getElementById('checkbox');
-    var mode = window.top.siyuan.config.appearance.mode; // 主题模式, 0: 明亮, 1: 暗黑
-    var node = window.frameElement.parentElement.parentElement;
+    const icon = document.getElementById('icon');
+    const query = document.getElementById('query');
+    const checkbox = document.getElementById('checkbox');
+    const mode = window.top.siyuan.config.appearance.mode; // 主题模式, 0: 明亮, 1: 暗黑
+    const node = window.frameElement.parentElement.parentElement;
     var status = 0;
-    var data = {
-        config: config, // 配置选项
-        node: node,
+    const data = {
+        config, // 配置选项
+        node,
         previous_id: null, // 前置代码块 ID
         id: node.dataset.nodeId || null, // 挂件块 ID
         next_id: null, // 后置表格块 ID

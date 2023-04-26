@@ -1,32 +1,50 @@
 /* 杂项工具 */
-import { getNotebookConf } from "./api.js";
+import { lsNotebooks } from "./api.js";
 export {
     merge, // 递归合并对象
-    getNotebookName, // 获取笔记本名称
+    notebookId2Name, // 获取笔记本名称
 }
 
-var notebookNames = {};
+const notebooks = {
+    list: [], // 笔记本列表
+    map: new Map(), // 笔记本 ID -> 笔记本
+};
+updateNotebooks();
 
-function getNotebookName(notebookId) {
-    if (!(notebookId in notebookNames)) {
-        updateNotebookNames(notebookId);
+/**
+ * 通过 ID 获取笔记本名称
+ * @params {string} id: 笔记本 ID
+ * @return {string}: 笔记本名称
+ * @return {null}: 未找到匹配的笔记本
+ */
+function notebookId2Name(id) {
+    if (notebooks.map.has(id)) {
+        return notebooks.map.get(id).name;
     }
-    return notebookNames?.[notebookId];
+    else {
+        updateNotebooks();
+        return null;
+    }
 }
 
 /**
- * 更新笔记本名称
- * @param {string} notebookId 
+ * 更新笔记本列表
  */
-function updateNotebookNames(notebookId) {
-    if (notebookId) {
-        getNotebookConf(notebookId).then((conf) => {
-            let name = conf?.name;
-            if (name) {
-                notebookNames[notebookId] = name;
-            }
-        });
+async function updateNotebooks() {
+    if (window.top?.siyuan?.notebooks?.length > 0) {
+        notebooks.list = window.top.siyuan.notebooks;
     }
+    else {
+        const data = await lsNotebooks();
+        if (data?.notebooks) {
+            notebooks.list = data.notebooks;
+        }
+        else return;
+    }
+    notebooks.map.clear();
+    notebooks.list.forEach(notebook => {
+        notebooks.map.set(notebook.id, notebook);
+    });
 }
 
 

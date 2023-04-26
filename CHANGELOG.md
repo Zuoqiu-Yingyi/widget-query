@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- 默认查询结果中的 `box` 字段显示笔记本名称 | The `box` field in the default query result displays the notebook name.
+
 ## v0.4.2/2022-10-07
 
 - [v0.4.1 <=> v0.4.2](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.4.1...v0.4.2)

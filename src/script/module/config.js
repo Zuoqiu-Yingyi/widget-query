@@ -1,6 +1,9 @@
 /* 配置文件(可以被 data/widgets/custom.js 覆盖) */
 
-import { merge, getNotebookName } from './../utils/misc.js';
+import {
+    merge,
+    notebookId2Name,
+} from './../utils/misc.js';
 
 import {
     cutString,
@@ -14,7 +17,7 @@ import {
 } from './../utils/string.js';
 
 import {
-    templateParse
+    templateParse,
 } from './../utils/templateParser.js';
 
 export var config = {
@@ -356,9 +359,9 @@ export var config = {
             },
             box: (row, ial, ...args) => {
                 // return `\`${row.box}\``;
-                let name = getNotebookName(row.box);
+                const name = notebookId2Name(row.box);
                 if (name) {
-                    return `${name}`;
+                    return markdown2span(name);
                 } else {
                     return `\`${row.box}\``;
                 }
