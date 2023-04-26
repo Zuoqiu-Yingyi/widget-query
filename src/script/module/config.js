@@ -1,6 +1,6 @@
 /* 配置文件(可以被 data/widgets/custom.js 覆盖) */
 
-import { merge } from './../utils/misc.js';
+import { merge, getNotebookName } from './../utils/misc.js';
 
 import {
     cutString,
@@ -355,7 +355,13 @@ export var config = {
                 return `\`${row.hash}\``;
             },
             box: (row, ial, ...args) => {
-                return `\`${row.box}\``;
+                // return `\`${row.box}\``;
+                let name = getNotebookName(row.box);
+                if (name) {
+                    return `${name}`;
+                } else {
+                    return `\`${row.box}\``;
+                }
             },
             path: (row, ial, ...args) => {
                 return `\`${row.path}\``;

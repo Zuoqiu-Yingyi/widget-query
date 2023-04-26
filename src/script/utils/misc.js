@@ -1,7 +1,34 @@
 /* 杂项工具 */
+import { getNotebookConf } from "./api.js";
 export {
     merge, // 递归合并对象
+    getNotebookName, // 获取笔记本名称
 }
+
+var notebookNames = {};
+
+function getNotebookName(notebookId) {
+    if (!(notebookId in notebookNames)) {
+        updateNotebookNames(notebookId);
+    }
+    return notebookNames?.[notebookId];
+}
+
+/**
+ * 更新笔记本名称
+ * @param {string} notebookId 
+ */
+function updateNotebookNames(notebookId) {
+    if (notebookId) {
+        getNotebookConf(notebookId).then((conf) => {
+            let name = conf?.name;
+            if (name) {
+                notebookNames[notebookId] = name;
+            }
+        });
+    }
+}
+
 
 // REF [js - 对象递归合并merge - zc-lee - 博客园](https://www.cnblogs.com/zc-lee/p/15873611.html)
 function isObject(obj) {
