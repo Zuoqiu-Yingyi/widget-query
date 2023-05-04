@@ -14,6 +14,7 @@ import {
     timeFormat,
     timestampFormat,
     isEmptyString,
+    removeSuperBlockMarks,
 } from './../utils/string.js';
 
 import {
@@ -42,6 +43,7 @@ export var config = {
             hex: /^[0-9a-fA-F]+$/, // 16 进制正则表达式
             id: /^\d{14}\-[0-9a-z]{7}$/, // 块 ID 正则表达式
             query: /^\s*\{\{(.*)\}\}\s*$/, // 嵌入块正则表达式
+            super: /^\{\{\{row|col%$/im, // 超级块标志
         },
         attribute: { // 块属性
             code: 'query-code', // 查询代码块
@@ -77,6 +79,12 @@ export var config = {
             id: 'link', // 块 ID
             parent_id: 'link', // 块的上级块 ID
             root_id: 'link', // 块所在文档 ID
+
+            markdown: { // markdown 字段渲染
+                s: { // 超级块渲染方案
+                    marks: true, // 是否显示超级块的标志 {{{ 与 }}}
+                },
+            },
 
             ial: { // 内联属性样式
                 /**形状
@@ -290,6 +298,10 @@ export var config = {
             markdown: (row, ial, ...args) => {
                 if (row.type === 'd') // 文档块的 markdown 字段显示为标题
                     row.markdown = ial.title;
+
+                if (!config.query.render.markdown.s.marks) { // 移除超级块标志符
+                    row.markdown = removeSuperBlockMarks(row.markdown);
+                }
                 switch (config.query.limit) {
                     case 'len':
                         return markdown2span(cutString(ReplaceSpace(row.markdown, config.query.space), config.query.maxlen));

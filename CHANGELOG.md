@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- 添加配置选项 `config.query.render.markdown.s.marks` 设置是否渲染超级块标志符 | Add configuration option `config.query.render.markdown.s.marks` to define whether to render superblock marks.
+
 ## v0.4.3/2023-04-26
 
 - [v0.4.2 ... v0.4.3](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.4.2...v0.4.3)

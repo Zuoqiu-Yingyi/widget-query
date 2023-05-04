@@ -166,3 +166,15 @@ export function markdown2span(markdown, mode = 'raw', reg = /[\r\n]+/g, br = '<b
 export function utf32Decode(hex) {
     return String.fromCodePoint(parseInt(hex, 16));
 }
+
+/**
+ * 移除超级块标志符
+ * @params {string} markdown: 含有超级块标志符的 markdown 字符串
+ * @return {string}: 移除超级块标志符的 markdown 字符串
+ */
+export function removeSuperBlockMarks(markdown) {
+    return markdown
+        .split('\n')
+        .filter(row => row !== '}}}' && row !== '{{{row' && row !== '{{{col')
+        .join('\n');
+}
