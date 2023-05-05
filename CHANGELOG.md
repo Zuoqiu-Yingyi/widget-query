@@ -3,6 +3,7 @@
 - 添加配置选项 `config.query.render.markdown.s.marks` 设置是否渲染超级块标志符 | Add configuration option `config.query.render.markdown.s.marks` to define whether to render superblock marks.
 - 调整挂件默认样式 | Adjust the default style of the widget.
 - 为自动查询复选框添加提示 | Add a tooltip to the auto query checkbox.
+- 修复表格列样式设置无效问题 | Fix the issue that the table column style setting is invalid.
 
 ## v0.4.3/2023-04-26
 

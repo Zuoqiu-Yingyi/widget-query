@@ -220,14 +220,15 @@ export async function widgetBlock(data) {
         return -1;
     }
 
-    let markdown = [];
+    const markdown = [];
+    const colgroup = [];
 
     if (data.config.query.regs.blocks.test(data.sql)) {
         // 匹配指定正则的 SQL 查询, 是 `SELECT * FROM blocks ...` 语句
 
-        let header = ['|']; // 表头
-        let align = ['|']; // 对齐样式
-        let ial_keys = data.config.query.render.ial.fields.forced.length
+        const header = ['|']; // 表头
+        const align = ['|']; // 对齐样式
+        const ial_keys = data.config.query.render.ial.fields.forced.length
             ? data.config.query.render.ial.fields.forced
             : []; // IAL 的有效键名
 
@@ -236,7 +237,7 @@ export async function widgetBlock(data) {
             // 启用查询结果过滤
             data.rows = data.rows.filter(row => {
                 let flag_filtrate = false; // 是否过滤
-                for (let handler of data.config.query.filter.blocks.handlers) {
+                for (const handler of data.config.query.filter.blocks.handlers) {
                     if (handler(row, data)) {
                         flag_filtrate = true;
                         break;
@@ -250,22 +251,23 @@ export async function widgetBlock(data) {
         if (data.config.query.index.enable) {
             // 是否启用编号
             header.push("    |");
-            align.push(" -: |");
+            align.push(" --: |");
+            colgroup.push("");
         }
-        for (let field of data.config.query.fields) {
+        for (const field of data.config.query.fields) {
             // 根据自定义字段列表，构造表头
             if (field === 'ial') {
                 if (ial_keys.length === 0) {
-                    let ial_keys_raw = new Set(data.config.query.rows.ials.keys(data.rows, ialParse));
-                    let ial_keys_ignore = new Set(data.config.query.render.ial.fields.ignore);
-                    let ial_keys_valid = data.config.query.render.ial.fields.valid;
+                    const ial_keys_raw = new Set(data.config.query.rows.ials.keys(data.rows, ialParse));
+                    const ial_keys_ignore = new Set(data.config.query.render.ial.fields.ignore);
+                    const ial_keys_valid = data.config.query.render.ial.fields.valid;
                     if (ial_keys_valid.length > 0) { // 白名单非空, 白名单 - 黑名单是有效的
-                        for (let key of ial_keys_valid) {
+                        for (const key of ial_keys_valid) {
                             if (ial_keys_raw.has(key) && !ial_keys_ignore.has(key)) ial_keys.push(key);
                         }
                     }
                     else { // 白名单为空时，黑名单外是有效的
-                        for (let key of Array.from(ial_keys_raw).sort()) {
+                        for (const key of Array.from(ial_keys_raw).sort()) {
                             if (!ial_keys_ignore.has(key)) ial_keys.push(key);
                         }
                     }
@@ -274,7 +276,7 @@ export async function widgetBlock(data) {
                 switch (data.config.query.render.ial.shape) {
                     case 'columns':
                         ial_keys.forEach((key) => {
-                            header.push(` ${markdown2span(key, data.config.query.render.ial.style.columns.key)}${data.config.query.style.column[field]} |`);
+                            header.push(` ${markdown2span(key, data.config.query.render.ial.style.columns.key)} |`);
                             align.push(` ${data.config.query.style.align[field]} |`);
                         });
                         continue;
@@ -283,8 +285,9 @@ export async function widgetBlock(data) {
                         break;
                 }
             }
-            header.push(` ${field}${data.config.query.style.column[field]} |`);
+            header.push(` ${field} |`);
             align.push(` ${data.config.query.style.align[field]} |`);
+            colgroup.push(data.config.query.style.column[field]);
         }
         markdown.push(header.join(""));
         markdown.push(align.join(""));
@@ -293,11 +296,11 @@ export async function widgetBlock(data) {
             // REF [JS几种数组遍历方式以及性能分析对比 | Dailc的个人主页](https://dailc.github.io/2016/11/25/baseKnowlenge_javascript_jsarrayGoThrough.html)
             for (let i = 0, len = data.rows.length; i < len; i++) {
                 // 每一条查询记录
-                let row = data.rows[i];
+                const row = data.rows[i];
                 // console.log(row);
 
                 // 解析内联属性列表(inline attribute list, IAL)
-                let ial = ialParse(row.ial);
+                const ial = ialParse(row.ial);
                 if (ial.icon) {
                     if (data.config.query.regs.hex.test(ial.icon)) {
                         // 如果是 UTF-32 编码的字符
@@ -308,11 +311,11 @@ export async function widgetBlock(data) {
                     }
                 }
 
-                let row_markdown = ['|'];
+                const row_markdown = ['|'];
                 if (data.config.query.index.enable) {
                     row_markdown.push(` ${i + 1} |`);
                 }
-                for (let field of data.config.query.fields) {
+                for (const field of data.config.query.fields) {
                     // 根据自定义字段列表，构造表格
                     row_markdown.push(` ${data.config.query.handler[field](row, ial, ial_keys)} |`);
                 }
@@ -329,20 +332,22 @@ export async function widgetBlock(data) {
         let header_row = null;
         if (data.rows.length > 0) {
             header_row = data.rows[0];
-            let header = ['|']; // 表头
-            let align = ['|']; // 对齐样式
-            let renderer = {}; // 渲染器
-            let keys = Object.keys(header_row);
+            const header = ['|']; // 表头
+            const align = ['|']; // 对齐样式
+            const renderer = {}; // 渲染器
+            const keys = Object.keys(header_row);
             if (data.config.query.index.enable) {
                 header.push('    |');
-                align.push(' -: |');
+                align.push(' --: |');
+                colgroup.push("");
             }
-            for (var key of keys) {
+            for (const key of keys) {
                 if (key.startsWith(data.config.query.prefix.hidden)) // 不显示该字段
                     continue;
 
-                header.push(` ${data.config.query.default.name(key)}${data.config.query.default.style.column} |`);
+                header.push(` ${data.config.query.default.name(key)} |`);
                 align.push(` ${data.config.query.default.style.align} |`);
+                colgroup.push(data.config.query.default.style.column);
                 renderer[key] = data.config.query.default.handler(key);
             }
             markdown.push(header.join("")); // 表头
@@ -379,17 +384,18 @@ export async function widgetBlock(data) {
     }
 
     data.markdown = markdown;
+    data.colgroup = colgroup;
     // console.log(data.markdown);
     return 0;
 }
 
 export async function tableBlock(data) {
     // 将查询结果渲染到页面中
-    let next_block = data.node.nextElementSibling;
+    const next_block = data.node.nextElementSibling;
     // console.log(next_block);
 
     /* 获取使用 ID 关联的表格 */
-    let table_id = data.attrs['custom-output']; // 表格块 ID
+    const table_id = data.attrs['custom-output']; // 表格块 ID
     let table_block; // 表格块
     let table_attrs, id, fn;
 
@@ -408,12 +414,13 @@ export async function tableBlock(data) {
     else id = null; // 下一节点不为查询结果, 且不存在关联的表格块, 那么需要在下方插入新的表格块
 
     /* 表格块的 IAL */
-    let table_ial = {
+    const table_ial = {
+        'colgroup': data.colgroup.join('|'),
         'custom-type': data.config.query.attribute.table,
     };
     if (data.config.query.style.table.enable) {
         // 添加 config 中设置的自定义属性
-        for (let attribute of data.config.query.style.table.attributes) {
+        for (const attribute of data.config.query.style.table.attributes) {
             if (attribute.enable) table_ial[attribute.key] = attribute.value;
         }
     }
@@ -465,10 +472,10 @@ async function mergeConfig(data) {
                 if (key.startsWith("custom-query-")) {
                     try {
                         // 按照-分割,依次解析
-                        let keys = key.substring(7).replaceAll("-", ".");
+                        const keys = key.substring(7).replaceAll("-", ".");
 
                         // 获取表达式
-                        let expr = `data.config.${keys}`;
+                        const expr = `data.config.${keys}`;
 
                         // 替换转义字符
                         v = v.replaceAll("&quot;", '"');

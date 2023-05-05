@@ -137,7 +137,7 @@ export var config = {
                         'linewrap', // <代码块>代码块是否换行
                         'ligatures', // <代码块>代码块是否启用连字符
                         'linenumber', // <代码块>代码块是否显示行号
-                        'colgroup', // <表格块>表格块列数
+                        'colgroup', // <表格块>表格块列样式
                         'title-img', // <代码块>文档块题头图
                         'breadcrumb', // <嵌入块>是否渲染嵌入块
                         'heading-fold', // <嵌入块>折叠标题块下级块
@@ -196,7 +196,7 @@ export var config = {
                 ],
             },
             column: {
-                // 列样式, 自定义宽度的字段可以设置为 '{: style="width: 512px"}'
+                // 列样式, 默认为不自动换行, 需要自定义宽度的字段可以设置为 'width: 512px;'
                 content: '',
                 fcontent: '',
                 markdown: '',
@@ -220,29 +220,29 @@ export var config = {
                 ial: '',
                 sort: '',
             },
-            align: { // 查询结果字段对齐样式(':-' 左对齐, ':-:' 居中, '-:' 右对齐)
-                content: ':-',
-                fcontent: ':-',
-                markdown: ':-',
+            align: { // 查询结果字段对齐样式(':--' 左对齐, ':-:' 居中, '--:' 右对齐, '---' 标题居中 & 内容左对齐)
+                content: '---',
+                fcontent: '---',
+                markdown: '---',
                 created: ':-:',
                 updated: ':-:',
                 type: ':-:',
-                hpath: ':-',
+                hpath: '---',
 
                 id: ':-:',
                 parent_id: ':-:',
                 root_id: ':-:',
                 hash: ':-:',
                 box: ':-:',
-                path: ':-',
-                name: ':-',
-                alias: ':-',
-                memo: ':-',
-                tag: ':-',
-                length: '-:',
-                subtype: '-:',
-                ial: ':-',
-                sort: '-:',
+                path: '---',
+                name: '---',
+                alias: '---',
+                memo: '---',
+                tag: '---',
+                length: '--:',
+                subtype: '--:',
+                ial: '---',
+                sort: '--:',
             },
         },
         filter: {
@@ -572,8 +572,8 @@ export var config = {
                 }
             },
             style: {
-                column: '',
-                align: ':-',
+                column: '', // 列样式
+                align: '---', // 对齐样式
             },
         },
     },
