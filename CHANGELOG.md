@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+## v0.4.4/2023-05-06
+
+- [v0.4.3 ... v0.4.4](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.4.3...v0.4.4)
 - 添加配置选项 `config.query.render.markdown.s.marks` 设置是否渲染超级块标志符 | Add configuration option `config.query.render.markdown.s.marks` to define whether to render superblock marks.
 - 调整挂件默认样式 | Adjust the default style of the widget.
 - 为自动查询复选框添加提示 | Add a tooltip to the auto query checkbox.
