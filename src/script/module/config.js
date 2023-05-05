@@ -24,16 +24,23 @@ import {
 export var config = {
     token: '', // API token, 无需填写
     query: { // 查询配置
-        width: '8em', // 挂件宽度
-        height: '2em', // 挂件高度
-        radius: '2em', // 挂件圆角
         auto: false, // 是否在加载完成后自动运行一次查询
-        color: {
-            default: 'rgb(255, 255, 255)', // 默认颜色
-            success: 'rgb(183, 223, 185)', // 成功颜色
-            info: 'rgb(166, 213, 250)', // 信息颜色
-            warning: 'rgb(255, 213, 153)', // 警告颜色
-            error: 'rgb(250, 179, 174)', // 错误颜色
+        theme: { // 挂件主题样式
+            width: '8em', // 挂件宽度
+            height: '2em', // 挂件高度
+            radius: '2em', // 挂件圆角
+            fontSize: '1em', // 文本尺寸
+
+            color: { // 前景颜色
+                default: 'var(--b3-theme-on-surface)', // 默认颜色
+            },
+            backgroundColor: { // 背景颜色
+                default: 'var(--b3-theme-surface)', // 默认颜色
+                error: 'var(--b3-card-error-background)', // 错误颜色
+                warning: 'var(--b3-card-warning-background)', // 警告颜色
+                info: 'var(--b3-card-info-background)', // 信息颜色
+                success: 'var(--b3-card-success-background)', // 成功颜色
+            },
         },
         regs: {
             blocks: /^\s*SELECT\s+\*\s+FROM\s+(blocks|blocks_fts|blocks_fts_case_insensitive)\s+.*/i, // 块查询的正则表达式

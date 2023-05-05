@@ -28,15 +28,34 @@ export async function updateAttrs(data, attrs) {
 }
 
 export async function initWidgetBlock(data) {
-    let query = window.document.getElementById("query");
-    query.style.borderRadius = data.config.query.radius;
-    window.document.body.style.borderRadius = data.config.query.radius;
-    // window.document.querySelector('html').style.width = data.config.query.width;
-    // window.document.querySelector('html').style.height = data.config.query.height;
+    /* 引入全局主题配置文件 */
+    // const themeDefaultStyle = window.parent.document.getElementById('themeDefaultStyle');
+    // const themeStyle = window.parent.document.getElementById('themeStyle');
 
-    /* 设置块样式 */
-    window.frameElement.style.width = data.config.query.width;
-    window.frameElement.style.height = data.config.query.height;
+    // if (themeDefaultStyle) {
+    //     document.head.appendChild(themeDefaultStyle.cloneNode(true));
+    // }
+    // if (themeStyle) {
+    //     document.head.appendChild(themeStyle.cloneNode(true));
+    // }
+
+    const query = window.document.getElementById("query");
+    const checkbox = window.document.getElementById("checkbox");
+
+    query.style.fontSize = data.config.query.theme.fontSize; // 按钮字号
+    query.style.borderRadius = data.config.query.theme.radius; // 按钮圆角弧度
+    query.style.color = data.config.query.theme.color.default; // 按钮文本颜色
+    query.style.backgroundColor = data.config.query.theme.backgroundColor.default; // 按钮背景颜色
+
+    window.document.body.style.color = data.config.query.theme.color.default; // 前景颜色
+
+    window.document.documentElement.style.fontSize = `${data.fontSize}px`; // 默认字号跟随思源编辑器
+    // window.document.documentElement.style.width = data.config.query.width;
+    // window.document.documentElement.style.height = data.config.query.height;
+
+    /* 设置挂件块样式 */
+    window.frameElement.style.width = data.config.query.theme.width;
+    window.frameElement.style.height = data.config.query.theme.height;
     window.frameElement.style.border = 'none';
     window.frameElement.style.backgroundColor = 'transparent';
 
