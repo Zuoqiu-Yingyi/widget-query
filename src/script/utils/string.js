@@ -20,7 +20,7 @@ export function HTMLEncode(text) {
     // REF: [javascript处理HTML的Encode(转码)和Decode(解码)总结 - 孤傲苍狼 - 博客园](https://www.cnblogs.com/xdp-gacl/p/3722642.html)
     let temp = document.createElement("div");
     temp.textContent = text;
-    return temp.innerHTML;;
+    return temp.innerHTML;
 }
 
 /* HTML 反转义 */
@@ -28,7 +28,7 @@ export function HTMLDecode(text) {
     // REF: [javascript处理HTML的Encode(转码)和Decode(解码)总结 - 孤傲苍狼 - 博客园](https://www.cnblogs.com/xdp-gacl/p/3722642.html)
     let temp = document.createElement("div");
     temp.innerHTML = text;
-    return temp.textContent;;
+    return temp.textContent;
 }
 
 /**
@@ -106,47 +106,83 @@ export function markdown2span(markdown, mode = 'raw', reg = /[\r\n]+/g, br = '<b
             case 's': // 该字段渲染为删除线
                 prefix = '~~';
                 suffix = '~~';
+                // prefix = '<span data-type="s">';
+                // suffix = '</span>';
                 break;
+
             case 'u': // 该字段渲染为下划线
                 prefix = '<u>';
                 suffix = '</u>';
+                // prefix = '<span data-type="u">';
+                // suffix = '</span>';
                 break;
+
             case 'em': // 该字段渲染为斜体
                 prefix = '*';
                 suffix = '*';
+                // prefix = '<span data-type="em">';
+                // suffix = '</span>';
                 break;
+
             case 'tag': // 该字段渲染为标签
                 prefix = '#';
                 suffix = '#';
+                // prefix = '<span data-type="tag">';
+                // suffix = '</span>';
                 break;
+
             case 'kbd': // 该字段渲染为按键样式
                 prefix = '<kbd>';
                 suffix = '</kbd>';
+                // prefix = '<span data-type="kbd">';
+                // suffix = '</span>';
                 break;
+
             case 'sub': // 该字段渲染为下标样式
                 prefix = '~';
                 suffix = '~';
+                // prefix = '<span data-type="sub">';
+                // suffix = '</span>';
                 break;
+
             case 'sup': // 该字段渲染为上标样式
                 prefix = '^';
                 suffix = '^';
+                // prefix = '<span data-type="sup">';
+                // suffix = '</span>';
                 break;
+
             case 'code': // 该字段渲染为行内代码
-                prefix = '`';
-                suffix = '`';
+                // prefix = '`';
+                // suffix = '`';
+
+                // 使用 <span> 可以保留内部的 ` 符号
+                prefix = '<span data-type="code">';
+                suffix = '</span>';
                 break;
+
             case 'mark': // 该字段渲染为标记
                 prefix = '==';
                 suffix = '==';
+                // prefix = '<span data-type="mark">';
+                // suffix = '</span>';
                 break;
+
             case 'math': // 该字段渲染为公式
                 prefix = '$';
                 suffix = '$';
+                // prefix = '<span data-type="inline-math" data-content="';
+                // markdown = markdown.replaceAll('"', '&quot;');
+                // suffix = '"></span>';
                 break;
+
             case 'strong': // 该字段渲染为粗体
                 prefix = '**';
                 suffix = '**';
+                // prefix = '<span data-type="strong">';
+                // suffix = '</span>';
                 break;
+
             case 'raw': // 仅替换换行符与列表分隔符
             default:
                 let temp = markdown.replaceAll('|', '\\|');

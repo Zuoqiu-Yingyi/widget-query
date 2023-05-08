@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- 优化行内代码渲染方案 | Optimize the inline code rendering scheme.
+
 ## v0.4.4/2023-05-06
 
 - [v0.4.3 ... v0.4.4](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.4.3...v0.4.4)
