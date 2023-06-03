@@ -1,6 +1,5 @@
-# widget-query
-
 <div align="center">
+<img src="./icon.png" style="width: 8em; height: 8em;">
 
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Zuoqiu-Yingyi/widget-query?include_prereleases&style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/releases/latest)
 [![GitHub Release Date](https://img.shields.io/github/release-date/Zuoqiu-Yingyi/widget-query?style=flat-square)](https://github.com/Zuoqiu-Yingyi/widget-query/releases/latest)
@@ -13,80 +12,64 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ---
-简体中文 \| [English](./README_en.md)
+[简体中文](./README-zh-Hans.md) \| English
 
 </div>
 
 ---
-一个将思源笔记数据库查询结果以表格样式渲染的挂件
+# widget-query
 
-现已上架[思源笔记社区集市](https://github.com/siyuan-note/bazaar), 如果您喜欢本挂件, 欢迎为本项目点亮一个⭐!
+A widget that renders the query results of the Siyuan Notes database in tabular style.
 
-思源数据库表与字段详情请见: [思源数据库表与字段 · 语雀](https://www.yuque.com/siyuannote/docs/go7uom)
+It is now on the shelves of the [Siyuan Notes Community Bazaar](https://github.com/siyuan-note/bazaar). If you like this widget, welcome to light up ⭐ for this project!
 
-## 预览
+## PREVIEW
 
-![preview-relative](./preview.png)<br />​![preview-location](/widgets/Query/preview.png)
+![preview](./preview.png)
 
-背景颜色状态指示:
+Background color status indication:
 
-* 白色:
+* White:
 
-  * 初始化
-  * 正在处理查询
-* 绿色
+  * Initialization.
+  * Processing query.
+* Green:
 
-  * 查询成功
-* 蓝色
+  * Query success.
+* Blue:
 
-  * 请继续操作
-* 黄色
+  * Please continue to operate.
+* Yellow:
 
-  * 查询结果为空
-* 红色
+  * Query result is empty.
+* Red:
 
-  * SQL 语句错误
-  * 未知错误
+  * SQL SQL statement error.
+  * Unknown error.
 
-## 功能
+## FUNCTION
 
-1. 点选自动查询复选框, 下次打开该页面时自动进行一次查询
-2. 为挂件块设置自定义属性 <kbd>input</kbd> 可以指定某个代码块或嵌入块中的 SQL 语句作为查询语句
+1. Click the Auto query check box to automatically query once the next time you open the page.
+2. Set custom attribute <kbd>input</kbd> for a widget block can specify the content of a SQL code block or an embedded block as a query statement.
 
-    * 例如在其他文档中有一个代码块或嵌入块 ID 为 `20220418210605-ibussa1`, 那么为挂件块设置自定义块属性 <kbd>input</kbd>: `20220418210605-ibussa1` 可以引用该块的 SQL 语句进行查询
-    * 只有挂件块前一个块不是具有自定义属性 <kbd>type</kbd>: `query-code` 的代码块时才会触发
-2. 为挂件块设置自定义属性 <kbd>output</kbd> 可以指定某个表格块作为查询结果展示块
+    * For example, in other documents there is a code block or an embedded block ID which ID is `20220418210605-ibussa1`, then set the custom block attribute <kbd>input</kbd>: `20220418210605-ibussa1` for the widget block can reference the block's SQL statement for query.
+    * Only if the pre-block of the widget block is not a code block with the custom attribute <kbd>type</kbd>: `query-code`.
+2. Set custom attribute <kbd>output</kbd> for a widget block can specify a table block as a display block for query results.
 
-    * 例如在其他文档中有一个表格块 ID 为 `20220604112815-sfiwyi7`, 那么为挂件块设置自定义块属性 <kbd>output</kbd>: `20220604112815-sfiwyi7` 可以将查询结果渲染到该表格中
-    * 只有挂件块后一个块不是具有自定义属性 <kbd>type</kbd>: `query-table` 的表格块时才会触发
-3. 符合正则表达式 `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` 的 SQL 语句将启用<kbd>默认块查询模式</kbd>
+    * For example, in other documents there is a table block ID which ID is `20220604112815-sfiwyi7`, then set the custom block attribute <kbd>output</kbd>: `20220604112815-sfiwyi7` for the widget block can render the query results into the table.
+    * Only if the post-block of the widget block is not a table block with the custom attribute <kbd>type</kbd>: `query-table`.
+3. SQL statements that conform to the regular expression `^\s*SELECT\s+\*\s+FROM\s+blocks\s+.*` will enable the default block query mode.
 
-    * 该正则表达式在 `/src/script/module/config.js` 文件中 `config.query.regs.blocks` 定义
-    * 示例: `SELECT * FROM blocks WHERE content LIKE '%内容块%'`
-    * 该模式下, 查询结果渲染样式将以如下配置选项进行控制
+    * This regular expression is configured in `config.query.regs.blocks` in `/src/script/module/config.js`
+    * Example: `SELECT * FROM blocks WHERE content LIKE '%Content block%'`
+    * In this mode, the query result rendering style is controlled with the following configuration options.
 
-      * |字段|字段说明|字段值|字段值说明|
-        | -------------------------------------------| -------------------------------------------------------------------------------------------------------------------------------------------------------------| ---------------------------------------------------------------------| ----------------------------------------------------------------------------------|
-        |`config.query.render.*`|定义部分字段渲染样式<br />超链接样式形如 `[锚文本](siyuan://blocks/<块ID>)`, 不会显示在反链面板中<br />块引用样式形如 `((<块ID> "锚文本"))`, 会显示在反面面板中|`'link'`<br />`'ref'`|以超链接形式渲染字段<br />以块引用形式渲染字段|
-        |`config.query.render.ial.shape`|定义块属性列表 `IAL` 排列方式<br />一列中分行显示<br />一行中分列显示<br />|`'rows'`<br />`'columns'`||
-        |`config.query.render.ial.fields.forced`|定义强制渲染的 `IAL` 属性名, 若为空数组则使用黑白名单控制|`['属性名', ...]`||
-        |`config.query.render.ial.fields.ignore`|定义不渲染的 `IAL` 属性名(黑名单), 优先级比白名单高|`['属性名', ...]`||
-        |`config.query.render.ial.fields.ignore`|定义可渲染的 `IAL` 属性名(白名单), 若为空则渲染黑名单外的所有字段|`['属性名', ...]`||
-        |`config.query.limit`|定义 `content` 或 `markdown` 字段查询结果显示样式|`null`<br />`'row'`<br />`'len'`<br />|无限制<br />限制行数<br />限制长度|
-        |`config.query.maxlen`|定义 `content` 或 `markdown` 字段查询结果最大长度<br />|正整数|`config.query.limit: 'len'` 时启用|
-        |`config.query.maxrow`|定义 `content` 或 `markdown` 字段查询结果最大行数<br />|正整数|`config.query.limit: 'row'` 时启用|
-        |`config.query.fields`|定义查询结果需要显示的字段与字段排列顺序|`['字段名', ...]`|字段名详情请参考 [blocks](https://www.yuque.com/siyuannote/docs/go7uom#276bd8cf)|
-        |`config.query.style.table.attributes`|定义查询结果表格的块属性, 可用于设置自定义样式|`[{enable: true/false, key: '块属性名', value: '块属性值'}, ...]`||
-        |`config.query.style.column.*`|定义查询结果表格某一列的样式|`{: style="width: 512px"}`|指定查询结果某一列的宽度|
-        |`config.query.style.align.*`|定义查询结果表格某一列的对齐方式|`:-`<br />`:-:`<br />`-:`|左对齐<br />居中<br />右对齐|
-        |`config.query.filter.blocks`|定义过滤器序列, 过滤一些查询结果|`{enable: true/flase, handlers: [(row, data) => {}, ...]}`|需要过滤的返回 `true`, 需要保留的返回 `false`|
-        |`config.query.handler.*`|定义具体字段值的处理函数|`(row, ial) => {}`|`row`: 当前记录<br />`ial`: 当前查询记录解析后的内联属性列表|
-        |`config.query.map.*`|查询结果映射表, 将某些查询结果字段值替换为人类可读的字段|||
-4. 不符合<kbd>默认块查询模式</kbd>的查询均为<kbd>普通查询模式</kbd>
+      * **TODO**
+4. Queries that do not conform to the <kbd>default block query mode</kbd> are <kbd>normal query mode</kbd>
 
-    * 示例
+    * Example:
 
-      * 查询帮助文档 `请从这里开始` 及其下级所有的文档
+      * Query the help document `请从这里开始` and all of its subordinate documents.
 
         ```sql
         SELECT
@@ -101,20 +84,7 @@
             b.path
         LIMIT 10
         ```
-
-        ||文档标题|文档路径|
-        | ---: | :---------------------------------------------------------------| :----------------------------------------------|
-        |1|[请从这里开始](siyuan://blocks/20200812220555-lj3enxa)|`/请从这里开始`|
-        |2|[编辑器](siyuan://blocks/20210808180320-abz7w6k)|`/请从这里开始/编辑器`|
-        |3|[排版元素](siyuan://blocks/20200825162036-4dx365o)|`/请从这里开始/编辑器/排版元素`|
-        |4|[内容块](siyuan://blocks/20210808180320-fqgskfj)|`/请从这里开始/内容块`|
-        |5|[什么是内容块](siyuan://blocks/20200813004931-q4cu8na)|`/请从这里开始/内容块/什么是内容块`|
-        |6|[引用内容块](siyuan://blocks/20200813013559-sgbzl5k)|`/请从这里开始/内容块/引用内容块`|
-        |7|[在内容块中遨游](siyuan://blocks/20200813131152-0wk5akh)|`/请从这里开始/内容块/在内容块中遨游`|
-        |8|[内容块类型](siyuan://blocks/20200905090211-2vixtlf)|`/请从这里开始/内容块/内容块类型`|
-        |9|[嵌入内容块](siyuan://blocks/20201117101902-2ewjjum)|`/请从这里开始/内容块/嵌入内容块`|
-        |10|[文档块和标题块的转换](siyuan://blocks/20201210103036-1x3vm8t)|`/请从这里开始/内容块/文档块和标题块的转换`|
-      * 查询思源数据库所有表
+      * Query all tables in Siyuan database.
 
         ```sql
         SELECT
@@ -122,54 +92,22 @@
         FROM
             sqlite_master
         ```
-
-        ||name|rootpage|sql|tbl_name|type|
-        | --: | :-------------------------| :---------| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------| :-------------------------| :----------|
-        |1|`stat`|`2`|`CREATE TABLE stat (key, value)`|`stat`|`table`|
-        |2|`blocks`|`3`|`CREATE TABLE blocks (id, parent_id, root_id, hash, box, path, hpath, name, alias, memo, content, markdown, length, type, subtype, ial, sort, created, updated)`|`blocks`|`table`|
-        |3|`spans`|`4`|`CREATE TABLE spans (id, block_id, root_id, box, path, content, markdown, type, ial)`|`spans`|`table`|
-        |4|`assets`|`5`|`CREATE TABLE assets (id, block_id, root_id, box, docpath, path, name, title, hash)`|`assets`|`table`|
-        |5|`attributes`|`6`|`CREATE TABLE attributes (id, name, value, type, block_id, root_id, box, path)`|`attributes`|`table`|
-        |6|`refs`|`7`|`CREATE TABLE refs (id, def_block_id, def_block_parent_id, def_block_root_id, def_block_path, block_id, root_id, box, path, content, markdown, type)`|`refs`|`table`|
-        |7|`file_annotation_refs`|`8`|`CREATE TABLE file_annotation_refs (id, file_path, annotation_id, block_id, root_id, box, path, content, type)`|`file_annotation_refs`|`table`|
-      * 查询思源数据库 `blocks` 表中所有字段  
+      * Query all fields in the `blocks` table of Siyuan database.
 
         ```sql
         PRAGMA table_info('blocks')
         ```
-
-        ||cid|dflt_value|name|notnull|pk|type|
-        | ---: | :-------| :-----------| :--------------| :--------| :---| :-----|
-        |1|||`id`||||
-        |2|`1`||`parent_id`||||
-        |3|`2`||`root_id`||||
-        |4|`3`||`hash`||||
-        |5|`4`||`box`||||
-        |6|`5`||`path`||||
-        |7|`6`||`hpath`||||
-        |8|`7`||`name`||||
-        |9|`8`||`alias`||||
-        |10|`9`||`memo`||||
-        |11|`10`||`content`||||
-        |12|`11`||`markdown`||||
-        |13|`12`||`length`||||
-        |14|`13`||`type`||||
-        |15|`14`||`subtype`||||
-        |16|`15`||`ial`||||
-        |17|`16`||`sort`||||
-        |18|`17`||`created`||||
-        |19|`18`||`updated`||||
-      * 自定义属性视图
+      * Customized property views.
 
         ```sql
         SELECT
-            '[' || b.content || '](siyuan://blocks/' || a.block_id || ')' AS __1____pre__文档标题,
+            '[' || b.content || '](siyuan://blocks/' || a.block_id || ')' AS __1____pre__Title,
             MAX(
                 CASE
                     WHEN a.name = 'name' THEN a.value
                     ELSE NULL
                 END
-            ) AS __2____kbd__命名,
+            ) AS __2____kbd__Name,
             MAX(
                 CASE
                     WHEN a.name = 'alias' THEN REPLACE(
@@ -179,7 +117,7 @@
                     )
                     ELSE NULL
                 END
-            ) AS __3____pre__别名,
+            ) AS __3____pre__Alias,
             MAX(
                 CASE
                     WHEN a.name = 'memo' THEN REPLACE(
@@ -189,7 +127,7 @@
                     )
                     ELSE NULL
                 END
-            ) AS __3____pre__备注
+            ) AS __3____pre__Memo
         FROM
             attributes AS a
             INNER JOIN blocks AS b ON a.block_id = b.id
@@ -207,97 +145,94 @@
         LIMIT
             10;
         ```
+    * Use field aliases prefix to define query display styles.
 
-        ![自定义属性视图-relative](./image/README/1649676356928.png)  
-        ​![自定义属性视图-location](/widgets/Query/image/README/1649676356928.png)
-    * 使用字段别名前缀定义查询显示样式
+      * `__hidden__alias0`:
 
-      * `__hidden__别名0`:
+        * This field does not appear in the query results.
+      * `__ref__alias1`:
 
-        * 该字段不显示在查询结果中
-      * `__ref__别名1`:
+        * The field is rendered as a block reference.
+        * example: `((<value> "<value>"))`
+      * `__link__alias2`:
 
-        * 该字段渲染为块引用
-        * 示例: `((<value> "<value>"))`
-      * `__link__别名2`:
+        * The field is rendered as a block link.
+        * example: `[<value>](siyuan://blocks/<value>)`
+      * `__raw__alias3`:
 
-        * 该字段渲染为块链接
-        * 示例: `[<value>](siyuan://blocks/<value>)`
-      * `__raw__别名3`:
+        * The field is rendered as the original value (inline code style).
+        * example: ``<value>``
+      * `__date__alias4`:
 
-        * 该字段渲染为原始值(行内代码样式)
-        * 示例: ``<value>``
-      * `__date__别名4`:
+        * The field is rendered as a date.
+        * example: `yyyy-MM-dd`
+      * `__time__alias5`:
 
-        * 该字段渲染为日期
-        * 示例: `yyyy-MM-dd`
-      * `__time__别名5`:
+        * The field is rendered as a time.
+        * example: `HH:mm:ss`
+      * `__datetime__alias6`:
 
-        * 该字段渲染为时间
-        * 示例: `HH:mm:ss`
-      * `__datetime__别名6`:
+        * The field is rendered as a datetime.
+        * example: `yyyy-MM-dd HH:mm:ss`
+      * `___s__alias7`:
 
-        * 该字段渲染为日期时间
-        * 示例: `yyyy-MM-dd HH:mm:ss`
-      * `__s__别名7`:
+        * The field is rendered as strikethrough.
+        * example: `~~<value>~~`
+      * `___u__alias8`:
 
-        * 该字段渲染为删除线
-        * 示例: `~~<value>~~`
-      * `__u__别名8`:
+        * The field is rendered as underline.
+        * example: `<u><value></u>`
+      * `___em__alias9`:
 
-        * 该字段渲染为下划线
-        * 示例: `<u><value></u>`
-      * `__em__别名9`:
+        * The field is rendered as emphasis.
+        * example: `*<value>*`
+      * `__tag__alias10`:
 
-        * 该字段渲染为斜体
-        * 示例: `*<value>*`
-      * `__tag__别名10`:
+        * The field is rendered as tag.
+        * example: `<kbd><value></kbd>`
+      * `__kbd__alias11`:
 
-        * 该字段渲染为标签
-        * 示例: `<kbd><value></kbd>`
-      * `__kbd__别名11`:
+        * The field is rendered as keyboard.
+        * example: `~<value>~`
+      * `__sub__alias12`:
 
-        * 该字段渲染为按键样式
-        * 示例: `~<value>~`
-      * `__sub__别名12`:
+        * The field is rendered as subscript.
+        * example: `^<value>^`
+      * `__sup__alias13`:
 
-        * 该字段渲染为下标样式
-        * 示例: `^<value>^`
-      * `__sup__别名13`:
+        * The field is rendered as superscript.
+        * example: `#<value>#`
+      * `__code__alias14`:
 
-        * 该字段渲染为上标样式
-        * 示例: `#<value>#`
-      * `__code__别名14`:
+        * The field is rendered as inline code.
+        * example: ``<value>``
+      * `__mark__alias15`:
 
-        * 该字段渲染为行内代码
-        * 示例: ``<value>``
-      * `__mark__别名15`:
+        * The field is rendered as mark.
+        * example: `==<value>==`
+      * `__math__alias16`:
 
-        * 该字段渲染为标记
-        * 示例: `==<value>==`
-      * `__math__别名16`:
+        * The field is rendered as math formula.
+        * example: `$<value>$`
+      * `__strong__alias17`:
 
-        * 该字段渲染为公式
-        * 示例: `$<value>$`
-      * `__strong__别名17`:
+        * The field is rendered as weightbold.
+        * example: `**<value>**`
+      * `__pre__alias7`:
 
-        * 该字段渲染为粗体
-        * 示例: `**<value>**`
-      * `__pre__别名18`:
+        * The field is rendered as a preview (rendering the markdown row-level identifier).
+        * example: `<value>`
+    * Use field aliases prefix to define query result field order.
 
-        * 该字段渲染为预览(渲染 markdown 行级标识符)
-        * 示例: `<value>`
-    * 使用字段别名前缀定义查询结果字段顺序
+      * `__<number>__alias8`:
 
-      * `__<数字>__别名8`:
+        * The field can be placed in front of the query style prefix field.
+        * example:
 
-        * 该字段可以放置在查询样式前缀字段的前面
-        * 示例:
-
-          * `__1____pre__别名9`
-          * `__02____raw__别名10`
-    * 默认显示查询结果原始值(使用行内代码)
-    * 字段别名前缀示例
+          * `__1____pre__alias9`
+          * `__02____raw__alias10`
+    * Displays the original value of the query result by default (using inline code).
+    * Example of a field alias prefix
 
       * ```sql
         SELECT
@@ -325,40 +260,40 @@
             id = '.root{.id}'
         ```
 
-        ![字段别名前缀示例-relative](./image/README/1648568044659.png)  
-        ​![字段别名前缀示例-location](/widgets/Query/image/README/1648568044659.png)
-5. 部分模板字段解析支持
+        ![字段别名前缀示例](https://cdn.jsdelivr.net/gh/Zuoqiu-Yingyi/widget-query//image/README/1648568044659.png)
+5. Partial template field parsing support
+6. Partial template field parsing support.
 
     * `.<prefix>{.<field>}`
 
-      * `<prefix>`: 前缀字段
+      * `<prefix>`: prefix field
 
-        * `block`: 挂件块
-        * `parent`: 挂件块的上级块
-        * `root`: 挂件块所在文档块
-      * `<field>`: 属性字段
+        * `block`: Widget block.
+        * `parent`: The parent block of the pendant block.
+        * `root`: The document block in which the pendant block resides.
+      * `<field>`: attribute field
 
-        * 数据库中 `blocks` 表的字段名, 详情请参考 [blocks](https://www.yuque.com/siyuannote/docs/go7uom#276bd8cf)
-      * 示例: `SELECT * FROM blocks WHERE id = '.root{.id}' content LIKE '%内容块%'`
+        * The field name of the `blocks` table in the database.
+      * Example: `SELECT * FROM blocks WHERE id = '.root{.id}' content LIKE '%content blocks%'`
 
-        * 等价于 `SELECT * FROM blocks WHERE id = '.block{.root_id}' content LIKE '%内容块%'`
-        * 查询挂件所在文档中所有含有 `内容块` 三个字的块
+        * Equivalent to `SELECT * FROM blocks WHERE id = '.block{.root_id}' content LIKE '%content blocks%'`
+        * Query all blocks in the document where the pendant is located that contain the word `content blocks`
 
-## 自定义配置
+## CUSTOM CONFIG
 
-### 全局自定义配置
+### GLOBAL CUSTOM CONFIG
 
-1. 创建文件 `<工作空间>/data/widgets/custom.js`
-2. 在文件 `<工作空间>/data/widgets/custom.js` 中定义的值将覆盖 `<工作空间>/data/widgets/Query/src/script/module/config.js` 中对应的值
+1. Create a file `<workspace>/data/widgets/custom.js`
+2. The value defined in file `<workspace>/data/widgets/custom.js` overwrites the corresponding value in file `<workspace>/data/widgets/Query/src/script/module/config.js`.
 
-#### 配置示例
+#### CONFIG EXAMPLE
 
 ```js
 /**
- * 文件路径
- *    <工作空间>/data/widgets/custom.js
- * 示例功能 | Example function:
- *    默认块查询结果中将块属性分列显示
+ * File Path
+ *    <workspace>/data/widgets/custom.js
+ * Example function:
+ *    Block attributes are displayed in columns in the default block query results.
  */
 
 export const config = {
@@ -371,32 +306,33 @@ export const config = {
     },
 };
 
+
 ```
 
-更多配置项请参考 [config.js](./src/script/module/config.js)
+For more configuration items, see [config.js](./src/script/module/config.js)
 
-### 块自定义配置
+### BLOCK CUSTOM CONFIG
 
-* 在挂件块（笔记中的Query按钮）中设置自定义块属性
+* Set custom block attributes in the widget block(the Query button in your note).
 
-  * 自定义属性名称为 `src/script/module/config.js` 文件中 `config` 对象中的属性
-  * 例如, 如果想要自定义查询结果字段列表, 可以设置自定义块属性 `query-fields`: `["hpath", "type", "markdown"]`, 在该块中将会替换 `config.query.fields` 字段
+  * Custom block attribute names are property in the `config` object under the file `src/script/module/config.js`.
+  * For example, if you want to customize the query result field list, you can set the custom block attribute `query-fields`: `["hpath", "type", "markdown"]`, where the `config.query.fields` property will be replaced in this block.
 
-## 开始
+## START
 
-该挂件已在[思源笔记社区集市](https://github.com/siyuan-note/bazaar)上架, 可直接在集市中安装
+The widget has been put on the shelves at [SiYuan community bazaar](https://github.com/siyuan-note/bazaar) and can be installed directly in the Bazaar.
 
-## 参考 & 感谢
+## REFERENCE & THANKS
 
-|作者|项目|许可证|
+|Author|Project|License|
 | :------------------------------------------------------| :------------------------------------------------------------------| :------------|
 |**[leolee9086](https://github.com/leolee9086)**|[leolee9086/cc-baselib](https://github.com/leolee9086/cc-baselib)|*Unknown*|
 
-注: 排序不分先后
+PS: Sort in no particular order.
 
 ## CONTRIBUTORS
 
-<!-- [![贡献者](https://contrib.rocks/image?repo=Zuoqiu-Yingyi/widget-query)](https://github.com/Zuoqiu-Yingyi/widget-query/graphs/contributors) -->
+<!-- [![CONTRIBUTOR](https://contrib.rocks/image?repo=Zuoqiu-Yingyi/widget-query)](https://github.com/Zuoqiu-Yingyi/widget-query/graphs/contributors) -->
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -423,8 +359,8 @@ export const config = {
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-注: 该表格使用 [All Contributors · GitHub](https://github.com/all-contributors) 自动生成, 请到 [emoji key](https://allcontributors.org/docs/en/emoji-key) 查看贡献类型
+PS: The table is generated automatically using [All Contributors · GitHub](https://github.com/all-contributors), go to [emoji key](https://allcontributors.org/docs/en/emoji-key) to see the contribution type.
 
-## 更改日志
+## CHANGE LOG
 
 [CHANGE LOG](./CHANGELOG.md)

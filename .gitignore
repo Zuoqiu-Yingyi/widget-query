@@ -1,4 +1,5 @@
 # 发行包文件目录
 /release
+package.zip
 # 测试文件目录
 /src/script/test

@@ -1,6 +1,7 @@
 # 更改日志 | CHANGE LOG
 
 - 优化行内代码渲染方案 | Optimize the inline code rendering scheme.
+- 完善清单文件内容 | Improve the content of the manifest file.
 
 ## v0.4.4/2023-05-06
 

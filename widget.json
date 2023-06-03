@@ -2,5 +2,29 @@
   "name": "Query",
   "author": "Zuoqiu-Yingyi",
   "url": "https://github.com/Zuoqiu-Yingyi/widget-query",
-  "version": "0.4.4"
+  "version": "0.4.5",
+  "displayName": {
+    "default": "Query",
+    "zh_CN": "查询",
+    "zh_CHT": "查詢"
+  },
+  "description": {
+    "default": "Use SQL for all your query needs!",
+    "zh_CN": "使用 SQL 满足你所有查询需求！",
+    "zh_CHT": "使用 SQL 滿足你所有查詢需求！"
+  },
+  "readme": {
+    "default": "README.md",
+    "zh_CN": "README_zh_CN.md",
+    "zh_CHT": "README_zh_CN.md"
+  },
+  "funding": {
+    "openCollective": "",
+    "patreon": "",
+    "github": "",
+    "custom": [
+      "https://afdian.net/a/zuoqiu",
+      "https://ko-fi.com/zuoqiu"
+    ]
+  }
 }
