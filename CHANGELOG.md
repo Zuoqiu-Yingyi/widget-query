@@ -2,6 +2,7 @@
 
 - 优化行内代码渲染方案 | Optimize the inline code rendering scheme.
 - 完善清单文件内容 | Improve the content of the manifest file.
+- 完善英文文档 | Improve the English documentation.
 
 ## v0.4.4/2023-05-06
 
