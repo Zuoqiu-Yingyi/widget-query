@@ -1,5 +1,8 @@
 # 更改日志 | CHANGE LOG
 
+## v0.4.5/2023-06-04
+
+- [v0.4.4 ... v0.4.5](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.4.4...v0.4.5)
 - 优化行内代码渲染方案 | Optimize the inline code rendering scheme.
 - 完善清单文件内容 | Improve the content of the manifest file.
 - 完善英文文档 | Improve the English documentation.
