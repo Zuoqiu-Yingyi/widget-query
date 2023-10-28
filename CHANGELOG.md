@@ -1,5 +1,7 @@
 # 更改日志 | CHANGE LOG
 
+- [#41](https://github.com/Zuoqiu-Yingyi/widget-query/issues/41) 修复文档链接问题 | Fixed document link issue.
+
 ## v0.4.5/2023-06-04
 
 - [v0.4.4 ... v0.4.5](https:///github.com/Zuoqiu-Yingyi/widget-query/compare/v0.4.4...v0.4.5)
